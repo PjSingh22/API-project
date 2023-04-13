@@ -1,7 +1,8 @@
 const router = require('express').Router();
 
-router.post('/test', function(req, res) {
-  res.json({ requestBody: req.body });
-});
+const { setTokenCookie, restoreUser, requireAuth } = require('../../utils/auth.js');
+
+router.use(restoreUser);
+
 
 module.exports = router;
