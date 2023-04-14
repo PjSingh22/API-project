@@ -35,6 +35,30 @@ module.exports = (sequelize, DataTypes) => {
         isEmail: true
       }
     },
+    firstName: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        len: [0, 31],
+        fNameNotEmpty(value) {
+          if (!value) {
+            throw new Error('first name cannot be empty');
+          }
+        }
+      }
+    },
+    lastName: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        len: [0, 31],
+        lNameNotEmpty(value) {
+          if (!value) {
+            throw new Error('last Name cannot be empty');
+          }
+        }
+      }
+    },
     hashedPassword: {
       type: DataTypes.STRING.BINARY,
       allowNull: false,
