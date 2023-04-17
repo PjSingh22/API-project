@@ -11,12 +11,12 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      // Spot.belongsTo(
-      //   models.User,
-      //   {
-      //     foreignKey: 'ownerId'
-      //   }
-      // )
+      Spot.belongsTo(
+        models.User,
+        {
+          foreignKey: 'ownerId'
+        }
+      )
     }
   }
   Spot.init({
@@ -76,7 +76,6 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
-        isAlpha: true,
         notEmpty: true
       }
     },
@@ -87,7 +86,15 @@ module.exports = (sequelize, DataTypes) => {
         notEmpty: true
       }
     },
-    price: DataTypes.DECIMAL
+    price: {
+      type: DataTypes.DECIMAL,
+      validate: {
+        notEmpty: {
+          args: true,
+          msg: 'Please provide a price'
+        }
+      }
+    }
   }, {
     sequelize,
     modelName: 'Spot',
