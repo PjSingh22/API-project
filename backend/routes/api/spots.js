@@ -1,7 +1,32 @@
 const express = require('express');
 const router = express.Router();
 
-const { Spot } = require('../../db/models');
+const { Spot, SpotImage } = require('../../db/models');
+
+router.post('/:id/images', async (req, res) => {
+  const { user } = req;
+  const id = parseInt(req.params.id);
+  const theSpot = await Spot.findByPk(id, {
+    where: {
+      ownerId: user.id
+    }
+  });
+
+  if (theSpot) {
+    const { url, preview } = req.body;
+
+    let newImage = SpotImage.build({
+      spotId: id,
+      url,
+      preview
+    });
+
+    await newImage.save();
+    return res.json(newImage);
+  }
+
+  return res.status(404).json('Spot does not exist with given id');
+})
 
 router.get('/', async (req, res) => {
   const allSpots = await Spot.findAll();
