@@ -11,12 +11,12 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      Spot.belongsTo(
-        models.User,
-        {
-          foreignKey: 'ownerId'
-        }
-      )
+      // Spot.belongsTo(
+      //   models.User,
+      //   {
+      //     foreignKey: 'ownerId'
+      //   }
+      // )
     }
   }
   Spot.init({
