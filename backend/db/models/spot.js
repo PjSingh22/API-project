@@ -35,71 +35,78 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
+        notNull: { msg: 'Address is required' },
         len: [5, 30],
-        notEmpty: true
+        notEmpty: { msg: 'Address is required'}
       }
     },
     city: {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
+        notNull: { msg: 'City is required' },
         len: [2, 18],
-        notEmpty: true
+        notEmpty: { msg: 'City is required'}
       }
     },
     state: {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
+        notNull: { msg: 'State is required' },
         len: [1, 12],
-        notEmpty: true
+        notEmpty: { msg: 'State is required'}
       }
     },
     country: {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
+        notNull: { msg: 'Country is required' },
         len: [3, 57],
-        notEmpty: true
+        notEmpty: { msg: 'Country is required'}
       }
     },
     lat: {
       type: DataTypes.DECIMAL,
       allowNull: false,
       validate: {
+        notNull: { msg: 'Lat is required' },
         isFloat: true,
-        notEmpty: true
+        notEmpty: { msg: 'Lat is required'}
       }
     },
     lng: {
       type: DataTypes.DECIMAL,
       allowNull: false,
       validate: {
+        notNull: { msg: 'Lng is required' },
         isFloat: true,
-        notEmpty: true
+        notEmpty: { msg: 'Lng is required'}
       }
     },
     name: {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
-        notEmpty: true
+        notNull: { msg: 'Name is required' },
+        notEmpty: { msg: 'Name is required'}
       }
     },
     description: {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
-        notEmpty: true
+        notNull: { msg: 'Description is required' },
+        notEmpty: { msg: 'Description is required'}
       }
     },
     price: {
       type: DataTypes.DECIMAL,
+      allowNull: false,
       validate: {
-        notEmpty: {
-          args: true,
-          msg: 'Please provide a price'
-        }
+        notNull: { msg: 'Price is required' },
+        notEmpty: { msg: 'Price is required'}
       }
     }
   }, {
