@@ -41,17 +41,21 @@ router.post('/:id/images', async (req, res, next) => {
     }
   });
 
-  if (theSpot) {
-    const { url, preview } = req.body;
+  try {
+    if (theSpot) {
+      const { url, preview } = req.body;
 
-    let newImage = SpotImage.build({
-      spotId: id,
-      url,
-      preview
-    });
+      let newImage = SpotImage.build({
+        spotId: theSpot.id,
+        url,
+        preview
+      });
 
-    await newImage.save();
-    return res.json(newImage);
+      await newImage.save();
+      return res.json(newImage);
+    }
+  } catch (error) {
+    return res.json(error);
   }
 
   next({

@@ -21,7 +21,7 @@ module.exports = {
         onDelete: 'CASCADE',
         allowNull: false,
         references: {
-          model: 'Users'
+          model: 'Spots'
         }
       },
       url: {
