@@ -14,10 +14,46 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   Review.init({
-    spotId: DataTypes.INTEGER,
-    userId: DataTypes.INTEGER,
-    review: DataTypes.STRING,
-    stars: DataTypes.INTEGER
+    spotId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      validate: {
+        notNull: { msg: 'spotId is required' },
+        isInt: true,
+        notEmpty: { msg: 'spotId is required' }
+      }
+    },
+    userId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      validate: {
+        notNull: { msg: 'ownerId is required' },
+        isInt: true,
+        notEmpty: { msg: 'ownerId is required' }
+      }
+    },
+    review: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notNull: { msg: 'review cannot be empty' },
+        notEmpty: { msg: 'review cannot be empty' },
+        minLength(value) {
+          if (value.length < 10) {
+            throw new Error('review must be a minimum length of 10 characters');
+          }
+        }
+      }
+    },
+    stars: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      validate: {
+        isInt: true,
+        notNull: { msg: 'rating is required' },
+        notEmpty: { msg: 'rating is required' }
+      }
+    }
   }, {
     sequelize,
     modelName: 'Review',
