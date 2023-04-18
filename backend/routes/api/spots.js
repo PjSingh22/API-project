@@ -1,31 +1,48 @@
 const express = require('express');
 const router = express.Router();
 
-const { Spot, SpotImage } = require('../../db/models');
-const spot = require('../../db/models/spot');
+const { Spot, SpotImage, Review, User } = require('../../db/models');
 
 // TODO: add reviews and avgRating to returned data
-router.get('/:id', async (req, res) => {
+router.get('/:id', async (req, res, next) => {
   const id = req.params.id;
-  const spot = await Spot.findByPk(id);
+  const spot = await Spot.findByPk(id, { raw: true });
 
-  if (spot) {
-    return res.json(spot);
+  if (!spot) {
+    return next({
+      error: 'Spot cannot be retrieved',
+      status: 400
+    });
   }
 
-  return res.status(404).json(`spot with id ${id} does not exist.`);
+  // gets the total stars and average
+  const stars = await Review.sum('stars',{where:{spotId:spot.id}}); // get all stars tied to this spot
+  const owner = await User.findByPk(spot.ownerId, { attributes: ['id', 'firstName', 'lastName']});
+  const totalReviews = await Review.count({where:{spotId:spot.id}});
+  const spotImages = await SpotImage.findAll({where:{spotId:spot.id}, attributes: ['id', 'url', 'preview']})
+  let avg = stars/totalReviews
+  spot.avgStarRating = avg ? avg : 0; // set it!
+  spot.numReviews = totalReviews;
+  spot.owner = owner
+  // check to see if previewimage is true if true put the url there
+  if(spotImages) spot.spotImages = spotImages
+  else spot.spotImages = 'invalid';
+
+  return res.json(spot);
+
 })
 
 // TODO: add reviews to this.
-router.put('/:id', async (req, res) => {
+router.put('/:id', async (req, res, next) => {
   const { user } = req;
+  const id = req.params.id;
   const spotToEdit = await Spot.findByPk(id, {
     where: {
       ownerId: user.id
     }
   });
 
-  if (spotToEdit) {
+  if (spotToEdit.ownerId === user.id) {
     const { address, city, state, country, lat, lng, name, description, price} = req.body;
 
     if (address) spotToEdit.address = address;
@@ -42,7 +59,10 @@ router.put('/:id', async (req, res) => {
     return res.json(spotToEdit);
   }
 
-  return res.status(404).json('Spot does not exist');
+  return next({
+    error: 'Either spot does not exist or you do not have permission to edit this spot',
+    status: 404
+  });
 })
 
 router.post('/:id/images', async (req, res, next) => {
@@ -73,14 +93,31 @@ router.post('/:id/images', async (req, res, next) => {
   })
 })
 
+// Get all spots
 router.get('/', async (req, res, next) => {
-  const allSpots = await Spot.findAll();
 
-  if (allSpots) return res.json(allSpots);
-  return next({
-    error: 'Spots cannot be retrieved',
-    status: 400
-  });
+
+  const spots = await Spot.findAll({raw: true})
+
+  if (!spots) {
+    return next({
+      error: 'Spots cannot be retrieved',
+      status: 400
+    });
+  }
+  for(let spot of spots){ // iterate through all spots
+       // gets the total stars and average
+      const stars = await Review.sum('stars',{where:{spotId:spot.id}}); // get all stars tied to this spot
+      const totalReviews = await Review.count({where:{spotId:spot.id}});
+      let avg = stars/totalReviews
+      spot.avgRating = avg ? avg : 0; // set it!
+      // check to see if previewimage is true if true put the url there
+      const previewImage = await SpotImage.findOne({where:{spotId:spot.id}})
+      if(previewImage) spot.previewImage = previewImage.url
+      else spot.previewImage = 'invalid';
+  }
+  return res.json(spots);
+
 });
 
 router.post('/', async (req, res, next) => {
