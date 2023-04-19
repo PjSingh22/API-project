@@ -4,6 +4,7 @@ const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
 
 const { Review, ReviewImage, User, Spot, SpotImage } = require('../../db/models');
+const { json } = require('sequelize');
 const validateReview = [
   check("review")
   .isLength({ min: 10 })
@@ -18,6 +19,22 @@ const validateReview = [
   .withMessage("Stars must be an integer from 1 to 5"),
   handleValidationErrors
 ];
+
+router.delete('/:reviewId', async (req, res) => {
+  const { user } = req;
+  const reviewId = req.params.reviewId;
+  const review = await Review.findByPk(reviewId);
+
+  if (user) {
+    if (!review || review.userId !== user.id) {
+      return res.status(404).json({ message: "review couldn't be found" });
+    }
+
+    await review.destroy();
+
+    return res.json({ message: "Successfully deleted" });
+  }
+})
 
 router.put('/:reviewId', validateReview, async (req, res) => {
   const { user } = req;
