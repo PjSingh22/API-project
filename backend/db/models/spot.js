@@ -132,13 +132,18 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.DECIMAL,
       allowNull: false,
       validate: {
-        notNull: true,
-        notEmpty: true
+        notNull: { msg: 'Price is required' },
+        notEmpty: { msg: 'Price is required'}
       }
     }
   }, {
     sequelize,
-    modelName: 'Spot'
+    modelName: 'Spot',
+    // defaultScope: {
+    //   attributes: {
+    //     include: ['id']
+    //   }
+    // }
   });
   return Spot;
 };

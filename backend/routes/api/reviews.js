@@ -44,7 +44,7 @@ router.post('/:id/images', async (req, res, next) => {
   }
 });
 
-router.get('/current', async (req, res, next) => {
+router.get('/current', async (req, res) => {
   const { user } = req;
 
   if (user) {
@@ -55,10 +55,13 @@ router.get('/current', async (req, res, next) => {
       where: {
         userId: user.id
       },
+      attributes: {
+        exclude: []
+      },
       raw: true
     });
 
-    for(let review of reviews) {
+    for (let review of reviews) {
       const spot = await Spot.findOne({
         where: {
           id: review.spotId
@@ -68,6 +71,7 @@ router.get('/current', async (req, res, next) => {
         },
         raw: true
       });
+
       const reviewImages = await ReviewImage.findAll({
         where: {
           reviewId: review.id
@@ -83,7 +87,7 @@ router.get('/current', async (req, res, next) => {
       review.Spot = spot
     }
 
-    return res.json(reviews);
+    return res.json({ Reviews: reviews });
   }
 });
 

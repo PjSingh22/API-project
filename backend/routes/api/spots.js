@@ -3,7 +3,8 @@ const router = express.Router();
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
 const { requireAuth } = require('../../utils/auth');
-const { Spot, SpotImage, Review, User } = require('../../db/models');
+const { Spot, SpotImage, Review, User, ReviewImage } = require('../../db/models');
+const spot = require('../../db/models/spot');
 
 const validateSpot = [
   check("address")
@@ -53,81 +54,57 @@ const validateSpot = [
   handleValidationErrors
 ];
 
-router.get('/current', async (req, res, next) => {
-  const { user } = req;
+const validateReview = [
+  check("review")
+  .isLength({ min: 10 })
+  .withMessage("Review must have a minimum of 10 characters"),
 
-  if (user) {
-    const id = user.id;
-    const currentUser = await User.findByPk(id);
-    const spots = await currentUser.getSpots({ raw: true });
+  check("review")
+  .exists({ checkFalsy: true })
+  .withMessage("Review text is required"),
 
-    for (let spot of spots) {
-      const stars = await Review.sum('stars', { where: { spotId: spot.id }});
-      const totalReviews = await Review.count({where:{spotId:spot.id}});
-      const previewImage = await SpotImage.findOne({where:{spotId:spot.id}});
-      const avg = stars/totalReviews;
+  check("stars")
+  .isInt({ min: 1, max: 5 })
+  .withMessage("Stars must be an integer from 1 to 5"),
+  handleValidationErrors
+]
 
-      if (previewImage) spot.previewImage = previewImage.url
-      else spot.previewImage = 'invalid';
-
-      spot.avgRating = avg;
-
-    }
-    return res.json({ Spots: spots });
-  }
-
-  return next({
-    error: 'You are not authorized to view this page',
-    status: 400
-  })
-})
-
-router.get('/:id/reviews', (req, res, next) => {
-
-})
-
-router.post('/:id/reviews', async (req, res, next) => {
+// create a review for a spot
+router.post('/:id/reviews', validateReview, async (req, res, next) => {
   const { user } = req;
   const spotId = req.params.id;
   const userId = user.id;
   const spot = await Spot.findByPk(spotId);
   const review = await Review.findOne({ where: { spotId: spotId, userId: userId }});
-
+  const reviewTotal = await Review.count('id');
   if (!spot) {
-    return next({
-      error: `spot with id ${spotId} does not exist`,
-      status: 404
-    });
+    return res.status(404).json({ error: `spot couldn't be found` });
   }
 
   if (review) {
-    return next({
-      error: `A review from this use already exists. Cannot submit a new one.`,
-      status: 403
-    });
+    return res.status(500).json({ message: `User already has a review for this spot` });
   }
 
   if (user) {
-    try {
-      const { review, stars } = req.body;
+    const { review, stars } = req.body;
 
-      const newReview = Review.build({
-        spotId,
-        userId,
-        review,
-        stars
-      });
+    const newReview = await Review.create({
+      spotId,
+      userId,
+      review,
+      stars
+    });
 
-      await newReview.save();
+    return res.json({
+      id: reviewTotal + 1,
+      spotId: newReview.spotId,
+      userId: newReview.userId,
+      review: newReview.review,
+      stars: newReview.stars,
+      createdAt: newReview.createdAt,
+      updatedAt: newReview.updatedAt
+    });
 
-      return res.json(newReview);
-
-    } catch(err) {
-      return next({
-        error: err.errors.map(err => err.message),
-        status: 400
-      });
-    }
   }
 });
 
@@ -160,35 +137,7 @@ router.post('/:id/images', async (req, res, next) => {
   return res.status(404).json({ message: "Spot couldn't be found" });
 });
 
-// get spot by id
-router.get('/:id', async (req, res, next) => {
-  const id = req.params.id;
-  const spot = await Spot.findByPk(id, { raw: true });
-
-  if (!spot) {
-    return res.status(404).json({
-      message: "Spot couldn't be found"
-    });
-  }
-
-  // gets the total stars and average
-  const stars = await Review.sum('stars',{where:{spotId:spot.id}}); // get all stars tied to this spot
-  const owner = await User.findByPk(spot.ownerId, { attributes: ['id', 'firstName', 'lastName']});
-  const totalReviews = await Review.count({where:{spotId:spot.id}});
-  const spotImages = await SpotImage.findAll({where:{spotId:spot.id}, attributes: ['id', 'url', 'preview']})
-  let avg = stars/totalReviews
-  spot.avgStarRating = avg ? avg : 0; // set it!
-  spot.numReviews = totalReviews;
-  spot.owner = owner
-  // check to see if previewimage is true if true put the url there
-  if(spotImages) spot.spotImages = spotImages
-  else spot.spotImages = 'invalid';
-
-  return res.json(spot);
-
-})
-
-// edit review
+// edit spot
 router.put('/:id',validateSpot, async (req, res, next) => {
   const { user } = req;
   const id = req.params.id;
@@ -201,7 +150,7 @@ router.put('/:id',validateSpot, async (req, res, next) => {
   if (!spotToEdit) {
     return res.status(404).json({ message: "spot couldn't be found" });
   }
-
+  //TODO: use update method to replace build and save;
   if (spotToEdit.ownerId === user.id) {
     const { address, city, state, country, lat, lng, name, description, price} = req.body;
 
@@ -236,6 +185,100 @@ router.delete('/:id', async (req, res, next) => {
   }
 });
 
+router.get('/current', async (req, res, next) => {
+  const { user } = req;
+
+  if (user) {
+    const id = user.id;
+    const currentUser = await User.findByPk(id);
+    const spots = await currentUser.getSpots({ raw: true });
+
+    for (let spot of spots) {
+      const stars = await Review.sum('stars', { where: { spotId: spot.id }});
+      const totalReviews = await Review.count({where:{spotId:spot.id}});
+      const previewImage = await SpotImage.findOne({where:{spotId:spot.id}});
+      const avg = stars/totalReviews;
+
+      if (previewImage) spot.previewImage = previewImage.url
+      else spot.previewImage = 'invalid';
+
+      spot.avgRating = avg;
+
+    }
+    return res.json({ Spots: spots });
+  }
+
+  return next({
+    error: 'You are not authorized to view this page',
+    status: 400
+  })
+});
+
+// get review by spot id
+router.get('/:id/reviews', async (req, res) => {
+  const spotId = req.params.id;
+  const spot = await Spot.findByPk(spotId);
+  const allReviews = await Review.findAll({
+    where: {
+      spotId: spotId
+    },
+    raw: true
+  });
+
+  if (!spot) {
+    return res.status(404).json({ message: "spot doesn't exist" });
+  }
+
+  for(let review of allReviews) {
+    const reviewId = review.id;
+    const user = await User.findOne({
+      where: {
+        id: review.userId
+      },
+      attributes: ['id', 'firstName', 'lastName']
+    });
+    const reviewImages = await ReviewImage.findAll({
+      where: {
+        reviewId: reviewId
+      },
+      attributes: ['id', 'url']
+    });
+
+    review.User = user;
+    review.ReviewImages = reviewImages
+  }
+
+
+  return res.json({Reviews: allReviews });
+});
+
+// get spot by id
+router.get('/:id', async (req, res, next) => {
+  const id = req.params.id;
+  const spot = await Spot.findByPk(id, { raw: true });
+
+  if (!spot) {
+    return res.status(404).json({
+      message: "Spot couldn't be found"
+    });
+  }
+
+  // gets the total stars and average
+  const stars = await Review.sum('stars',{where:{spotId:spot.id}}); // get all stars tied to this spot
+  const owner = await User.findByPk(spot.ownerId, { attributes: ['id', 'firstName', 'lastName']});
+  const totalReviews = await Review.count({where:{spotId:spot.id}});
+  const spotImages = await SpotImage.findAll({where:{spotId:spot.id}, attributes: ['id', 'url', 'preview']})
+  let avg = stars/totalReviews
+  spot.avgStarRating = avg ? avg : 0; // set it!
+  spot.numReviews = totalReviews;
+  spot.owner = owner
+  // check to see if previewimage is true if true put the url there
+  if(spotImages) spot.spotImages = spotImages
+  else spot.spotImages = 'invalid';
+
+  return res.json(spot);
+
+})
 
 // Get all spots
 router.get('/', async (req, res, next) => {
