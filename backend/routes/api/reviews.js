@@ -4,7 +4,6 @@ const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
 
 const { Review, ReviewImage, User, Spot, SpotImage } = require('../../db/models');
-const { json } = require('sequelize');
 const validateReview = [
   check("review")
   .isLength({ min: 10 })
