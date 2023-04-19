@@ -132,8 +132,8 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.DECIMAL,
       allowNull: false,
       validate: {
-        notNull: { msg: 'Price is required' },
-        notEmpty: { msg: 'Price is required'}
+        notNull: true,
+        notEmpty: true
       }
     }
   }, {
