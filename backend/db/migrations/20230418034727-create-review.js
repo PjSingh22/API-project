@@ -15,7 +15,6 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      // TODO: add associations and onDelete cascade
       spotId: {
         type: Sequelize.INTEGER,
         allowNull: false,

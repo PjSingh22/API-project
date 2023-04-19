@@ -139,6 +139,11 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'Spot',
+    // defaultScope: {
+    //   attributes: {
+    //     include: ['id']
+    //   }
+    // }
   });
   return Spot;
 };

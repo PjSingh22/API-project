@@ -2,35 +2,111 @@ const express = require('express');
 const router = express.Router();
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
-const { Spot, SpotImage, Review, User } = require('../../db/models');
+const { requireAuth } = require('../../utils/auth');
+const { Spot, SpotImage, Review, User, ReviewImage } = require('../../db/models');
+const spot = require('../../db/models/spot');
 
-// const validateSpot = [
-//   check("address")
-//     .exists({ checkFalsy: true })
-//     .withMessage("Street address is required"),
-//   check("city").exists({ checkFalsy: true }).withMessage("City is required"),
-//   check("state").exists({ checkFalsy: true }).withMessage("State is required"),
-//   check("country")
-//     .exists({ checkFalsy: true })
-//     .withMessage("Country is required"),
-//   check("lat")
-//     .isFloat({ min: -90, max: 90 })
-//     .withMessage("Latitude is not valid"),
-//   check("lng")
-//     .isFloat({ min: -180, max: 180 })
-//     .withMessage("Longitude is not valid"),
-//   check("name").exists({ checkFalsy: true }).withMessage("Name is required"),
-//   check("name")
-//     .isLength({ max: 49 })
-//     .withMessage("Name must be less than 50 characters"),
-//   check("description")
-//     .exists({ checkFalsy: true })
-//     .withMessage("Description is required"),
-//   check("price")
-//     .exists({ checkFalsy: true })
-//     .withMessage("Price per day is required"),
-//   handleValidationErrors,
-// ];
+const validateSpot = [
+  check("address")
+    .exists({ checkFalsy: true })
+    .withMessage("Street address is required"),
+
+  check("city")
+  .exists({ checkFalsy: true })
+  .withMessage("City is required"),
+
+  check("state")
+  .exists({ checkFalsy: true })
+  .withMessage("State is required"),
+
+  check("country")
+    .exists({ checkFalsy: true })
+    .withMessage("Country is required"),
+
+  check("lat")
+    .isFloat({ min: -90, max: 90 })
+    .withMessage("Latitude is not valid"),
+
+  check("lng")
+    .isFloat({ min: -180, max: 180 })
+    .withMessage("Longitude is not valid"),
+
+  check("name")
+  .exists({ checkFalsy: true })
+  .withMessage("Name is required"),
+
+  check("name")
+    .isLength({ max: 49 })
+    .withMessage("Name must be less than 50 characters"),
+
+  check("description")
+    .exists({ checkFalsy: true })
+    .withMessage("Description is required"),
+
+  check("description")
+  .isLength({ min: 10})
+  .withMessage("Description must be at least 10 characters long"),
+
+  check("price")
+    .exists({ checkFalsy: true })
+    .withMessage("Price per day is required"),
+
+  handleValidationErrors
+];
+
+const validateReview = [
+  check("review")
+  .isLength({ min: 10 })
+  .withMessage("Review must have a minimum of 10 characters"),
+
+  check("review")
+  .exists({ checkFalsy: true })
+  .withMessage("Review text is required"),
+
+  check("stars")
+  .isInt({ min: 1, max: 5 })
+  .withMessage("Stars must be an integer from 1 to 5"),
+  handleValidationErrors
+]
+
+// create a review for a spot
+router.post('/:id/reviews', validateReview, async (req, res, next) => {
+  const { user } = req;
+  const spotId = req.params.id;
+  const userId = user.id;
+  const spot = await Spot.findByPk(spotId);
+  const review = await Review.findOne({ where: { spotId: spotId, userId: userId }});
+  const reviewTotal = await Review.count('id');
+  if (!spot) {
+    return res.status(404).json({ error: `spot couldn't be found` });
+  }
+
+  if (review) {
+    return res.status(500).json({ message: `User already has a review for this spot` });
+  }
+
+  if (user) {
+    const { review, stars } = req.body;
+
+    const newReview = await Review.create({
+      spotId,
+      userId,
+      review,
+      stars
+    });
+
+    return res.json({
+      id: reviewTotal + 1,
+      spotId: newReview.spotId,
+      userId: newReview.userId,
+      review: newReview.review,
+      stars: newReview.stars,
+      createdAt: newReview.createdAt,
+      updatedAt: newReview.updatedAt
+    });
+
+  }
+});
 
 router.post('/:id/images', async (req, res, next) => {
   const { user } = req;
@@ -41,7 +117,6 @@ router.post('/:id/images', async (req, res, next) => {
     }
   });
 
-  try {
     if (theSpot) {
       const { url, preview } = req.body;
 
@@ -52,27 +127,139 @@ router.post('/:id/images', async (req, res, next) => {
       });
 
       await newImage.save();
-      return res.json(newImage);
+      return res.json({
+        id: newImage.id,
+        url: newImage.url,
+        preview: newImage.preview
+      });
     }
-  } catch (error) {
-    return res.json(error);
+
+  return res.status(404).json({ message: "Spot couldn't be found" });
+});
+
+// edit spot
+router.put('/:id',validateSpot, async (req, res, next) => {
+  const { user } = req;
+  const id = req.params.id;
+  const spotToEdit = await Spot.findByPk(id, {
+    where: {
+      ownerId: user.id
+    }
+  });
+
+  if (!spotToEdit) {
+    return res.status(404).json({ message: "spot couldn't be found" });
+  }
+  //TODO: use update method to replace build and save;
+  if (spotToEdit.ownerId === user.id) {
+    const { address, city, state, country, lat, lng, name, description, price} = req.body;
+
+    if (address) spotToEdit.address = address;
+    if (city) spotToEdit.city = city;
+    if (state) spotToEdit.state = state;
+    if (country) spotToEdit.country = country;
+    if (lat) spotToEdit.lat = lat;
+    if (lng) spotToEdit.lng = lng;
+    if (name) spotToEdit.name = name;
+    if (description) spotToEdit.name = name;
+    if (price) spotToEdit.price = price;
+
+    await spotToEdit.save();
+    return res.json(spotToEdit);
+  }
+});
+
+// delete a spot
+router.delete('/:id', async (req, res, next) => {
+  const { user } = req;
+  const id = req.params.id;
+  const spot = await Spot.findByPk(id);
+
+  if(!spot) {
+    return res.status(404).json({ message: "spot couldn't be found" });
   }
 
-  next({
-    error: `Spot does not exist with given id: ${id}`,
+  if (spot.ownerId === user.id){
+    await spot.destroy();
+    return res.json({message: 'Successfully deleted'});
+  }
+});
+
+router.get('/current', async (req, res, next) => {
+  const { user } = req;
+
+  if (user) {
+    const id = user.id;
+    const currentUser = await User.findByPk(id);
+    const spots = await currentUser.getSpots({ raw: true });
+
+    for (let spot of spots) {
+      const stars = await Review.sum('stars', { where: { spotId: spot.id }});
+      const totalReviews = await Review.count({where:{spotId:spot.id}});
+      const previewImage = await SpotImage.findOne({where:{spotId:spot.id}});
+      const avg = stars/totalReviews;
+
+      if (previewImage) spot.previewImage = previewImage.url
+      else spot.previewImage = 'invalid';
+
+      spot.avgRating = avg;
+
+    }
+    return res.json({ Spots: spots });
+  }
+
+  return next({
+    error: 'You are not authorized to view this page',
     status: 400
   })
 });
 
-// TODO: add reviews and avgRating to returned data
+// get review by spot id
+router.get('/:id/reviews', async (req, res) => {
+  const spotId = req.params.id;
+  const spot = await Spot.findByPk(spotId);
+  const allReviews = await Review.findAll({
+    where: {
+      spotId: spotId
+    },
+    raw: true
+  });
+
+  if (!spot) {
+    return res.status(404).json({ message: "spot doesn't exist" });
+  }
+
+  for(let review of allReviews) {
+    const reviewId = review.id;
+    const user = await User.findOne({
+      where: {
+        id: review.userId
+      },
+      attributes: ['id', 'firstName', 'lastName']
+    });
+    const reviewImages = await ReviewImage.findAll({
+      where: {
+        reviewId: reviewId
+      },
+      attributes: ['id', 'url']
+    });
+
+    review.User = user;
+    review.ReviewImages = reviewImages
+  }
+
+
+  return res.json({Reviews: allReviews });
+});
+
+// get spot by id
 router.get('/:id', async (req, res, next) => {
   const id = req.params.id;
   const spot = await Spot.findByPk(id, { raw: true });
 
   if (!spot) {
-    return next({
-      error: 'Spot cannot be retrieved',
-      status: 400
+    return res.status(404).json({
+      message: "Spot couldn't be found"
     });
   }
 
@@ -93,62 +280,6 @@ router.get('/:id', async (req, res, next) => {
 
 })
 
-// TODO: add reviews to this.
-router.put('/:id', async (req, res, next) => {
-  const { user } = req;
-  const id = req.params.id;
-  const spotToEdit = await Spot.findByPk(id, {
-    where: {
-      ownerId: user.id
-    }
-  });
-
-  if (!spotToEdit) {
-    return next({
-      error: `spot with id ${id} does not exist.`,
-      status: 404
-    });
-  }
-
-  if (spotToEdit.ownerId === user.id) {
-    const { address, city, state, country, lat, lng, name, description, price} = req.body;
-    try {
-      if (address) spotToEdit.address = address;
-      if (city) spotToEdit.city = city;
-      if (state) spotToEdit.state = state;
-      if (country) spotToEdit.country = country;
-      if (lat) spotToEdit.lat = lat;
-      if (lng) spotToEdit.lng = lng;
-      if (name) spotToEdit.name = name;
-      if (description) spotToEdit.name = name;
-      if (price) spotToEdit.price = price;
-
-      await spotToEdit.save();
-      return res.json(spotToEdit);
-
-    } catch(err) {
-      return res.status(400).json(err);
-    }
-  }
-});
-
-router.delete('/:id', async (req, res, next) => {
-  const { user } = req;
-  const id = req.params.id;
-  const spot = await Spot.findByPk(id);
-
-  if (spot.ownerId === user.id){
-    await spot.destroy();
-    res.json('Successfully removed spot!');
-  }
-
-  return next({
-    error: `Spot with id ${id} either does not exist or you do not have permission to delete it.`,
-    status: 404
-  });
-});
-
-
 // Get all spots
 router.get('/', async (req, res, next) => {
 
@@ -161,61 +292,55 @@ router.get('/', async (req, res, next) => {
       status: 400
     });
   }
+
   for(let spot of spots){ // iterate through all spots
        // gets the total stars and average
-      const stars = await Review.sum('stars',{where:{spotId:spot.id}}); // get all stars tied to this spot
-      const totalReviews = await Review.count({where:{spotId:spot.id}});
+      const stars = await Review.sum('stars',{ where:{ spotId:spot.id }}); // get all stars tied to this spot
+      const totalReviews = await Review.count({ where:{ spotId:spot.id }});
       let avg = stars/totalReviews
       spot.avgRating = avg ? avg : 0; // set it!
       // check to see if previewimage is true if true put the url there
-      const previewImage = await SpotImage.findOne({where:{spotId:spot.id}})
+      const previewImage = await SpotImage.findOne({ where:{ spotId:spot.id }})
       if(previewImage) spot.previewImage = previewImage.url
       else spot.previewImage = 'invalid';
   }
-  return res.json(spots);
+
+
+  return res.json({ Spots: spots });
 
 });
 
-router.post('/', async (req, res, next) => {
+// create a spot
+router.post('/',validateSpot, async (req, res) => {
   const { user } = req;
   const { address, city, state, country, lat, lng, name, description, price} = req.body;
 
-  try {
-    if (user) {
-      const newSpot = Spot.build({
-        ownerId: user.id,
-        address,
-        city,
-        state,
-        country,
-        lat,
-        lng,
-        name,
-        description,
-        price
-      });
+  if (user) {
+    const newSpot = await Spot.create({
+      ownerId: user.id,
+      address,
+      city,
+      state,
+      country,
+      lat,
+      lng,
+      name,
+      description,
+      price
+    });
 
-      await newSpot.save();
-
-      return res.json(newSpot);
-    }
-
-  } catch (error) {
-    const errArr = [];
-    error.errors.forEach(err => errArr.push(err.message));
-
-    next({
-      error: errArr,
-      status: 400
+    return res.json({
+      address: newSpot.address,
+      city: newSpot.city,
+      state: newSpot.state,
+      country: newSpot.country,
+      lat: newSpot.lat,
+      lng: newSpot.lng,
+      name: newSpot.name,
+      description: newSpot.description,
+      price: newSpot.price
     });
   }
-});
-
-router.use((err, _req, res, _next) => {
-  console.error(err);
-
-  res.status(err.status || 500);
-  return res.json({ errors: err.error })
 });
 
 module.exports = router;
