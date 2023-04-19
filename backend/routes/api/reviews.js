@@ -1,9 +1,40 @@
 const express = require('express');
 const router = express.Router();
+const { check } = require('express-validator');
+const { handleValidationErrors } = require('../../utils/validation');
 
 const { Review, ReviewImage, User, Spot, SpotImage } = require('../../db/models');
+const validateReview = [
+  check("review")
+  .isLength({ min: 10 })
+  .withMessage("Review must have a minimum of 10 characters"),
 
-router.put()
+  check("review")
+  .exists({ checkFalsy: true })
+  .withMessage("Review text is required"),
+
+  check("stars")
+  .isInt({ min: 1, max: 5 })
+  .withMessage("Stars must be an integer from 1 to 5"),
+  handleValidationErrors
+];
+
+router.put('/:reviewId', validateReview, async (req, res) => {
+  const { user } = req;
+
+  if (user) {
+    const reviewId = req.params.reviewId;
+    const editRev = await Review.findByPk(reviewId);
+
+    if (!editRev || editRev.userId != user.id) {
+      return res.status(404).json({ message: "Review couldn't be found" });
+    }
+
+    await editRev.update({ ...req.body });
+
+    return res.json(editRev);
+  }
+})
 
 router.post('/:id/images', async (req, res, next) => {
   const { user } = req;
