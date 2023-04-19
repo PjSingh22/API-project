@@ -3,6 +3,8 @@ const router = express.Router();
 
 const { Review, ReviewImage, User, Spot, SpotImage } = require('../../db/models');
 
+router.put()
+
 router.post('/:id/images', async (req, res, next) => {
   const { user } = req;
   const reviewId = req.params.id;
@@ -13,17 +15,15 @@ router.post('/:id/images', async (req, res, next) => {
       userId: userId
     }
   });
-  const reviewImages = await ReviewImage.findAll({
+  // get count of all reviewImages on current review to use in following if statement
+  const reviewImages = await ReviewImage.count({
     where: {
       reviewId: reviewId
     }
   });
-
-  if (reviewImages.length > 3) {
-    return next({
-      error: 'Cannot add any more images to review',
-      status: 403
-    });
+  // check if the max amount of images is reached and throw error if reached
+  if (reviewImages > 10) {
+    return res.status(403).json({ message: "Maximum number of images for this resource was reached" });
   }
 
   if (review) {
@@ -35,12 +35,12 @@ router.post('/:id/images', async (req, res, next) => {
 
     await newImage.save();
 
-    res.json(newImage);
-  } else {
-    return next({
-      error: `review with id ${reviewId} does not exist`,
-      status: 404
+    res.json({
+      id: newImage.id,
+      url: newImage.url
     });
+  } else {
+    return res.status(404).json({ message: `Review couldn't be found` });
   }
 });
 
@@ -89,13 +89,6 @@ router.get('/current', async (req, res) => {
 
     return res.json({ Reviews: reviews });
   }
-});
-
-router.use((err, _req, res, _next) => {
-  console.error(err);
-
-  res.status(err.status || 500);
-  return res.json({ errors: err.error })
 });
 
 module.exports = router;
