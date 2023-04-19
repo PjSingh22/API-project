@@ -1,36 +1,82 @@
 const express = require('express');
 const router = express.Router();
-const { check } = require('express-validator');
-const { handleValidationErrors } = require('../../utils/validation');
+// const { check } = require('express-validator');
+// const { handleValidationErrors } = require('../../utils/validation');
 const { Spot, SpotImage, Review, User } = require('../../db/models');
 
-// const validateSpot = [
-//   check("address")
-//     .exists({ checkFalsy: true })
-//     .withMessage("Street address is required"),
-//   check("city").exists({ checkFalsy: true }).withMessage("City is required"),
-//   check("state").exists({ checkFalsy: true }).withMessage("State is required"),
-//   check("country")
-//     .exists({ checkFalsy: true })
-//     .withMessage("Country is required"),
-//   check("lat")
-//     .isFloat({ min: -90, max: 90 })
-//     .withMessage("Latitude is not valid"),
-//   check("lng")
-//     .isFloat({ min: -180, max: 180 })
-//     .withMessage("Longitude is not valid"),
-//   check("name").exists({ checkFalsy: true }).withMessage("Name is required"),
-//   check("name")
-//     .isLength({ max: 49 })
-//     .withMessage("Name must be less than 50 characters"),
-//   check("description")
-//     .exists({ checkFalsy: true })
-//     .withMessage("Description is required"),
-//   check("price")
-//     .exists({ checkFalsy: true })
-//     .withMessage("Price per day is required"),
-//   handleValidationErrors,
-// ];
+router.get('/current', async (req, res, next) => {
+  const { user } = req;
+
+  if (user) {
+    const id = user.id;
+    const currentUser = await User.findByPk(id);
+    const spots = await currentUser.getSpots({ raw: true });
+
+    for (let spot of spots) {
+      const stars = await Review.sum('stars', { where: { spotId: spot.id }});
+      const totalReviews = await Review.count({where:{spotId:spot.id}});
+      const previewImage = await SpotImage.findOne({where:{spotId:spot.id}});
+      const avg = stars/totalReviews;
+
+      if (previewImage) spot.previewImage = previewImage.url
+      else spot.previewImage = 'invalid';
+
+      spot.avgRating = avg;
+
+    }
+    res.json(spots);
+  }
+
+  return next({
+    error: 'You are not authorized to view this page',
+    status: 400
+  })
+})
+
+router.post('/:id/reviews', async (req, res, next) => {
+  const { user } = req;
+  const spotId = req.params.id;
+  const userId = user.id;
+  const spot = await Spot.findByPk(spotId);
+  const review = await Review.findOne({ where: { spotId: spotId, userId: userId }});
+
+  if (!spot) {
+    return next({
+      error: `spot with id ${spotId} does not exist`,
+      status: 404
+    });
+  }
+
+  if (review) {
+    return next({
+      error: `A review from this use already exists. Cannot submit a new one.`,
+      status: 403
+    });
+  }
+
+  if (user) {
+    try {
+      const { review, stars } = req.body;
+
+      const newReview = Review.build({
+        spotId,
+        userId,
+        review,
+        stars
+      });
+
+      await newReview.save();
+
+      return res.json(newReview);
+
+    } catch(err) {
+      return next({
+        error: err.errors.map(err => err.message),
+        status: 400
+      });
+    }
+  }
+});
 
 router.post('/:id/images', async (req, res, next) => {
   const { user } = req;
@@ -161,6 +207,7 @@ router.get('/', async (req, res, next) => {
       status: 400
     });
   }
+
   for(let spot of spots){ // iterate through all spots
        // gets the total stars and average
       const stars = await Review.sum('stars',{where:{spotId:spot.id}}); // get all stars tied to this spot

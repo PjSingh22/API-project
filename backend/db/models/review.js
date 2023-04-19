@@ -70,6 +70,11 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'Review',
+    defaultScope: {
+      attributes: {
+        include: ['id', 'spotId', 'userId', 'review', 'stars']
+      }
+    }
   });
   return Review;
 };
