@@ -53,6 +53,11 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'Booking',
+    // defaultScope: {
+    //   attributes: {
+    //     include: ['id']
+    //   }
+    // }
   });
   return Booking;
 };

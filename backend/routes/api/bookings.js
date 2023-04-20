@@ -25,7 +25,7 @@ router.get('/current', async (req, res) => {
           id: booking.spotId
         },
         attributes: {
-          exclude: ['createdAt', 'updatedAt']
+          exclude: ['createdAt', 'updatedAt', 'description']
         },
         raw: true
       });

@@ -3,7 +3,7 @@ const router = express.Router();
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
 const { requireAuth } = require('../../utils/auth');
-const { Spot, SpotImage, Review, User, ReviewImage } = require('../../db/models');
+const { Spot, SpotImage, Review, User, ReviewImage, Booking } = require('../../db/models');
 const spot = require('../../db/models/spot');
 
 const validateSpot = [
@@ -212,6 +212,45 @@ router.get('/current', async (req, res, next) => {
     error: 'You are not authorized to view this page',
     status: 400
   })
+});
+// get bookings by spot id
+router.get('/:spotId/bookings', async (req, res) => {
+  const { user } = req;
+  const spotId = req.params.spotId;
+  const spot = await Spot.findByPk(spotId);
+  const bookings = await Booking.findAll({
+    where: {
+      spotId: spotId,
+    },
+    attributes: {
+      include: ['id']
+    },
+    raw: true
+  });
+
+  if (!spot) return res.status(404).json({ message: "spot couldn't be found" });
+
+  for (let booking of bookings) {
+    if (booking.userId === user.id) {
+      const owner = await User.findByPk(user.id, {
+        attributes: {
+          exclude: ['username']
+        }
+      });
+      booking.User = owner;
+    } else {
+      return res.json({
+        Bookings: {
+          spotId: booking.spotId,
+          startDate: booking.startDate,
+          endDate: booking.endDate
+        }
+      });
+    }
+  }
+
+
+  return res.json({ Bookings: bookings });
 });
 
 // get review by spot id
