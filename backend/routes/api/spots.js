@@ -5,6 +5,7 @@ const { handleValidationErrors } = require('../../utils/validation');
 const { requireAuth } = require('../../utils/auth');
 const { Spot, SpotImage, Review, User, ReviewImage, Booking } = require('../../db/models');
 const spot = require('../../db/models/spot');
+const { json } = require('sequelize');
 
 const validateSpot = [
   check("address")
@@ -67,7 +68,96 @@ const validateReview = [
   .isInt({ min: 1, max: 5 })
   .withMessage("Stars must be an integer from 1 to 5"),
   handleValidationErrors
+];
+
+const validateBooking = [
+  check("endDate")
+    .isAfter("startDate")
+    .withMessage("endDate cannot be on or before startDate"),
+  handleValidationErrors
 ]
+
+// create a booking from a spot
+router.post('/:id/bookings', async (req, res) => {
+  const { user } = req;
+  const spotId = parseInt(req.params.id);
+
+  if (user) {
+    const { startDate, endDate } = req.body;
+    const spot = await Spot.findOne({ where: { id: spotId }, include: {model: Booking }});
+    if (!spot) return res.status(404).json({ message: "spot couldn't be found" });
+
+    const spotBookings = spot.Bookings;
+
+    const spotStartDate = spot.Bookings[0].startDate.toDateString()
+    const spotEndDate = spot.Bookings[0].endDate.toDateString();
+    // const convertedSD = new Date(spotStartDate).getTime()
+    const bodyStartDate = new Date(startDate + ' ').toDateString()
+    const bodyEndDate = new Date(endDate + ' ').toDateString()
+    const convertedBSD = new Date(bodyStartDate).getTime()
+    const convertedBED = new Date(bodyEndDate).getTime()
+
+    if (convertedBED <= convertedBSD) return res.status(400).json({
+      message: "Bad request",
+      errors: {
+        endDate: "endDate cannot be on or before startDate"
+      }
+    })
+
+    console.log({spotStartDate}, {spotEndDate});
+    // return res.json({covertedSD, convertedBSD})
+    if (spot.ownerId !== user.id) {
+
+      for(let booking of spotBookings) {
+        let conflict = false;
+        const errors = {}
+        const spotStartDate = new Date(booking.startDate.toDateString()).getTime();
+        const spotEndDate = new Date(booking.endDate.toDateString()).getTime();
+        // return res.json({spotStartDate, spotEndDate})
+        if (convertedBSD === spotStartDate || (convertedBSD > spotStartDate && convertedBSD <= spotEndDate)) {
+          errors.startDate = "Start date conflicts with an existing booking";
+          conflict = true;
+        }
+        if (convertedBED === spotEndDate || (convertedBED >= spotStartDate && convertedBED < spotEndDate)) {
+          errors.endDate = "End date conflicts with an existing booking"
+          conflict = true
+        }
+
+        if (convertedBSD < spotStartDate && convertedBED > spotEndDate) {
+          errors.startDate = "Start date conflicts with an existing booking";
+          errors.endDate = "End date conflicts with an existing booking"
+          conflict = true
+        }
+
+        if (conflict) {
+          return res.status(403).json({
+            message: "Sorry, this spot is already booked for the specified dates",
+            errors
+          })
+        }
+      }
+
+      return res.json('BOOK IT BEFORE IT IS GONE!!!')
+
+      // const totalBookings = await Booking.count();
+      // const newBooking = await Booking.create({
+      //   spotId: spotId,
+      //   userId: user.id,
+      //   ...req.body
+      //  });
+
+      // return res.json({
+      //   id: totalBookings + 1,
+      //   spotId: newBooking.spotId,
+      //   userId: newBooking.userId,
+      //   startDate: newBooking.startDate,
+      //   endDate: newBooking.endDate,
+      //   createdAt: newBooking.createdAt,
+      //   updatedAt: newBooking.updatedAt
+      // });
+    }
+  }
+})
 
 // create a review for a spot
 router.post('/:id/reviews', validateReview, async (req, res, next) => {
