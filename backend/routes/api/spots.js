@@ -85,16 +85,17 @@ router.post('/:id/bookings', async (req, res) => {
   if (user) {
     const { startDate, endDate } = req.body;
     const spot = await Spot.findOne({ where: { id: spotId }, include: {model: Booking }});
-    if (!spot) return res.status(404).json({ message: "spot couldn't be found" });
+
+    if (!spot || spot.ownerId === user.id) return res.status(404).json({ message: "spot couldn't be found" });
 
     const spotBookings = spot.Bookings;
 
-    const spotStartDate = spot.Bookings[0].startDate.toDateString()
-    const spotEndDate = spot.Bookings[0].endDate.toDateString();
+    // const spotStartDate = spot.Bookings[0].startDate.toDateString()
+    // const spotEndDate = spot.Bookings[0].endDate.toDateString();
     // const convertedSD = new Date(spotStartDate).getTime()
     const bodyStartDate = new Date(startDate + ' ').toDateString()
     const bodyEndDate = new Date(endDate + ' ').toDateString()
-    const convertedBSD = new Date(bodyStartDate).getTime()
+    const convertedBSD = new Date(bodyStartDate).getTime() // conv to time
     const convertedBED = new Date(bodyEndDate).getTime()
 
     if (convertedBED <= convertedBSD) return res.status(400).json({
@@ -104,10 +105,8 @@ router.post('/:id/bookings', async (req, res) => {
       }
     })
 
-    console.log({spotStartDate}, {spotEndDate});
-    // return res.json({covertedSD, convertedBSD})
     if (spot.ownerId !== user.id) {
-
+      // for each booking, convert the time for the start and end date then compare to the bodys start and end date and throw errors if confliction is found.
       for(let booking of spotBookings) {
         let conflict = false;
         const errors = {}
@@ -136,28 +135,26 @@ router.post('/:id/bookings', async (req, res) => {
           })
         }
       }
+      // create booking if no conflicton is found
+      const totalBookings = await Booking.count();
+      const newBooking = await Booking.create({
+        spotId: spotId,
+        userId: user.id,
+        ...req.body
+       });
 
-      return res.json('BOOK IT BEFORE IT IS GONE!!!')
-
-      // const totalBookings = await Booking.count();
-      // const newBooking = await Booking.create({
-      //   spotId: spotId,
-      //   userId: user.id,
-      //   ...req.body
-      //  });
-
-      // return res.json({
-      //   id: totalBookings + 1,
-      //   spotId: newBooking.spotId,
-      //   userId: newBooking.userId,
-      //   startDate: newBooking.startDate,
-      //   endDate: newBooking.endDate,
-      //   createdAt: newBooking.createdAt,
-      //   updatedAt: newBooking.updatedAt
-      // });
+      return res.json({
+        id: totalBookings + 1,
+        spotId: newBooking.spotId,
+        userId: newBooking.userId,
+        startDate: newBooking.startDate,
+        endDate: newBooking.endDate,
+        createdAt: newBooking.createdAt,
+        updatedAt: newBooking.updatedAt
+      });
     }
   }
-})
+});
 
 // create a review for a spot
 router.post('/:id/reviews', validateReview, async (req, res, next) => {
