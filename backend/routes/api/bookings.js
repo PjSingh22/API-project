@@ -6,6 +6,46 @@ const { handleValidationErrors } = require('../../utils/validation');
 
 const { Review, ReviewImage, User, Spot, SpotImage, Booking } = require('../../db/models');
 
+// delete a booking
+router.delete('/:id', async (req, res) => {
+  const { user } = req;
+  const bookingId = req.params.id;
+  const booking = await Booking.findOne({
+    where: {
+      id: bookingId
+    }
+  });
+  const spotId = booking.spotId;
+  // return res.json(booking.spotId);
+  const spot = await Spot.findByPk(spotId);
+
+  if (!booking) {
+    return res.status(404).json({
+      message: "Booking couldn't be found"
+    })
+  }
+
+  const bookingsUser = booking.userId;
+  if (bookingsUser == user.id || spot.ownerId == user.id) {
+    const bookingStartDate = new Date(booking.startDate.toDateString()).getTime();
+    const bookingEndDate = new Date(booking.endDate.toDateString()).getTime();
+    const today = new Date().getTime();
+
+    if (today >= bookingStartDate && today <= bookingEndDate) {
+      return res.status(403).json({
+        message: "Bookings that have been started can't be deleted"
+      })
+    }
+    await booking.destroy();
+
+    return res.json({
+      message: "Successfully deleted"
+    })
+  }
+
+  return res.json(booking);
+});
+
 // edit a booking
 router.put('/:id', async (req, res) => {
   const { user } = req;
