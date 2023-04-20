@@ -69,13 +69,13 @@ const validateReview = [
   .withMessage("Stars must be an integer from 1 to 5"),
   handleValidationErrors
 ];
-
-const validateBooking = [
-  check("endDate")
-    .isAfter("startDate")
-    .withMessage("endDate cannot be on or before startDate"),
-  handleValidationErrors
-]
+// TODO: clean up this and other routes here
+// const validateBooking = [
+//   check("endDate")
+//     .isAfter("startDate")
+//     .withMessage("endDate cannot be on or before startDate"),
+//   handleValidationErrors
+// ]
 
 // create a booking from a spot
 router.post('/:id/bookings', async (req, res) => {
