@@ -408,14 +408,11 @@ router.get('/:id', async (req, res, next) => {
 
 // Get all spots
 router.get('/', async (req, res, next) => {
-
-
   const spots = await Spot.findAll({raw: true})
 
   if (!spots) {
-    return next({
-      error: 'Spots cannot be retrieved',
-      status: 400
+    return res.status(400).json({
+      message: 'Spots cannot be retrieved'
     });
   }
 
