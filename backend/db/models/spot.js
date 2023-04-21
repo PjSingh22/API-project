@@ -47,13 +47,30 @@ module.exports = (sequelize, DataTypes) => {
       Spot.hasMany(
         models.Review,
         {
-          foreignKey: 'spotId'
+          foreignKey: 'spotId',
+          onDelete: 'CASCADE',
+          hooks: true
         }
+      );
+
+      Spot.hasMany(
+        models.Booking,
+        {
+          foreignKey: 'SpotId',
+          onDelete: 'CASCADE',
+          hooks: true
+        },
+
       )
     }
 
   }
   Spot.init({
+    id: {
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+      autoIncrement: true
+    },
     ownerId: {
       type: DataTypes.INTEGER,
       allowNull: false
