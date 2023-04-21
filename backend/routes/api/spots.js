@@ -7,6 +7,34 @@ const { Spot, SpotImage, Review, User, ReviewImage, Booking } = require('../../d
 const spot = require('../../db/models/spot');
 const { json, Op } = require('sequelize');
 
+const checkPagination = (body, res) => {
+  let { page, size, minLat, maxLat, minLng, maxLng, minPrice, maxPrice} = body;
+  const errObj = {};
+
+  if (page && page < 1) errObj.page = "Page must be greater than or equal to 1";
+
+  if (size && size < 1) errObj.size = "Size must be greater than or equal to 1";
+
+  if (minLat && (minLat < -90 || minLat > 90)) errObj.minLat = "Minimum latitude is invalid";
+
+  if (maxLat && (maxLat < -90 || maxLat > 90)) errObj.maxLat = "Maximum latitude is invalid";
+
+  if (minLng && (minLng < -180 || minLng > 180)) errObj.maxLat = "Minimum longitude is invalid";
+
+  if (maxLng && (maxLng < -180 || maxLng > 180)) errObj.maxLat = "Maximum longitude is invalid";
+
+  if (minPrice && minPrice < 0) errObj.minPrice = "Minimum price must be greater than or equal to 0";
+
+  if (maxPrice && maxPrice < 0) errObj.maxPrice = "Maximum price must be greater than or equal to 0";
+
+  if(Object.keys(errObj).length) {
+    return res.status(400).json({
+      message: "Bad Request",
+      errors: errObj
+    })
+  }
+};
+
 const validateSpots = (body, res) => {
   const { address, city, state, country } = body;
   const errorsObj = {};
@@ -36,7 +64,7 @@ const validateSpots = (body, res) => {
   }
 
   if(Object.keys(errorsObj).length) {
-    return res.status(404).json({
+    return res.status(400).json({
       message: "Bad Request",
       errors: errorsObj
     })
@@ -119,10 +147,6 @@ router.post('/:id/bookings', async (req, res) => {
     if (!spot) return res.status(404).json({ message: "spot couldn't be found" });
 
     const spotBookings = spot.Bookings;
-
-    // const spotStartDate = spot.Bookings[0].startDate.toDateString()
-    // const spotEndDate = spot.Bookings[0].endDate.toDateString();
-    // const convertedSD = new Date(spotStartDate).getTime()
     const bodyStartDate = new Date(startDate + ' ').toDateString()
     const bodyEndDate = new Date(endDate + ' ').toDateString()
     const convertedBSD = new Date(bodyStartDate).getTime() // conv to time
@@ -340,8 +364,8 @@ router.get('/:spotId/bookings', async (req, res) => {
   if (!spot) return res.status(404).json({ message: "spot couldn't be found" });
 
   for (let booking of bookings) {
-    if (booking.userId === user.id) {
-      const owner = await User.findByPk(user.id, {
+    if (spot.ownerId === user.id) {
+      const owner = await User.findByPk(booking.userId, {
         attributes: {
           exclude: ['username']
         }
@@ -434,6 +458,8 @@ router.get('/', async (req, res, next) => {
     where: {}
   }
 
+  checkPagination(req.query, res)
+
   if (!page) page = 1;
   if (!size) size = 20;
   if (page > 10) page = 10;
@@ -485,7 +511,6 @@ router.get('/', async (req, res, next) => {
       if(previewImage) spot.previewImage = previewImage.url
       else spot.previewImage = 'invalid';
   }
-
 
   return res.json({ Spots: spots, page, size });
 
