@@ -272,10 +272,10 @@ router.put('/:id', async (req, res, next) => {
 });
 
 // delete a spot
-router.delete('/:id', async (req, res, next) => {
+router.delete('/:id', async (req, res) => {
   const { user } = req;
   const id = req.params.id;
-  const spot = await Spot.findByPk(id);
+  const spot = await Spot.findOne({ where: { id: id }});
 
   if (!user) return res.status(401).json({
     error: "Authentication required"
@@ -285,14 +285,14 @@ router.delete('/:id', async (req, res, next) => {
     return res.status(404).json({ message: "spot couldn't be found" });
   }
 
-  if (spot.ownerId === user.id){
+  if (spot.ownerId == user.id){
     await spot.destroy();
     return res.json({message: 'Successfully deleted'});
   }
 
   return res.status(403).json({ message: "Forbidden" });
 });
-
+// get current users spots
 router.get('/current', async (req, res, next) => {
   const { user } = req;
 
