@@ -15,17 +15,13 @@ router.delete('/:id', async (req, res) => {
       id: bookingId
     }
   });
+
+  if (!booking) return res.status(404).json({ message: "Booking couldn't be found" });
+
   const spotId = booking.spotId;
-  // return res.json(booking.spotId);
   const spot = await Spot.findByPk(spotId);
-
-  if (!booking) {
-    return res.status(404).json({
-      message: "Booking couldn't be found"
-    })
-  }
-
   const bookingsUser = booking.userId;
+
   if (bookingsUser == user.id || spot.ownerId == user.id) {
     const bookingStartDate = new Date(booking.startDate.toDateString()).getTime();
     const bookingEndDate = new Date(booking.endDate.toDateString()).getTime();
@@ -51,15 +47,15 @@ router.put('/:id', async (req, res) => {
   const { user } = req;
   const { startDate, endDate } = req.body;
   const bookingId = req.params.id;
-  const booking = await Booking.findByPk(bookingId);
   const editBooking = await Booking.findByPk(bookingId);
-  const otherBookings = await Booking.findAll({ where: {spotId: booking.spotId, id: { [Op.not]: booking.id} }});
 
-  if (!editBooking || editBooking.userId !== user.id) {
+  if (!editBooking) {
     return res.status(404).json({
       message: "Booking couldn't be found"
     });
   }
+
+  const otherBookings = await Booking.findAll({ where: {spotId: editBooking.spotId, id: { [Op.not]: editBooking.id} }});
 
   if (editBooking.userId == user.id) {
     const spotEndDate = new Date(editBooking.endDate.toDateString()).getTime();
@@ -121,6 +117,8 @@ router.put('/:id', async (req, res) => {
     await editBooking.save();
     return res.json(editBooking);
   }
+  // if not owned by owner
+  return res.status(403).json({ message: "Forbidden" });
 });
 
 router.get('/current', async (req, res) => {
@@ -155,8 +153,12 @@ router.get('/current', async (req, res) => {
       booking.Spot = spot;
     }
 
-    return res.json(allBookings);
+    return res.json({Bookings: allBookings});
   }
+
+  return res.status(401).json({
+    error: "Authentication required"
+  });
 });
 
 module.exports = router;

@@ -10,7 +10,13 @@ router.delete('/:id', async (req, res) => {
     include: [{model: Spot}]
   });
 
-  if (user && image.Spot.ownerId == user.id) {
+  if (!image) return res.status(404).json({
+    message: "Spot Image couldn't be found"
+  })
+
+  if (!user) return res.status(401).json({ message: "Authentication required" });
+
+  if (image.Spot.ownerId == user.id) {
     await image.destroy();
 
     return res.json({
@@ -18,9 +24,7 @@ router.delete('/:id', async (req, res) => {
     })
   }
 
-  return res.status(404).json({
-    message: "Spot Image couldn't be found"
-  })
+  return res.status(403).json({ message: "Forbidden" });
 })
 
 module.exports = router;

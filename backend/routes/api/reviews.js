@@ -34,7 +34,7 @@ router.delete('/:reviewId', async (req, res) => {
     return res.json({ message: "Successfully deleted" });
   }
 })
-
+// edit a review
 router.put('/:reviewId', validateReview, async (req, res) => {
   const { user } = req;
 
@@ -42,25 +42,30 @@ router.put('/:reviewId', validateReview, async (req, res) => {
     const reviewId = req.params.reviewId;
     const editRev = await Review.findByPk(reviewId);
 
-    if (!editRev || editRev.userId != user.id) {
+    if (!editRev) {
       return res.status(404).json({ message: "Review couldn't be found" });
     }
+
+    if (editRev.userId != user.id) return res.status(403).json({ message: "Forbidden" });
 
     await editRev.update({ ...req.body });
 
     return res.json(editRev);
   }
 })
-
+// add image to review
 router.post('/:id/images', async (req, res, next) => {
   const { user } = req;
   const reviewId = req.params.id;
   const userId = user.id;
   const review = await Review.findOne({
     where: {
-      id: reviewId,
-      userId: userId
+      id: reviewId
     }
+  });
+
+  if (!user) return res.status(401).json({
+    error: "Authentication required"
   });
   // get count of all reviewImages on current review to use in following if statement
   const reviewImages = await ReviewImage.count({
@@ -74,6 +79,8 @@ router.post('/:id/images', async (req, res, next) => {
   }
 
   if (review) {
+    if (review.userId != user.id) return res.status(403).json({ message: "Forbidden" });
+
     const { url } = req.body;
     const newImage = ReviewImage.build({
       reviewId,
@@ -136,6 +143,10 @@ router.get('/current', async (req, res) => {
 
     return res.json({ Reviews: reviews });
   }
+
+  return res.status(401).json({
+    error: "Authentication required"
+  });
 });
 
 module.exports = router;
