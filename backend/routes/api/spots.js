@@ -213,32 +213,28 @@ router.post('/:id/reviews', validateReview, async (req, res, next) => {
 router.post('/:id/images', async (req, res, next) => {
   const { user } = req;
   const id = parseInt(req.params.id);
-  const theSpot = await Spot.findByPk(id, {
-    where: {
-      ownerId: user.id
-    }
-  });
+  const theSpot = await Spot.findByPk(id)
+
+  if (!theSpot) return res.status(404).json({ message: "Spot couldn't be found" });
 
   if (!user) return res.status(401).json({ message: "Authentication required" });
 
-  if (theSpot) {
-    const { url, preview } = req.body;
+  if (theSpot.ownerId != user.id) return res.status(403).json({ message: "Forbidden" });
 
-    let newImage = SpotImage.build({
-      spotId: theSpot.id,
-      url,
-      preview
-    });
+  const { url, preview } = req.body;
 
-    await newImage.save();
-    return res.json({
-      id: newImage.id,
-      url: newImage.url,
-      preview: newImage.preview
-    });
-  }
+  let newImage = SpotImage.build({
+    spotId: theSpot.id,
+    url,
+    preview
+  });
 
-  return res.status(404).json({ message: "Spot couldn't be found" });
+  await newImage.save();
+  return res.json({
+    id: newImage.id,
+    url: newImage.url,
+    preview: newImage.preview
+  });
 });
 
 // edit spot
@@ -515,16 +511,6 @@ router.post('/', validateSpot, async (req, res) => {
     });
 
     return res.json(newSpot);
-
-    // address: newSpot.address,
-    //   city: newSpot.city,
-    //   state: newSpot.state,
-    //   country: newSpot.country,
-    //   lat: newSpot.lat,
-    //   lng: newSpot.lng,
-    //   name: newSpot.name,
-    //   description: newSpot.description,
-    //   price: newSpot.price
   }
 });
 
