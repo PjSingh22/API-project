@@ -7,6 +7,42 @@ const { Spot, SpotImage, Review, User, ReviewImage, Booking } = require('../../d
 const spot = require('../../db/models/spot');
 const { json } = require('sequelize');
 
+const validateSpots = (body, res) => {
+  const { address, city, state, country } = body;
+  const errorsObj = {};
+
+  if (address) {
+    if (address.length < 5 || address.length > 30) {
+      errorsObj.address = "Address needs to be between 5 and 30 characters";
+    }
+  }
+
+  if (city) {
+    if (city.length < 2 || city.length > 18) {
+      errorsObj.city = "City needs to be between 2 and 18 characters";
+    }
+  }
+
+  if (state) {
+    if (state.length < 1 || state.length > 12) {
+      errorsObj.state = "State needs to be between 1 and 12 characters";
+    }
+  }
+
+  if (country) {
+    if (country.length < 3 || country.length > 57) {
+      errorsObj.country = "Country needs to be 3 and 57 characters";
+    }
+  }
+
+  if(Object.keys(errorsObj).length) {
+    return res.status(404).json({
+      message: "Bad Request",
+      errors: errorsObj
+    })
+  }
+}
+
 const validateSpot = [
   check("address")
     .exists({ checkFalsy: true })
@@ -225,7 +261,7 @@ router.post('/:id/images', async (req, res, next) => {
 });
 
 // edit spot
-router.put('/:id',validateSpot, async (req, res, next) => {
+router.put('/:id', async (req, res, next) => {
   const { user } = req;
   const id = req.params.id;
   const spotToEdit = await Spot.findByPk(id, {
@@ -240,6 +276,8 @@ router.put('/:id',validateSpot, async (req, res, next) => {
   //TODO: use update method to replace build and save;
   if (spotToEdit.ownerId === user.id) {
     const { address, city, state, country, lat, lng, name, description, price} = req.body;
+
+    validateSpots(req.body, res);
 
     if (address) spotToEdit.address = address;
     if (city) spotToEdit.city = city;
@@ -408,7 +446,10 @@ router.get('/:id', async (req, res, next) => {
 
 // Get all spots
 router.get('/', async (req, res, next) => {
+  const { page, size, minLat, maxLat, minLng, maxLng, minPrice, maxPrice} = req.query;
   const spots = await Spot.findAll({raw: true})
+
+  // return res.json(req.query);
 
   if (!spots) {
     return res.status(400).json({
@@ -434,7 +475,7 @@ router.get('/', async (req, res, next) => {
 });
 
 // create a spot
-router.post('/',validateSpot, async (req, res) => {
+router.post('/', validateSpot, async (req, res) => {
   const { user } = req;
   const { address, city, state, country, lat, lng, name, description, price} = req.body;
 
