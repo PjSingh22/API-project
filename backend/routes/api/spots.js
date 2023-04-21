@@ -5,7 +5,7 @@ const { handleValidationErrors } = require('../../utils/validation');
 const { requireAuth } = require('../../utils/auth');
 const { Spot, SpotImage, Review, User, ReviewImage, Booking } = require('../../db/models');
 const spot = require('../../db/models/spot');
-const { json } = require('sequelize');
+const { json, Op } = require('sequelize');
 
 const validateSpots = (body, res) => {
   const { address, city, state, country } = body;
@@ -333,10 +333,9 @@ router.get('/current', async (req, res, next) => {
     return res.json({ Spots: spots });
   }
 
-  return next({
-    error: 'You are not authorized to view this page',
-    status: 400
-  })
+  return res.status(401).json({
+    error: "Authentication required"
+  });
 });
 // get bookings by spot id
 router.get('/:spotId/bookings', async (req, res) => {
@@ -446,10 +445,44 @@ router.get('/:id', async (req, res, next) => {
 
 // Get all spots
 router.get('/', async (req, res, next) => {
-  const { page, size, minLat, maxLat, minLng, maxLng, minPrice, maxPrice} = req.query;
-  const spots = await Spot.findAll({raw: true})
+  let { page, size, minLat, maxLat, minLng, maxLng, minPrice, maxPrice} = req.query;
+  const pagination = {
+    where: {}
+  }
 
-  // return res.json(req.query);
+  if (!page) page = 1;
+  if (!size) size = 20;
+  if (page > 10) page = 10;
+  if (size > 20) size = 20;
+  if (page >= 1 && size >=1) {
+    pagination.limit = size;
+    pagination.offset = size * (page - 1);
+  }
+
+  if (minLat !== undefined && maxLat !== undefined) pagination.where.lat = {[Op.between]: [minLat, maxLat]};
+
+  if (minLat != undefined && maxLat == undefined) pagination.where.lat = {[Op.gte]: minLat};
+
+  if (minLat == undefined && maxLat != undefined) pagination.where.lat = {[Op.lte]: maxLat};
+
+  if (minLng != undefined && maxLng != undefined) pagination.where.lng = {[Op.between]: [minLng, maxLng]};
+
+  if (minLng != undefined && maxLng == undefined) pagination.where.lng = {[Op.gte]: minLng};
+
+  if (minLng == undefined && maxLng != undefined) pagination.where.lng = {[Op.lte]: maxLng};
+
+  if (minPrice != undefined && maxPrice != undefined) pagination.where.price = {[Op.between]: [minPrice, maxPrice]};
+
+  if (minPrice != undefined && maxPrice == undefined) pagination.where.price = {[Op.gte]: minPrice};
+
+  if (minPrice == undefined && maxPrice != undefined) pagination.where.price = {[Op.lte]: maxPrice};
+
+  const spots = await Spot.findAll({
+    raw: true,
+    where: pagination.where,
+    limit: pagination.limit,
+    offset: pagination.offset
+  })
 
   if (!spots) {
     return res.status(400).json({
@@ -470,7 +503,7 @@ router.get('/', async (req, res, next) => {
   }
 
 
-  return res.json({ Spots: spots });
+  return res.json({ Spots: spots, page, size });
 
 });
 
@@ -493,17 +526,17 @@ router.post('/', validateSpot, async (req, res) => {
       price
     });
 
-    return res.json({
-      address: newSpot.address,
-      city: newSpot.city,
-      state: newSpot.state,
-      country: newSpot.country,
-      lat: newSpot.lat,
-      lng: newSpot.lng,
-      name: newSpot.name,
-      description: newSpot.description,
-      price: newSpot.price
-    });
+    return res.json(newSpot);
+
+    // address: newSpot.address,
+    //   city: newSpot.city,
+    //   state: newSpot.state,
+    //   country: newSpot.country,
+    //   lat: newSpot.lat,
+    //   lng: newSpot.lng,
+    //   name: newSpot.name,
+    //   description: newSpot.description,
+    //   price: newSpot.price
   }
 });
 
