@@ -340,8 +340,8 @@ router.get('/:spotId/bookings', async (req, res) => {
   if (!spot) return res.status(404).json({ message: "spot couldn't be found" });
 
   for (let booking of bookings) {
-    if (booking.userId === user.id) {
-      const owner = await User.findByPk(user.id, {
+    if (spot.ownerId === user.id) {
+      const owner = await User.findByPk(booking.userId, {
         attributes: {
           exclude: ['username']
         }
@@ -485,7 +485,6 @@ router.get('/', async (req, res, next) => {
       if(previewImage) spot.previewImage = previewImage.url
       else spot.previewImage = 'invalid';
   }
-
 
   return res.json({ Spots: spots, page, size });
 

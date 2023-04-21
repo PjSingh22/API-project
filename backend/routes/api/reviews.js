@@ -74,7 +74,7 @@ router.post('/:id/images', async (req, res, next) => {
     }
   });
   // check if the max amount of images is reached and throw error if reached
-  if (reviewImages > 10) {
+  if (reviewImages >= 10) {
     return res.status(403).json({ message: "Maximum number of images for this resource was reached" });
   }
 
