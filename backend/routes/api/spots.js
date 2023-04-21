@@ -106,12 +106,6 @@ const validateReview = [
   handleValidationErrors
 ];
 // TODO: clean up this and other routes here
-// const validateBooking = [
-//   check("endDate")
-//     .isAfter("startDate")
-//     .withMessage("endDate cannot be on or before startDate"),
-//   handleValidationErrors
-// ]
 
 // create a booking from a spot
 router.post('/:id/bookings', async (req, res) => {
@@ -320,7 +314,7 @@ router.get('/current', async (req, res, next) => {
       if (previewImage) spot.previewImage = previewImage.url
       else spot.previewImage = 'invalid';
 
-      spot.avgRating = avg;
+      spot.avgRating = avg ? avg : 0;
 
     }
     return res.json({ Spots: spots });
