@@ -2,10 +2,8 @@ const express = require('express');
 const router = express.Router();
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
-const { requireAuth } = require('../../utils/auth');
 const { Spot, SpotImage, Review, User, ReviewImage, Booking } = require('../../db/models');
-const spot = require('../../db/models/spot');
-const { json, Op } = require('sequelize');
+const { Op } = require('sequelize');
 
 const checkPagination = (body, res) => {
   let { page, size, minLat, maxLat, minLng, maxLng, minPrice, maxPrice} = body;
@@ -23,9 +21,9 @@ const checkPagination = (body, res) => {
 
   if (maxLng && (maxLng < -180 || maxLng > 180)) errObj.maxLat = "Maximum longitude is invalid";
 
-  if (minPrice && minPrice < 0) errObj.minPrice = "Minimum price must be greater than or equal to 0";
+  if ((minPrice && minPrice < 0)) errObj.minPrice = "Minimum price must be greater than or equal to 0";
 
-  if (maxPrice && maxPrice < 0) errObj.maxPrice = "Maximum price must be greater than or equal to 0";
+  if ((maxPrice && maxPrice < 0)) errObj.maxPrice = "Maximum price must be greater than or equal to 0";
 
   if(Object.keys(errObj).length) {
     return res.status(400).json({
@@ -133,7 +131,6 @@ const validateReview = [
   .withMessage("Stars must be an integer from 1 to 5"),
   handleValidationErrors
 ];
-// TODO: clean up this and other routes here
 
 // create a booking from a spot
 router.post('/:id/bookings', async (req, res) => {
@@ -453,12 +450,15 @@ router.get('/:id', async (req, res, next) => {
 
 // Get all spots
 router.get('/', async (req, res, next) => {
-  let { page, size, minLat, maxLat, minLng, maxLng, minPrice, maxPrice} = req.query;
+  let { minLat, maxLat, minLng, maxLng, minPrice, maxPrice } = req.query;
   const pagination = {
     where: {}
   }
 
   checkPagination(req.query, res)
+
+  const page = req.query.page === undefined ? 1 : parseInt(req.query.page);
+  const size = req.query.size === undefined ? 20 : parseInt(req.query.size);
 
   if (!page) page = 1;
   if (!size) size = 20;
