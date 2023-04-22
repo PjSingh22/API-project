@@ -27,11 +27,12 @@ router.delete('/:id', async (req, res) => {
     const bookingEndDate = new Date(booking.endDate.toDateString()).getTime();
     const today = new Date().getTime();
 
-    if (today >= bookingStartDate && today <= bookingEndDate) {
+    if ((today >= bookingStartDate && today <= bookingEndDate) || bookingEndDate < today) {
       return res.status(403).json({
-        message: "Bookings that have been started can't be deleted"
+        message: "Bookings that have been started or finished can't be deleted"
       })
     }
+
     await booking.destroy();
 
     return res.json({
@@ -65,8 +66,9 @@ router.put('/:id', async (req, res) => {
 
     const convertedBSD = new Date(newStartDate.toDateString()).getTime(); // conv to time
     const convertedBED = new Date(newEndDate.toDateString()).getTime();
+    const today = new Date().getTime();
 
-    if (convertedBSD > spotEndDate) {
+    if (spotEndDate < today) {
       return res.status(403).json({
         message: "Past bookings can't be modified"
       })
