@@ -148,6 +148,13 @@ router.post('/:id/bookings', async (req, res) => {
     const bodyEndDate = new Date(endDate + ' ').toDateString()
     const convertedBSD = new Date(bodyStartDate).getTime() // conv to time
     const convertedBED = new Date(bodyEndDate).getTime()
+    const today = new Date();
+
+    if (convertedBSD < today.getTime() && bodyStartDate != today.toDateString()) {
+      return res.status(400).json({
+        message: "Cannot book dates in the past"
+      })
+    }
 
     if (convertedBED <= convertedBSD) return res.status(400).json({
       message: "Bad request",
