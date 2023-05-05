@@ -87,12 +87,18 @@ const validateSpot = [
     .withMessage("Country is required"),
 
   check("lat")
-    .isFloat({ min: -90, max: 90 })
-    .withMessage("Latitude is not valid"),
+    .exists({ checkNull: false }),
+
+  // check("lat")
+  //   .isFloat({ min: -90, max: 90 })
+  //   .withMessage("Latitude is not valid"),
 
   check("lng")
-    .isFloat({ min: -180, max: 180 })
-    .withMessage("Longitude is not valid"),
+    .exists({ checkNull: false }),
+
+  // check("lng")
+  //   .isFloat({ min: -180, max: 180 })
+  //   .withMessage("Longitude is not valid"),
 
   check("name")
   .exists({ checkFalsy: true })
