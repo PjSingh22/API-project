@@ -122,20 +122,11 @@ module.exports = (sequelize, DataTypes) => {
     },
     lng: {
       type: DataTypes.DECIMAL,
-      allowNull: false,
-      validate: {
-        notNull: { msg: 'Lng is required' },
-        isFloat: true,
-        notEmpty: { msg: 'Lng is required'}
-      }
+      allowNull: true
     },
     name: {
       type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        notNull: { msg: 'Name is required' },
-        notEmpty: { msg: 'Name is required'}
-      }
+      allowNull: true
     },
     description: {
       type: DataTypes.STRING,
