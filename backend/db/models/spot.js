@@ -113,29 +113,21 @@ module.exports = (sequelize, DataTypes) => {
     },
     lat: {
       type: DataTypes.DECIMAL,
-      allowNull: false,
-      validate: {
-        notNull: { msg: 'Lat is required' },
-        isFloat: true,
-        notEmpty: { msg: 'Lat is required'}
-      }
+      allowNull: true,
+      // validate: {
+      //   isFloat: true
+      // }
     },
     lng: {
       type: DataTypes.DECIMAL,
-      allowNull: false,
-      validate: {
-        notNull: { msg: 'Lng is required' },
-        isFloat: true,
-        notEmpty: { msg: 'Lng is required'}
-      }
+      allowNull: true,
+      // validate: {
+      //   isFloat: true
+      // }
     },
     name: {
       type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        notNull: { msg: 'Name is required' },
-        notEmpty: { msg: 'Name is required'}
-      }
+      allowNull: true
     },
     description: {
       type: DataTypes.STRING,
