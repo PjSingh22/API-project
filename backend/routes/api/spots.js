@@ -33,7 +33,7 @@ const checkPagination = (body, res) => {
   }
 };
 
-const validateSpots = (body, res) => {
+const validateSpotEdit = (body, res) => {
   const { address, city, state, country } = body;
   const errorsObj = {};
 
@@ -170,7 +170,7 @@ router.post('/:id/bookings', async (req, res) => {
         const errors = {}
         const spotStartDate = new Date(booking.startDate.toDateString()).getTime();
         const spotEndDate = new Date(booking.endDate.toDateString()).getTime();
-        // return res.json({spotStartDate, spotEndDate})
+
         if (convertedBSD === spotStartDate || (convertedBSD > spotStartDate && convertedBSD <= spotEndDate)) {
           errors.startDate = "Start date conflicts with an existing booking";
           conflict = true;
@@ -282,7 +282,7 @@ router.put('/:id', async (req, res, next) => {
   if (spotToEdit.ownerId === user.id) {
     const { address, city, state, country, lat, lng, name, description, price} = req.body;
 
-    validateSpots(req.body, res);
+    validateSpotEdit(req.body, res);
 
     if (address) spotToEdit.address = address;
     if (city) spotToEdit.city = city;
