@@ -29,6 +29,7 @@
   font-size: 20px;
   position: sticky;
   border-radius: 20px;
+  background-color: var(--background-color);
 }
 
 .logout-btn {
@@ -38,4 +39,13 @@
   border-radius: 20px;
   border: 1px solid var(--main-color);
   padding: 5px 10px;
+}
+
+.open-modal {
+  background-color: var(--background-color);
+  border: none;
+}
+
+.open-modal:hover {
+  color: var(--main-color);
 }
