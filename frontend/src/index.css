@@ -1,1 +1,14 @@
 /* TODO Add site wide styles */
+:root {
+  --main-font: 'Poppins', sans-serif;
+  --main-color: rgb(255,56,92);
+  --border-color: #dddddd;
+  --background-color: #ffffff;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: var(--main-font);
+}
