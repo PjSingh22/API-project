@@ -5,5 +5,8 @@
 #nav-links {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   list-style-type: none;
+  padding: 15px;
+  border-bottom: 1px solid var(--border-color);
 }

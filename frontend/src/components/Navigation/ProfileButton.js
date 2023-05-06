@@ -36,15 +36,17 @@ function ProfileButton({ user }) {
 
   return (
     <>
-      <button onClick={openMenu} style={{ fontSize: "20px"}}>
+      <button className="user-btn btn" onClick={openMenu}>
+      <i className="fas fa-bars"></i>
       <i className="fa-solid fa-user"></i>
       </button>
       <ul className={ulClassName} ref={ulRef}>
-        <li>{user.username}</li>
-        <li>{user.firstName} {user.lastName}</li>
+        <li>Hello, {user.username}</li>
+        {/* <li>{user.firstName} {user.lastName}</li> */}
         <li>{user.email}</li>
+        <li>Manage Spots</li> {/*TODO: place a link inside li */}
         <li>
-          <button onClick={logout}>Log Out</button>
+          <button className="logout-btn btn" onClick={logout}>Log Out</button>
         </li>
       </ul>
     </>

@@ -1,10 +1,9 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import ProfileButton from './ProfileButton';
 import OpenModalButton from '../OpenModalButton';
 import LoginFormModal from '../LoginFormModal';
-import * as sessionActions from '../../store/session';
 import './Navigation.css';
 import SignupFormModal from '../SignupFormModal';
 
@@ -36,7 +35,7 @@ function Navigation({ isLoaded }){
   return (
     <ul id='nav-links'>
       <li>
-        <NavLink exact to="/">Home</NavLink>
+        <NavLink style={{textDecoration: 'none', fontFamily: "Poppins", color: 'rgb(255,56,92)', fontSize: "30px"}} exact to="/">TripBnb</NavLink>
       </li>
       {isLoaded && sessionLinks}
     </ul>
