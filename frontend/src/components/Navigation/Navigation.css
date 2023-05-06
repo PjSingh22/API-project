@@ -1,3 +1,9 @@
 .hidden {
   display: none;
 }
+
+#nav-links {
+  display: flex;
+  justify-content: space-between;
+  list-style-type: none;
+}
