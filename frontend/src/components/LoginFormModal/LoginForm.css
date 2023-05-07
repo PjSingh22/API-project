@@ -1,9 +1,8 @@
 .user-form {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  /* display: flex; */
+  /* flex-direction: column;
+  align-items: center; */
   padding: 10px;
-  border-radius: 20px;
 }
 
 .user-form > form > label {
@@ -14,17 +13,28 @@
 }
 
 .user-form > form > label > input {
-  max-width: 100vw;
-}
-
-.login-btn {
-  font-size: 15px;
   width: 100%
 }
 
+.login-btn {
+  color: white;
+  background-color: var(--main-color);
+  box-shadow: -2px 3px 5px black ;
+  font-size: 15px;
+  width: 100%;
+  border: 1px solid black;
+}
+
 .demo-user {
+  margin: 0 auto;
+  margin-top: 10px;
+  width: 100%;
   color: purple;
   background: var(--background-color);
   border: none;
   text-decoration: underline;
+}
+
+.disabled {
+  background-color: grey;
 }

@@ -27,7 +27,7 @@ function LoginFormModal() {
 
   return (
     <div className="user-form login-form form">
-      <h1>Log In</h1>
+      <h1 style={{textAlign: 'center'}}>Log In</h1>
       <form onSubmit={handleSubmit}>
         <label>
           Username or Email
@@ -48,7 +48,7 @@ function LoginFormModal() {
           />
         </label>
         {errors.credential && <p className="errors">{errors.credential}</p>}
-        <button className="open-modal login-btn btn" type="submit">Log In</button>
+        <button className="login-btn btn" type="submit">Log In</button>
       </form>
       <button className="demo-user btn">Demo User</button>
     </div>
