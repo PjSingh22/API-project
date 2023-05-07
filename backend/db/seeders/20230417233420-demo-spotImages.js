@@ -21,17 +21,17 @@ module.exports = {
    await queryInterface.bulkInsert(options, [
     {
       spotId: 1,
-      url: 'www.anImage.com/images/someimg',
+      url: 'https://i.imgur.com/M6WbGRu.jpeg',
       preview: true
     },
     {
       spotId: 2,
-      url: 'www.puppyimages.com/images/puppy/1/dog',
+      url: 'https://i.imgur.com/6yBvrjC.jpeg',
       preview: true
     },
     {
       spotId: 3,
-      url: 'www.weirdstuff.com/images/weird',
+      url: 'https://i.imgur.com/3zTTYLa.jpeg',
       preview: false
     }
    ]);

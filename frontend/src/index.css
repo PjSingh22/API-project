@@ -16,3 +16,7 @@
 button:hover {
   cursor: pointer;
 }
+
+.app-body {
+  margin: 20px 40px;
+}

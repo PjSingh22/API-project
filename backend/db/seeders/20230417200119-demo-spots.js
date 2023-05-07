@@ -54,6 +54,18 @@ module.exports = {
       name: 'old home',
       description: 'don\'t tell my wife',
       price: 20
+    },
+    {
+      ownerId: 4,
+      address: '420 oldtown road',
+      city: 'oldTown',
+      state: 'Kentucky',
+      country: 'United States',
+      lat: 65.432,
+      lng: 22.444,
+      name: 'Cottage le cot',
+      description: 'no free toilet paper',
+      price: 200
     }
    ])
   },

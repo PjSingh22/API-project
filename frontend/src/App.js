@@ -16,11 +16,13 @@ function App() {
     <>
       <Navigation isLoaded={isLoaded} />
       {isLoaded &&
+      <div className="app-body">
         <Switch>
           <Route exact path="/">
             <AllSpots />
           </Route>
         </Switch>
+      </div>
       }
     </>
   );

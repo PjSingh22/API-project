@@ -1,0 +1,54 @@
+.all-spots {
+  /* max-width: 100vw; */
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-auto-rows: 300px;
+  gap: 25px;
+}
+
+/* .all-spots > .spotcard > img {
+  width: 100%;
+  height: 100%;
+} */
+
+.card-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.no-img-text > p {
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  margin: auto;
+}
+
+.spot-info {
+  display: flex;
+  justify-content: space-between;
+}
+/* .all-spots > .spot-card > img {
+  width: 100%;
+  height: 100%;
+} */
+
+@media screen and (max-width: 1024px) {
+  .all-spots {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .spot-card {
+    margin-top: 40px;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .all-spots {
+    grid-template-columns: 1fr;
+  }
+
+  .spot-card {
+    margin-top: 40px;
+  }
+}
