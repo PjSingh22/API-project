@@ -26,7 +26,7 @@ function LoginFormModal() {
   };
 
   return (
-    <>
+    <div className="user-form login-form form">
       <h1>Log In</h1>
       <form onSubmit={handleSubmit}>
         <label>
@@ -47,10 +47,11 @@ function LoginFormModal() {
             required
           />
         </label>
-        {errors.credential && <p>{errors.credential}</p>}
-        <button type="submit">Log In</button>
+        {errors.credential && <p className="errors">{errors.credential}</p>}
+        <button className="open-modal login-btn btn" type="submit">Log In</button>
       </form>
-    </>
+      <button className="demo-user btn">Demo User</button>
+    </div>
   );
 }
 

@@ -1,0 +1,30 @@
+.user-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px;
+  border-radius: 20px;
+}
+
+.user-form > form > label {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 15px;
+}
+
+.user-form > form > label > input {
+  max-width: 100vw;
+}
+
+.login-btn {
+  font-size: 15px;
+  width: 100%
+}
+
+.demo-user {
+  color: purple;
+  background: var(--background-color);
+  border: none;
+  text-decoration: underline;
+}
