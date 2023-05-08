@@ -30,8 +30,43 @@ module.exports = {
       preview: true
     },
     {
+      spotId: 1,
+      url: 'https://i.imgur.com/1KgfYNV.jpeg',
+      preview: true
+    },
+    {
+      spotId: 1,
+      url: 'https://i.imgur.com/wzMdw6e.jpeg',
+      preview: true
+    },
+    {
+      spotId: 1,
+      url: 'https://i.imgur.com/0AKKIdd.jpeg',
+      preview: true
+    },
+    {
       spotId: 2,
-      url: 'https://i.imgur.com/6yBvrjC.jpeg',
+      url: 'https://i.imgur.com/lYTYgZ9.jpeg',
+      preview: true
+    },
+    {
+      spotId: 2,
+      url: 'https://i.imgur.com/asLguVw.jpeg',
+      preview: true
+    },
+    {
+      spotId: 2,
+      url: 'https://i.imgur.com/C6pn1k1.jpeg',
+      preview: true
+    },
+    {
+      spotId: 2,
+      url: 'https://i.imgur.com/eeaIUrz.jpeg',
+      preview: true
+    },
+    {
+      spotId: 2,
+      url: 'https://i.imgur.com/tbiL2SJ.jpeg',
       preview: true
     },
     {

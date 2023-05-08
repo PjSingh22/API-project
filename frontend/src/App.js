@@ -4,6 +4,7 @@ import { Route, Switch } from "react-router-dom";
 import * as sessionActions from "./store/session";
 import Navigation from "./components/Navigation";
 import AllSpots from "./components/AllSpots";
+import ViewSpot from "./components/ViewSpot";
 import { loadSpotsThunk } from "./store/spots";
 
 function App() {
@@ -26,6 +27,9 @@ function App() {
       {isLoaded &&
       <div className="app-body">
         <Switch>
+          <Route path="/spots/:spotId">
+            <ViewSpot spots={spots} />
+          </Route>
           <Route exact path="/">
             <AllSpots spots={spots} />
           </Route>
