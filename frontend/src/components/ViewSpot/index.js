@@ -14,7 +14,9 @@ const ViewSpot = (props) => {
     dispatch(getSpotThunk(spotId))
   }, [dispatch]);
 
-  if (spotObj) {
+  if(Object.values(spotObj).length === 0) {
+    return null;
+  }
     return (
       <div className="view-container">
         <div className="spot-header">
@@ -23,7 +25,7 @@ const ViewSpot = (props) => {
         </div>
         <div className="spot-images">
           <div className="main-img">
-            {/* <img src={spotImages[0].url} /> */}
+            <img src={spotImages[0].url} />
           </div>
           <div className="other-imgs">
             {/* put 4 images here */}
@@ -36,9 +38,6 @@ const ViewSpot = (props) => {
         <div className="spot-reviews"></div>
       </div>
     )
-  } else {
-    return null;
-  }
 };
 
 export default ViewSpot;
