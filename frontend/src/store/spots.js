@@ -41,7 +41,7 @@ const spotsReducer = (state = initialState, action) => {
 
       return { ...state, allSpots: allSpots}
     case GET_SPOT:
-      return { ...state, allSpots: {}, singleSpot: action.spot}
+      return { ...state, singleSpot: action.spot}
     default:
       return state;
   }
