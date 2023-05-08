@@ -25,6 +25,11 @@ module.exports = {
       preview: true
     },
     {
+      spotId: 1,
+      url: 'https://i.imgur.com/M6WbGRu.jpeg',
+      preview: true
+    },
+    {
       spotId: 2,
       url: 'https://i.imgur.com/6yBvrjC.jpeg',
       preview: true
@@ -32,6 +37,26 @@ module.exports = {
     {
       spotId: 3,
       url: 'https://i.imgur.com/3zTTYLa.jpeg',
+      preview: false
+    },
+    {
+      spotId: 3,
+      url: 'https://i.imgur.com/C3lLLlT.jpeg',
+      preview: false
+    },
+    {
+      spotId: 3,
+      url: 'https://i.imgur.com/IzJK3Ku.jpeg',
+      preview: false
+    },
+    {
+      spotId: 3,
+      url: 'https://i.imgur.com/MCWsA8l.jpeg',
+      preview: false
+    },
+    {
+      spotId: 3,
+      url: 'https://i.imgur.com/j1kdc1u.jpeg',
       preview: false
     }
    ]);

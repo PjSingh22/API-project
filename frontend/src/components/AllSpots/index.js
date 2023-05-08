@@ -1,21 +1,12 @@
-import { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { loadSpotsThunk } from "../../store/spots";
-import Spot from "../Spot";
+import noImg from '../../No_Image_Available.jpg'
 import './AllSpots.css';
 
-const AllSpots = (props) => {
-  const dispatch = useDispatch();
-  const spots = useSelector(state => Object.values(state.spots.allSpots));
-
-  useEffect(() => {
-    dispatch(loadSpotsThunk());
-  }, [dispatch]);
+const AllSpots = ({spots}) => {
   return (
     <div className="all-spots">
       {spots.map(spot => (
         <div className="spot-card">
-          {spot.previewImage === 'invalid' ? <div className="card-img no-img-text"><p>No photo available</p></div> : <img className="card-img" src={spot.previewImage} alt="preview" />}
+         <img className="card-img" src={spot.previewImage === 'invalid' ? noImg : spot.previewImage} alt="preview" />
           <div className="spot-info">
             <div className="left-half-info">
               <div>
