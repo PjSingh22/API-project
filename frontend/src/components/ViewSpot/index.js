@@ -4,11 +4,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { getSpotThunk } from "../../store/spots";
 import './ViewSpot.css';
 
-const ViewSpot = (props) => {
+const ViewSpot = ({defaultImg}) => {
   const { spotId } = useParams();
   const dispatch = useDispatch();
   const spotObj = useSelector(state => state.spots.singleSpot);
-  const { address, avgStarRating, city, country, description, lat, lng, name, numReviews, User, price, spotImages, state } = spotObj;
+  const { address, avgStarRating, city, country, description, lat, lng, name, numReviews, owner, price, spotImages, state } = spotObj;
 
   useEffect(() => {
     dispatch(getSpotThunk(spotId))
@@ -20,20 +20,32 @@ const ViewSpot = (props) => {
     return (
       <div className="view-container">
         <div className="spot-header">
-          <p className="spot__main-title">{name}</p>
+          <p style={{fontSize: '25px'}} className="spot__main-title">{name}</p>
           <p className="spot__header-info">{city}, {state}, {country}</p>
         </div>
         <div className="spot-images">
           <div className="main-img">
-            <img src={spotImages[0].url} />
+            <img src={spotImages[0].url} alt="home" />
           </div>
           <div className="other-imgs">
-            {/* put 4 images here */}
+            <img src={spotImages[1] ? spotImages[1].url : defaultImg} alt="home" />
+            <img src={spotImages[2] ? spotImages[2].url : defaultImg} alt="home" />
+            <img src={spotImages[3] ? spotImages[3].url : defaultImg} alt="home" />
+            <img src={spotImages[4] ? spotImages[4].url : defaultImg} alt="home" />
           </div>
         </div>
         <div className="spot-info">
-          <div className="spot-info-left"></div>
-          <div className="spot-info-right"></div>
+          <div className="spot-info-left">
+            <p style={{fontSize: "20px"}}>Hosted by {owner.firstName} {owner.lastName}</p>
+            <p className="spot__desc">{description}</p>
+          </div>
+          <div className="spot-info-right">
+            <div className="upper-info">
+              <p className="spot-info__price">${price} night</p>
+              <p><i className="fa-solid fa-star"></i> {avgStarRating} * {numReviews} Reviews</p>
+            </div>
+            <button className="btn login-btn" onClick={() => alert('feature coming soon')}>Reserve</button>
+          </div>
         </div>
         <div className="spot-reviews"></div>
       </div>
