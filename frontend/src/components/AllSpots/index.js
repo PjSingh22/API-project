@@ -34,7 +34,7 @@ const AllSpots = ({spots}) => {
               </div>
             </div>
           </div>
-        </Link>
+         </Link>
       ))}
     </div>
   )

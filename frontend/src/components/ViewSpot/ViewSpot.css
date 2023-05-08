@@ -32,17 +32,20 @@
   object-fit: cover;
 }
 
-.spot-info {
+.spot__spot-info {
   display: grid;
-  grid-template-columns: 1fr 500px;
+  grid-template-columns: 1fr minmax(300px, 450px);
   border-bottom: 1px solid var(--border-color);
   padding-bottom: 15px;
 }
 
-.spot__desc {
+.spot__desc, .review-desc, .review-postDate {
   text-align: left;
-  overflow-y: scroll;
   font-size: 12px;
+}
+
+.spot__desc {
+  overflow-y: scroll;
 }
 
 .spot-info-left {
@@ -60,4 +63,16 @@
   display: flex;
   justify-content: space-between;
   padding-bottom: 10px;
+}
+
+.spot__review {
+  padding: 10px 0;
+}
+
+.review-username {
+  font-size: 20px;
+}
+
+.review-postDate {
+  color: grey;
 }
