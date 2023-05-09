@@ -1,7 +1,8 @@
 import { csrfFetch } from "./csrf";
 const LOAD_SPOTS = "spots/LOAD_SPOTS";
 const GET_SPOT = "spots/GET_SPOT";
-// const GET_USER_SPOTS = "spots/GET_USER_SPOTS";
+const GET_USER_SPOTS = "spots/GET_USER_SPOTS";
+const CLEAN_UP = "spots/CLEAN_UP";
 
 const getSpot = (spot) => {
   return {
@@ -10,12 +11,12 @@ const getSpot = (spot) => {
   }
 }
 
-// const currentUserSpots = (spots) => {
-//   return {
-//     type: GET_USER_SPOTS,
-//     spots
-//   }
-// }
+const currentUserSpots = (spots) => {
+  return {
+    type: GET_USER_SPOTS,
+    spots
+  }
+}
 
 const loadSpots = (spots) => {
   return {
@@ -24,11 +25,17 @@ const loadSpots = (spots) => {
   }
 };
 
-// export const currentUserSpotsThunk = () => async (dispatch) => {
-//   const res = await csrfFetch(`/api/spots/current`);
-//   const spots = await res.json();
-//   dispatch(currentUserSpots(spots));
-// }
+export const cleanUp = () => {
+  return {
+    type: CLEAN_UP
+  }
+}
+
+export const currentUserSpotsThunk = () => async (dispatch) => {
+  const res = await csrfFetch(`/api/spots/current`);
+  const spots = await res.json();
+  dispatch(currentUserSpots(spots));
+}
 
 export const getSpotThunk = (spotId) => async (dispatch) => {
   const response = await csrfFetch(`/api/spots/${spotId}`);
@@ -47,6 +54,8 @@ const initialState = { allSpots: {}, singleSpot: {} };
 
 const spotsReducer = (state = initialState, action) => {
   switch (action.type) {
+    case CLEAN_UP:
+      return { ...state };
     case LOAD_SPOTS:
       let allSpots = {};
       action.spots.forEach(spot => {
@@ -56,8 +65,12 @@ const spotsReducer = (state = initialState, action) => {
       return { ...state, allSpots: allSpots}
     case GET_SPOT:
       return { ...state, singleSpot: action.spot}
-    // case GET_USER_SPOTS:
-    //   return action.spots;
+    case GET_USER_SPOTS:
+      const newSpots = {}
+      action.spots.forEach(spot => {
+       newSpots[spot.id] = spot;
+      });
+      return { ...state, allSpots: newSpots }
     default:
       return state;
   }
