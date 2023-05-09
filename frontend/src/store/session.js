@@ -75,14 +75,8 @@ export const signup = (user) => async (dispatch) => {
 export const currentUserSpotsThunk = () => async (dispatch) => {
   const res = await csrfFetch(`/api/spots/current`);
   const spots = await res.json();
-  console.log(spots);
   dispatch(currentUserSpots(spots.Spots));
 }
-
-// export const logoutUserThunk = () => async (dispatch) => {
-
-// }
-
 
 const initialReducer = { user: null, spots: {} };
 

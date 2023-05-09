@@ -1,5 +1,5 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import ProfileButton from './ProfileButton';
 import './Navigation.css';
@@ -18,7 +18,7 @@ function Navigation({ isLoaded }){
       </li>
       {isLoaded && (
         <li className='nav__right-side'>
-          <button className='nav__create-spot'>Create a New Spot</button>
+          <Link to="/user/spots/create"><button className='nav__create-spot'>Create a New Spot</button></Link>
           <ProfileButton user={sessionUser} />
         </li>
       )}
