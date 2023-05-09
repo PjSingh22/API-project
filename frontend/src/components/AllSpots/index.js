@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { loadSpotsThunk, cleanUp } from '../../store/spots';
-import { Link } from 'react-router-dom';
+import { loadSpotsThunk } from '../../store/spots';
+// import { Link } from 'react-router-dom';
 import Spot from '../Spot';
 import './AllSpots.css';
 
@@ -13,7 +13,6 @@ const AllSpots = () => {
 
   useEffect(() => {
     dispatch(loadSpotsThunk());
-    return () => dispatch(cleanUp());
   }, [dispatch])
   return (
     <div className="all-spots">

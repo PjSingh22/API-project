@@ -17,19 +17,23 @@ const ManageSpots = (props) => {
   }, [dispatch])
 
   return (
-    <div className="manage__container">
-      {spots.map(spot => {
-        return (
-          <div>
-            <Spot spot={spot} />
-            <div className="spot-buttons">
-              {/* TODO: finish this */}
-              <button className="btn">Edit</button>
-              <button className="btn">Delete</button>
+    <div>
+      <h2>Manage Spots</h2>
+      <button>Create A Spot</button>
+      <div className="manage__container">
+        {spots.map(spot => {
+          return (
+            <div>
+              <Spot spot={spot} />
+              <div className="spot-buttons">
+                {/* TODO: finish this */}
+                <button className="btn">Edit</button>
+                <button className="btn">Delete</button>
+              </div>
             </div>
-          </div>
-        )
-      })}
+          )
+        })}
+      </div>
     </div>
   )
 };
