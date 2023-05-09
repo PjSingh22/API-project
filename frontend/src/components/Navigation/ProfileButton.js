@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useDispatch } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import * as sessionActions from '../../store/session';
 import OpenModalButton from "../OpenModalButton";
 import LoginFormModal from "../LoginFormModal";

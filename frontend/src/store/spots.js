@@ -34,7 +34,8 @@ export const cleanUp = () => {
 export const currentUserSpotsThunk = () => async (dispatch) => {
   const res = await csrfFetch(`/api/spots/current`);
   const spots = await res.json();
-  dispatch(currentUserSpots(spots));
+  console.log('spots from thunk', spots);
+  dispatch(currentUserSpots(spots.Spots));
 }
 
 export const getSpotThunk = (spotId) => async (dispatch) => {
@@ -55,7 +56,7 @@ const initialState = { allSpots: {}, singleSpot: {} };
 const spotsReducer = (state = initialState, action) => {
   switch (action.type) {
     case CLEAN_UP:
-      return { ...state };
+      return initialState;
     case LOAD_SPOTS:
       let allSpots = {};
       action.spots.forEach(spot => {
@@ -66,11 +67,14 @@ const spotsReducer = (state = initialState, action) => {
     case GET_SPOT:
       return { ...state, singleSpot: action.spot}
     case GET_USER_SPOTS:
+      let newState = { allSpots: {}, singleSpot: {} };
       const newSpots = {}
       action.spots.forEach(spot => {
        newSpots[spot.id] = spot;
       });
-      return { ...state, allSpots: newSpots }
+      newState.allSpots = newSpots;
+      return newState;
+      // return { ...state, allSpots: newSpots }
     default:
       return state;
   }
