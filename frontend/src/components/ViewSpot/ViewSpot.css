@@ -46,6 +46,7 @@
 
 .spot__desc {
   overflow-y: scroll;
+  overflow: hidden;
 }
 
 .spot-info-left {
