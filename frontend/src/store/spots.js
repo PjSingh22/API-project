@@ -74,7 +74,6 @@ const spotsReducer = (state = initialState, action) => {
       });
       newState.allSpots = newSpots;
       return newState;
-      // return { ...state, allSpots: newSpots }
     default:
       return state;
   }
