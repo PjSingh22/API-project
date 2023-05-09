@@ -1,26 +1,36 @@
+import { Link } from 'react-router-dom';
+const Spot = ({spot, defaultImg}) => {
+  const { id, city, state, price, avgRating, previewImage } = spot;
 
-const Spot = ({spot}) => {
-  const { address, city, state, price, avgRating, previewImage } = spot;
+  const linkStyle = {
+    display: 'grid',
+    gridAutoRows: "300px",
+    marginBottom: "40px",
+    width: "100%",
+    textDecoration: "none",
+    color:"black"
+  }
   return (
-    <div className="">
-      {previewImage === 'invalid' ?
-      <div className="spot-img">No Image Available</div>
-      :
-      <div className="spot-img">
-        <img src={previewImage} alt="preview" />
-      </div>
-      }
-      <div className="spot-info">
-        <div className="left-half-info">
-          <div>
-            <span>{city}</span>, <span>{state}</span>
+    <Link to={`/spots/${id}`} key={id} style={linkStyle}>
+      <div className='spot-card'>
+        <img className="card-img" src={previewImage === 'invalid' ? defaultImg : previewImage} alt="preview" />
+        <div className="spot-info">
+          <div className="left-half-info">
+            <div>
+              <div>
+                <span>{city}</span>, <span>{state}</span>
+              </div>
+              <div>
+                <span> ${price}</span> night
+              </div>
+            </div>
+          </div>
+          <div className="right-half-info">
+            <span><i className="fa-solid fa-star"></i>{avgRating}</span>
           </div>
         </div>
-        <div className="right-half-info">
-          <span>*{avgRating}</span>
-        </div>
       </div>
-    </div>
+    </Link>
   )
 };
 
