@@ -6,6 +6,7 @@ import Navigation from "./components/Navigation";
 import AllSpots from "./components/AllSpots";
 import ViewSpot from "./components/ViewSpot";
 import { loadSpotsThunk } from "./store/spots";
+import ManageSpots from "./components/ManageSpots";
 
 function App() {
   const dispatch = useDispatch();
@@ -28,6 +29,9 @@ function App() {
       {isLoaded &&
       <div className="app-body">
         <Switch>
+          <Route path="/user/spots">
+            <ManageSpots />
+          </Route>
           <Route path="/spots/:spotId">
             <ViewSpot defaultImg={defaultImg} spots={spots} />
           </Route>

@@ -17,7 +17,8 @@ function Navigation({ isLoaded }){
           </NavLink>
       </li>
       {isLoaded && (
-        <li>
+        <li className='nav__right-side'>
+          <button className='nav__create-spot'>Create a New Spot</button>
           <ProfileButton user={sessionUser} />
         </li>
       )}

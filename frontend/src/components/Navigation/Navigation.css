@@ -10,3 +10,19 @@
   padding: 15px;
   border-bottom: 1px solid var(--border-color);
 }
+
+.nav__right-side {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.nav__create-spot {
+  background-color: var(--background-color);
+  border: none;
+  color: #055579;
+}
+
+.nav__create-spot:hover {
+  color: var(--main-color);
+}

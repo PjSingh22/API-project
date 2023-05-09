@@ -17,6 +17,7 @@ const ViewSpot = ({defaultImg}) => {
     dispatch(getSpotThunk(spotId))
   }, [dispatch]);
 
+  // TODO: refactor this to look simpler. change to use reviews variable and check for spotId
   if(Object.values(spotObj).length === 0 && Object.values(reviewsObj).length === 0) {
     return null;
   }
