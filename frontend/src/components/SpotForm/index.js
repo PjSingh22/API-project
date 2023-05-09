@@ -3,8 +3,8 @@ import { createSpotThunk } from "../../store/spots";
 import "./SpotForm.css";
 import { useDispatch } from "react-redux";
 
-const CreateSpot = () => {
-  const dispatch = useDispatch
+const CreateSpot = (props) => {
+  const dispatch = useDispatch();
   const [country, setCountry] = useState("");
   const [address, setAddress] = useState("");
   const [city, setCity] = useState("");
@@ -22,7 +22,7 @@ const CreateSpot = () => {
   const [img4, setImg4] = useState("");
 
   // useEffect(() => {
-
+  //   if (!name)
   // }, [name, address, city, state, lat, lng, description, name, price])
 
   const handleSubmit = (e) => {
