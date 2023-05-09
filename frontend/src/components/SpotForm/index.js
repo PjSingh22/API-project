@@ -1,30 +1,53 @@
 import { useState, useEffect } from "react";
+import { createSpotThunk } from "../../store/spots";
 import "./SpotForm.css";
+import { useDispatch } from "react-redux";
 
 const CreateSpot = () => {
+  const dispatch = useDispatch
   const [country, setCountry] = useState("");
-  const [address, setAddress] = useState();
-  const [city, setCity] = useState();
-  const [state, setState] = useState();
-  const [lat, setLat] = useState();
-  const [lng, setLng] = useState();
-  const [description, setDescription] = useState();
-  const [name, setName] = useState();
-  const [price, setPrice] = useState();
+  const [address, setAddress] = useState("");
+  const [city, setCity] = useState("");
+  const [state, setState] = useState("");
+  const [lat, setLat] = useState(null);
+  const [lng, setLng] = useState(null);
+  const [description, setDescription] = useState("");
+  const [name, setName] = useState("");
+  const [price, setPrice] = useState("");
   const [errors, setSerrors] = useState({});
-  const [previewImage, setPreviewImage] = useState([]);
-  const [img1, setImg1] = useState();
-  const [img2, setImg2] = useState();
-  const [img3, setImg3] = useState();
-  const [img4, setImg4] = useState();
+  const [previewImage, setPreviewImage] = useState("");
+  const [img1, setImg1] = useState("");
+  const [img2, setImg2] = useState("");
+  const [img3, setImg3] = useState("");
+  const [img4, setImg4] = useState("");
 
-  useEffect(() => {
+  // useEffect(() => {
 
-  }, [name, address, city, state, lat, lng, description, name, price])
+  // }, [name, address, city, state, lat, lng, description, name, price])
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    const formData = {
+      country,
+      address,
+      city,
+      state,
+      lat,
+      lng,
+      description,
+      name,
+      price,
+      previewImage,
+      img1,
+      img2,
+      img3,
+      img4
+    }
+
+    dispatch(createSpotThunk(formData));
   }
+
   return (
     <div className="form-component" onSubmit={handleSubmit}>
       <h2>Create your Spot</h2>
@@ -80,7 +103,7 @@ const CreateSpot = () => {
           <h3>Liven up your spot with photos</h3>
           <p>Submit a link to at east one photo to publish your spot</p>
           <div className="links-container">
-            <input type="url" placeholder="Image URL" onChange={(e) => setPreviewImage(e.target.value)} />
+            <input type="url" placeholder="Preview Image" onChange={(e) => setPreviewImage(e.target.value)} />
             <input type="url" placeholder="Image URL" onChange={(e) => setImg1(e.target.value)} />
             <input type="url" placeholder="Image URL" onChange={(e) => setImg2(e.target.value)} />
             <input type="url" placeholder="Image URL" onChange={(e) => setImg3(e.target.value)} />
