@@ -1,0 +1,79 @@
+.view-container {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-auto-rows: auto;
+  gap: 15px;
+}
+
+.spot-images {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  overflow: hidden;
+  grid-auto-rows: 300px;
+  gap: 5px;
+  /* max-height: 300px; */
+}
+
+.main-img > img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.other-imgs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 150px;
+}
+
+.other-imgs > img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.spot__spot-info {
+  display: grid;
+  grid-template-columns: 1fr minmax(300px, 450px);
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 15px;
+}
+
+.spot__desc, .review-desc, .review-postDate {
+  text-align: left;
+  font-size: 12px;
+}
+
+.spot__desc {
+  overflow-y: scroll;
+  overflow: hidden;
+}
+
+.spot-info-left {
+  max-height: 100px;
+}
+
+.spot-info-right {
+  border: 1px solid black;
+  padding: 20px;
+  border-radius: 10px;
+  height: fit-content;
+}
+
+.upper-info {
+  display: flex;
+  justify-content: space-between;
+  padding-bottom: 10px;
+}
+
+.spot__review {
+  padding: 10px 0;
+}
+
+.review-username {
+  font-size: 20px;
+}
+
+.review-postDate {
+  color: grey;
+}

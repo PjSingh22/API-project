@@ -12,3 +12,11 @@
   box-sizing: border-box;
   font-family: var(--main-font);
 }
+
+button:hover {
+  cursor: pointer;
+}
+
+.app-body {
+  margin: 20px 40px;
+}

@@ -437,12 +437,17 @@ router.get('/:id/reviews', async (req, res) => {
 router.get('/:id', async (req, res, next) => {
   const id = req.params.id;
   const spot = await Spot.findByPk(id, { raw: true });
+  // const spot = await Spot.findByPk(id, {
+  //   include: [{ model: SpotImage, attributes: ['id', 'url', 'preview']}, { model: User, attributes: ['id', 'firstname', 'lastname']}],
+  //   // raw: true
+  // } );
 
   if (!spot) {
     return res.status(404).json({
       message: "Spot couldn't be found"
     });
   }
+
 
   // gets the total stars and average
   const stars = await Review.sum('stars',{where:{spotId:spot.id}}); // get all stars tied to this spot
@@ -455,7 +460,7 @@ router.get('/:id', async (req, res, next) => {
   spot.owner = owner
   // check to see if previewimage is true if true put the url there
   if(spotImages) spot.spotImages = spotImages
-  else spot.spotImages = 'invalid';
+  else spot.spotImages = [];
 
   return res.json(spot);
 

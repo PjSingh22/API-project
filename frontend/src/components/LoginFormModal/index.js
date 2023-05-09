@@ -26,8 +26,8 @@ function LoginFormModal() {
   };
 
   return (
-    <>
-      <h1>Log In</h1>
+    <div className="user-form login-form form">
+      <h1 style={{textAlign: 'center'}}>Log In</h1>
       <form onSubmit={handleSubmit}>
         <label>
           Username or Email
@@ -47,10 +47,11 @@ function LoginFormModal() {
             required
           />
         </label>
-        {errors.credential && <p>{errors.credential}</p>}
-        <button type="submit">Log In</button>
+        {errors.credential && <p className="errors">{errors.credential}</p>}
+        <button className="login-btn btn" type="submit">Log In</button>
       </form>
-    </>
+      <button className="demo-user btn">Demo User</button>
+    </div>
   );
 }
 

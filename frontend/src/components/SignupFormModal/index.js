@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Redirect } from "react-router-dom";
 import * as sessionActions from "../../store/session";
@@ -17,6 +17,13 @@ function SignupFormModal() {
   const [errors, setErrors] = useState({});
   const { closeModal } = useModal();
 
+  // implement useEffect to disable button if invalid input fields
+  // useEffect(() => {
+  //   const inputErrors = {};
+  //   if (!username.length) inputErrors["username"] = 'User name must be filled in';
+  //   if (!email.includes('@')) inputErrors["email"] = "Enter valid email";
+  //   setErrors({...errors});
+  // }, [username, email])
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -44,9 +51,11 @@ function SignupFormModal() {
     });
   };
 
+  const isDisabled = Object.keys(errors).length ? "login-btn disabled" : "login-btn btn"
+
   return (
-    <>
-      <h1>Sign Up</h1>
+    <div className="user-form signup-form form">
+      <h1 style={{textAlign: 'center'}}>Sign Up</h1>
       <form onSubmit={handleSubmit}>
         <label>
           Email
@@ -107,10 +116,10 @@ function SignupFormModal() {
             required
           />
         </label>
-        {errors.confirmPassword && <p>{errors.confirmPassword}</p>}
-        <button type="submit">Sign Up</button>
+        {errors.username && <p>{errors.username}</p>}
+        <button disabled={Object.keys(errors).length} className={isDisabled} type="submit">Sign Up</button>
       </form>
-    </>
+    </div>
   );
 }
 

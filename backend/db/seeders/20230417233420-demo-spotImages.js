@@ -21,17 +21,77 @@ module.exports = {
    await queryInterface.bulkInsert(options, [
     {
       spotId: 1,
-      url: 'www.anImage.com/images/someimg',
+      url: 'https://i.imgur.com/M6WbGRu.jpeg',
+      preview: true
+    },
+    {
+      spotId: 1,
+      url: 'https://i.imgur.com/M6WbGRu.jpeg',
+      preview: true
+    },
+    {
+      spotId: 1,
+      url: 'https://i.imgur.com/1KgfYNV.jpeg',
+      preview: true
+    },
+    {
+      spotId: 1,
+      url: 'https://i.imgur.com/wzMdw6e.jpeg',
+      preview: true
+    },
+    {
+      spotId: 1,
+      url: 'https://i.imgur.com/0AKKIdd.jpeg',
       preview: true
     },
     {
       spotId: 2,
-      url: 'www.puppyimages.com/images/puppy/1/dog',
+      url: 'https://i.imgur.com/lYTYgZ9.jpeg',
+      preview: true
+    },
+    {
+      spotId: 2,
+      url: 'https://i.imgur.com/asLguVw.jpeg',
+      preview: true
+    },
+    {
+      spotId: 2,
+      url: 'https://i.imgur.com/C6pn1k1.jpeg',
+      preview: true
+    },
+    {
+      spotId: 2,
+      url: 'https://i.imgur.com/eeaIUrz.jpeg',
+      preview: true
+    },
+    {
+      spotId: 2,
+      url: 'https://i.imgur.com/tbiL2SJ.jpeg',
       preview: true
     },
     {
       spotId: 3,
-      url: 'www.weirdstuff.com/images/weird',
+      url: 'https://i.imgur.com/3zTTYLa.jpeg',
+      preview: false
+    },
+    {
+      spotId: 3,
+      url: 'https://i.imgur.com/C3lLLlT.jpeg',
+      preview: false
+    },
+    {
+      spotId: 3,
+      url: 'https://i.imgur.com/IzJK3Ku.jpeg',
+      preview: false
+    },
+    {
+      spotId: 3,
+      url: 'https://i.imgur.com/MCWsA8l.jpeg',
+      preview: false
+    },
+    {
+      spotId: 3,
+      url: 'https://i.imgur.com/j1kdc1u.jpeg',
       preview: false
     }
    ]);

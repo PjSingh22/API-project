@@ -22,7 +22,7 @@ module.exports = (sequelize, DataTypes) => {
         models.SpotImage,
         {
           foreignKey: 'spotId', onDelete: 'CASCADE',  hooks: true,
-          as: 'previewImage'
+          // as: 'previewImage'
         }
       );
 

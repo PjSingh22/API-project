@@ -1,0 +1,40 @@
+.user-form {
+  /* display: flex; */
+  /* flex-direction: column;
+  align-items: center; */
+  padding: 10px;
+}
+
+.user-form > form > label {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 15px;
+}
+
+.user-form > form > label > input {
+  width: 100%
+}
+
+.login-btn {
+  color: white;
+  background-color: var(--main-color);
+  box-shadow: -2px 3px 5px black ;
+  font-size: 15px;
+  width: 100%;
+  border: 1px solid black;
+}
+
+.demo-user {
+  margin: 0 auto;
+  margin-top: 10px;
+  width: 100%;
+  color: purple;
+  background: var(--background-color);
+  border: none;
+  text-decoration: underline;
+}
+
+.disabled {
+  background-color: grey;
+}

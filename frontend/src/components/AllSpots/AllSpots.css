@@ -1,0 +1,41 @@
+.all-spots {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-auto-rows: 300px;
+  gap: 25px;
+}
+
+.spot-card {
+  margin-bottom: 40px;
+
+}
+
+.card-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.no-img-text > p {
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  margin: auto;
+}
+
+.spot-info {
+  display: flex;
+  justify-content: space-between;
+}
+
+@media screen and (max-width: 1024px) {
+  .all-spots {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .all-spots {
+    grid-template-columns: 1fr;
+  }
+}
