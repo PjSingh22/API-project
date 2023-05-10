@@ -29,7 +29,7 @@ const ManageSpots = (props) => {
               <Spot spot={spot} />
               <div className="spot-buttons">
                 {/* TODO: finish this */}
-                <button className="btn">Edit</button>
+                <Link to={`/user/spots/${spot.id}`} ><button className="btn">Edit</button></Link>
                 <OpenModalButton
                    className="open-modal"
                    buttonText="Delete"

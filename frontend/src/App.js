@@ -8,6 +8,7 @@ import ViewSpot from "./components/ViewSpot";
 import { loadSpotsThunk } from "./store/spots";
 import ManageSpots from "./components/ManageSpots";
 import CreateSpot from "./components/SpotForm";
+import EditSpot from "./components/EditSpot";
 
 function App() {
   const dispatch = useDispatch();
@@ -30,6 +31,9 @@ function App() {
       {isLoaded &&
       <div className="app-body">
         <Switch>
+          <Route path="/user/spots/:spotId">
+            <EditSpot />
+          </Route>
           <Route path="/user/spots/create">
             <CreateSpot />
           </Route>

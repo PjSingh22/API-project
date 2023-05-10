@@ -4,10 +4,18 @@ const GET_SPOT = "spots/GET_SPOT";
 const GET_USER_SPOTS = "spots/GET_USER_SPOTS";
 const CREATE_SPOT = "spots/CREATE_SPOT";
 const DELETE_SPOT = "spots/DELETE_SPOT";
+const UPDATE_REVIEW = "spots/UPDATE_REVIEW";
 
 const getSpot = (spot) => {
   return {
     type: GET_SPOT,
+    spot
+  }
+}
+
+const updateReview = (spot) => {
+  return {
+    type: UPDATE_REVIEW,
     spot
   }
 }
@@ -39,6 +47,10 @@ const loadSpots = (spots) => {
     spots
   }
 };
+
+export const updateSpotThunk = (spot) => async (dispatch) => {
+  console.log('update spot thunk', spot);
+}
 
 export const deleteSpotThunk = (spotId) => async (dispatch) => {
   const res = await csrfFetch(`/api/spots/${spotId}`, {

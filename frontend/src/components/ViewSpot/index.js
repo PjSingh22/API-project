@@ -12,6 +12,7 @@ const ViewSpot = ({defaultImg}) => {
   const reviewsObj = useSelector(state => state.reviews.spot)
   const reviews = Object.values(reviewsObj);
   const { address, avgStarRating, city, country, description, lat, lng, name, numReviews, owner, price, spotImages, state } = spotObj;
+
   useEffect(() => {
     dispatch(getSpotReviewsThunk(spotId));
     dispatch(getSpotThunk(spotId))
@@ -32,10 +33,10 @@ const ViewSpot = ({defaultImg}) => {
             <img src={spotImages[0] ? spotImages[0].url : defaultImg} alt="home" />
           </div>
           <div className="other-imgs">
+            <img src={spotImages[1] ? spotImages[1].url : defaultImg} alt="home" />
             <img src={spotImages[2] ? spotImages[2].url : defaultImg} alt="home" />
             <img src={spotImages[3] ? spotImages[3].url : defaultImg} alt="home" />
             <img src={spotImages[4] ? spotImages[4].url : defaultImg} alt="home" />
-            <img src={spotImages[5] ? spotImages[5].url : defaultImg} alt="home" />
           </div>
         </div>
         <div className="spot__spot-info">
