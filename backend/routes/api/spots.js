@@ -243,7 +243,7 @@ router.post('/:id/reviews', validateReview, async (req, res, next) => {
 
   }
 });
-
+// create image for spot
 router.post('/:id/images', async (req, res, next) => {
   const { user } = req;
   const id = parseInt(req.params.id);

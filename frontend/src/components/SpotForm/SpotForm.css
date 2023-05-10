@@ -1,0 +1,55 @@
+.form-component {
+  display: flex;
+  flex-direction: column;
+  width: 50%;
+  margin: 0 auto;
+}
+
+form > label {
+  display: flex;
+  flex-direction: column;
+}
+
+.city-state {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.form-seperator {
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 10px;
+}
+
+.city-state > label {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-text-area {
+  width: 100%;
+}
+
+.title-input {
+  width: 100%;
+}
+
+.price-input {
+  width: 95%;
+}
+
+.links-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+form > button {
+ background-color: var(--main-color);
+ box-shadow: var(--box-shadow);
+ margin-top: 10px;
+
+}
+
+.errors {
+  color: red;
+}
