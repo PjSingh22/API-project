@@ -44,7 +44,8 @@ const CreateSpot = (props) => {
   const validURL = [".png", ".jpg", ".jpeg"]
 
   const urlValidator = (url)=>{
-    if (url.includes(".jpg") || url.includes(".png") || url.includes(".jpeg")) {
+    let split = url.split(".");
+    if (split.indexOf("jpg") !== -1 || split.indexOf("png") !== -1 || split.indexOf("jpeg") !== -1) {
       return true;
     } else {
       return false
