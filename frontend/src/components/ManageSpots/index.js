@@ -22,7 +22,7 @@ const ManageSpots = (props) => {
       <div className="manage__container">
         {spots.map(spot => {
           return (
-            <div>
+            <div className="manage__spot">
               <Spot spot={spot} />
               <div className="spot-buttons">
                 {/* TODO: finish this */}

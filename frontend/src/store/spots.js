@@ -32,7 +32,7 @@ const loadSpots = (spots) => {
   }
 };
 
-export const createSpotThunk = (spot) => async (dispatch) => {
+export const createSpotThunk = (spot, images, ownerId) => async (dispatch) => {
   const res = await csrfFetch(`/api/spots`, {
     method: 'POST',
     body: JSON.stringify(spot)
@@ -41,6 +41,17 @@ export const createSpotThunk = (spot) => async (dispatch) => {
   if (res.ok) {
     const spot = await res.json();
     dispatch(createSpot(spot));
+    // for(let i = 0; i < images.length; i++) {
+    //   if (images[i].length) {
+    //     await csrfFetch(`/api/spots/${spot.id}/images`, {
+    //       method: "POST",
+    //       body: {
+    //         url: JSON.stringify(images[i]),
+    //         preview: true
+    //       }
+    //     });
+    //   }
+    // }
     return spot.id;
   } else {
     let errors = await res.json();
