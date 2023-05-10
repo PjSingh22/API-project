@@ -66,6 +66,7 @@ const CreateSpot = (props) => {
      let spot = await dispatch(createSpotThunk(spotData, spotImages, owner.id));
 
      if (spot.errors) {
+      // fix error handling
       setErrors(spot.errors);
       console.log('spot errors', spot.errors)
      } else {

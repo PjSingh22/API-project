@@ -42,6 +42,7 @@ function App() {
           <Route exact path="/">
             <AllSpots defaultImg={defaultImg} />
           </Route>
+          <h1>Page not found</h1>
         </Switch>
       </div>
       }

@@ -3,6 +3,9 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 // import { Redirect } from "react-router-dom";
 import { currentUserSpotsThunk } from "../../store/spots";
+import { Link } from 'react-router-dom';
+import DeleteButton from "../DeleteButtonModal";
+import OpenModalButton from "../OpenModalButton";
 import Spot from "../Spot";
 import './ManageSpots.css';
 
@@ -18,7 +21,7 @@ const ManageSpots = (props) => {
   return (
     <div>
       <h2>Manage Spots</h2>
-      <button>Create A Spot</button>
+      <Link to="spots/create"><button>Create A Spot</button></Link>
       <div className="manage__container">
         {spots.map(spot => {
           return (
@@ -27,7 +30,11 @@ const ManageSpots = (props) => {
               <div className="spot-buttons">
                 {/* TODO: finish this */}
                 <button className="btn">Edit</button>
-                <button className="btn">Delete</button>
+                <OpenModalButton
+                   className="open-modal"
+                   buttonText="Delete"
+                   modalComponent={<DeleteButton spotId={spot.id} />}
+                   />
               </div>
             </div>
           )
