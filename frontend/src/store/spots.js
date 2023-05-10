@@ -33,7 +33,15 @@ const loadSpots = (spots) => {
 };
 
 export const createSpotThunk = (spot) => async (dispatch) => {
-  console.log('spot in thunk', spot);
+  const res = await csrfFetch(`/api/spots`, {
+    method: 'POST',
+    body: JSON.stringify(spot)
+  });
+
+  if (res.ok) {
+    const spot = await res.json();
+    dispatch(createSpot(spot));
+  }
 }
 
 export const currentUserSpotsThunk = () => async (dispatch) => {
@@ -66,6 +74,8 @@ const spotsReducer = (state = initialState, action) => {
       })
 
       return { ...state, allSpots: allSpots}
+    case CREATE_SPOT:
+      return { ...state, allSpots: { ...state, [action.spot.id]: action.spot }}
     case GET_SPOT:
       return { ...state, singleSpot: action.spot}
     case GET_USER_SPOTS:

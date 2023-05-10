@@ -17,7 +17,7 @@ const AllSpots = () => {
   return (
     <div className="all-spots">
       {spots.map(spot => (
-        <Spot spot={spot} defaultImg={defaultImg} />
+        <Spot spot={spot} />
       ))}
     </div>
   )
