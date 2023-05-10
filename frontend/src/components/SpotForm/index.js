@@ -27,6 +27,7 @@ const CreateSpot = (props) => {
   // TODO: hanlde error validation especially for images
   useEffect(() => {
     const errorObj = {};
+    if(description && description.length < 10) errorObj["desc"] = "Description must be at least 10 characters long"
     if(!name) errorObj["name"] = "needs a name";
     if(!country) errorObj["country"] = "country needs to be provided";
     if(!address) errorObj["address"] = "Address needs to be provided";
@@ -108,6 +109,7 @@ const CreateSpot = (props) => {
         <div className="form-seperator">
           <h3>Describe your place to guests</h3>
           <p>Mention the best features of your space, any special amenities like fast wifi or parking, and what you love about the neighborhood</p>
+          {errors.desc && <p className="errors">{errors.desc}</p>}
           <textarea min={10} required={true} className="form-text-area " rows={5} value={description} onChange={(e) => setDescription(e.target.value)} />
         </div>
 
