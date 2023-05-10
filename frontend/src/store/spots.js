@@ -41,6 +41,10 @@ export const createSpotThunk = (spot) => async (dispatch) => {
   if (res.ok) {
     const spot = await res.json();
     dispatch(createSpot(spot));
+    return spot.id;
+  } else {
+    let errors = await res.json();
+    return errors;
   }
 }
 
@@ -75,7 +79,7 @@ const spotsReducer = (state = initialState, action) => {
 
       return { ...state, allSpots: allSpots}
     case CREATE_SPOT:
-      return { ...state, allSpots: { ...state, [action.spot.id]: action.spot }}
+      return { ...state, allSpots: { ...state.allSpots, [action.spot.id]: action.spot }}
     case GET_SPOT:
       return { ...state, singleSpot: action.spot}
     case GET_USER_SPOTS:
