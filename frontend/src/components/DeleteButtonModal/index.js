@@ -15,11 +15,11 @@ const DeleteButton = ({spotId}) => {
   }
 
   return (
-    <div>
-      <h2>Are you sure you want to delete this spot?</h2>
+    <div className='delete-modal'>
+      <h2>Are you sure you want to delete spot #{spotId}?</h2>
       <div className='delete-buttons'>
-        <button className='btn' onClick={deleteHandler}>Yes</button>
-        <button className='btn' onClick={closeModal}>No</button>
+        <button className='btn yes-btn' onClick={deleteHandler}>Yes</button>
+        <button className='btn no-btn' onClick={closeModal}>No</button>
       </div>
     </div>
   )
