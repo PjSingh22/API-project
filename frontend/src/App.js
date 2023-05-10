@@ -31,11 +31,11 @@ function App() {
       {isLoaded &&
       <div className="app-body">
         <Switch>
-          <Route path="/user/spots/:spotId">
-            <EditSpot />
-          </Route>
           <Route path="/user/spots/create">
             <CreateSpot />
+          </Route>
+          <Route path="/user/spots/:spotId">
+            <EditSpot />
           </Route>
           <Route path="/user/spots">
             <ManageSpots />

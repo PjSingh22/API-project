@@ -32,13 +32,25 @@ const CreateSpot = (props) => {
     if(!country) errorObj["country"] = "country needs to be provided";
     if(!address) errorObj["address"] = "Address needs to be provided";
     if(!city) errorObj["city"] = "City needs to be provided";
+    if((previewImage && !urlValidator(previewImage)) || (img1 && !urlValidator(img1)) || (img2 && !urlValidator(img2)) || (img3 && !urlValidator(img3)) || (img4 && !urlValidator(img4))) errorObj['img'] = "image needs to be in format of either jpg, png, or jpeg";
     // if(previewImage && ) errorObj['img'] = "image needs to be in jpg, png, or jpeg format"
 
     if (lng && (lng > 180 || lng < -180)) errorObj['lng'] = "longitude is out of range";
     if (lat && (lat > 90 || lat < -90)) errorObj['lat'] = "latitude is out of range"
 
     setErrors(errorObj)
-  }, [name, address, city, state, lat, lng, description, name, price, previewImage])
+  }, [name, address, city, state, lat, lng, description, name, price, previewImage, img1, img2, img3, img4])
+
+  const validURL = [".png", ".jpg", ".jpeg"]
+
+  const urlValidator = (url)=>{
+    if (url.includes(".jpg") || url.includes(".png") || url.includes(".jpeg")) {
+      return true;
+    } else {
+      return false
+    }
+    // return (((!validURL.includes(url.substring(url.length - 6) || !validURL.includes(url.substring(url.length - 5))))))
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault();

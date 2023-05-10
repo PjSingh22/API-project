@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { getSpotThunk } from "../../store/spots";
+import { getSpotThunk, updateSpotThunk } from "../../store/spots";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory, useParams } from 'react-router-dom';
 import "./EditSpot.css";
@@ -10,12 +10,11 @@ const EditSpot = () => {
   const dispatch = useDispatch();
   const owner = useSelector(state => state.session.user);
   const spot = useSelector(state => state.spots.singleSpot);
-  console.log('edit spot', spot)
-  const [country, setCountry] = useState(spot.country);
+  let [country, setCountry] = useState(spot.country);
   const [address, setAddress] = useState(spot.address);
   const [city, setCity] = useState(spot.city);
-  const [state, setState] = useState(spot.state || "");
-  const [lat, setLat] = useState(spot.lat || "");
+  const [state, setState] = useState(spot.state );
+  const [lat, setLat] = useState(spot.lat);
   const [lng, setLng] = useState(spot.lng || "");
   const [description, setDescription] = useState(spot.description || "");
   const [name, setName] = useState(spot.name || "");
@@ -25,6 +24,18 @@ const EditSpot = () => {
   useEffect(() => {
     dispatch(getSpotThunk(spotId));
   }, [dispatch])
+
+  useEffect(() => {
+    setCountry(spot.country);
+    setAddress(spot.address);
+    setCity(spot.city);
+    setState(spot.state);
+    setLat(spot.lat);
+    setLng(spot.lng);
+    setDescription(spot.description);
+    setName(spot.name);
+    setPrice(spot.price);
+  },[spot])
 
   // TODO: handle error validation especially for images
   useEffect(() => {
@@ -44,8 +55,8 @@ const EditSpot = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     const spotData = {
+      id: spot.id,
       country,
       address,
       city,
@@ -57,14 +68,14 @@ const EditSpot = () => {
       price,
     }
 
-     let spot = await dispatch();
+     let editSpot = await dispatch(updateSpotThunk(spotData));
 
-     if (spot.errors) {
+     if (editSpot.errors) {
       // fix error handling
-      setErrors(spot.errors);
-      console.log('spot errors', spot.errors)
+      setErrors(editSpot.errors);
+      console.log('spot errors', editSpot.errors)
      } else {
-      return history.push(`/spots/${spot}`);
+      return history.push(`/spots/${editSpot}`);
      }
   }
 
