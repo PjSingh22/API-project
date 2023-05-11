@@ -27,7 +27,7 @@ const Spot = ({spot}) => {
             </div>
           </div>
           <div className="right-half-info">
-            <span><i className="fa-solid fa-star"></i>{avgRating}</span>
+            <span><i className="fa-solid fa-star"></i>{parseFloat(avgRating).toFixed(1)}</span>
           </div>
         </div>
       </div>

@@ -49,7 +49,7 @@ const ViewSpot = ({defaultImg}) => {
           <div className="spot-info-right">
             <div className="upper-info">
               <p className="spot-info__price">${price} night</p>
-              <p><i className="fa-solid fa-star"></i> {avgStarRating} &#x2022; {numReviews} Reviews</p>
+              <p><i className="fa-solid fa-star"></i> {parseFloat(avgStarRating).toFixed(1)} &#x2022; {numReviews} Reviews</p>
             </div>
             <button className="btn login-btn" onClick={() => alert('feature coming soon')}>Reserve</button>
           </div>
@@ -59,8 +59,9 @@ const ViewSpot = ({defaultImg}) => {
           buttonText="Create a review"
           modalComponent={<PostReview spotId={spotObj.id} />}
         />
+        {/* TODO: put this in own component */}
         <div className="spot-reviews">
-          <p style={{fontSize: "1.2em"}}><i className="fa-solid fa-star"></i> {avgStarRating} &#x2022; {numReviews} Reviews</p>
+          <p style={{fontSize: "1.2em"}}><i className="fa-solid fa-star"></i> {parseFloat(avgStarRating).toFixed(1)} &#x2022; {numReviews} Reviews</p>
           { reviews.length <= 0 ? <p>Be the first to post a review!</p> : reviews.map(review => (
             <div className="spot__review">
               <p className="review-username">{review.User.firstName}</p>
