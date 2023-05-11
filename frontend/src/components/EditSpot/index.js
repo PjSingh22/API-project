@@ -24,7 +24,7 @@ const EditSpot = () => {
   useEffect(() => {
     dispatch(getSpotThunk(spotId));
   }, [dispatch])
-
+  // TODO: try wrapper component to check for spot
   useEffect(() => {
     setCountry(spot.country);
     setAddress(spot.address);

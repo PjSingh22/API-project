@@ -1,0 +1,21 @@
+.post-review-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 10px;
+}
+
+.post-review-textbox {
+  width: 100%;
+}
+
+.post-review-container > button {
+  width: 100%;
+}
+
+.post-review-star-rating {
+  display: flex;
+  gap: 10px;
+
+}

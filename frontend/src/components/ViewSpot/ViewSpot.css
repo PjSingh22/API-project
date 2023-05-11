@@ -77,3 +77,11 @@
 .review-postDate {
   color: grey;
 }
+
+.create-rev-btn {
+  width: fit-content;
+  background-color: var(--main-color);
+  color: white;
+  border-color: 1px solid black;
+  box-shadow: var(--box-shadow);
+}

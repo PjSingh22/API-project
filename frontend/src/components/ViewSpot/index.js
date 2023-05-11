@@ -3,6 +3,8 @@ import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from "react-redux";
 import { getSpotThunk } from "../../store/spots";
 import { getSpotReviewsThunk } from "../../store/reviews";
+import OpenModalButton from "../OpenModalButton";
+import PostReview from "../PostReview";
 import './ViewSpot.css';
 
 const ViewSpot = ({defaultImg}) => {
@@ -52,9 +54,14 @@ const ViewSpot = ({defaultImg}) => {
             <button className="btn login-btn" onClick={() => alert('feature coming soon')}>Reserve</button>
           </div>
         </div>
+        <OpenModalButton
+          className="create-rev-btn btn"
+          buttonText="Create a review"
+          modalComponent={<PostReview spotId={spotObj.id} />}
+        />
         <div className="spot-reviews">
           <p style={{fontSize: "1.2em"}}><i className="fa-solid fa-star"></i> {avgStarRating} &#x2022; {numReviews} Reviews</p>
-          {reviews.map(review => (
+          { reviews.length <= 0 ? <p>Be the first to post a review!</p> : reviews.map(review => (
             <div className="spot__review">
               <p className="review-username">{review.User.firstName}</p>
               <p className="review-postDate">{review.createdAt}</p>

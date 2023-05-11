@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useModal } from '../../context/Modal';
 import { deleteSpotThunk } from '../../store/spots';
@@ -11,7 +10,6 @@ const DeleteButton = ({spotId}) => {
   const deleteHandler = () => {
     dispatch(deleteSpotThunk(spotId))
     closeModal();
-    window.location.reload(false);
   }
 
   return (
