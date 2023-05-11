@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useModal } from "../../context/Modal";
+import { postReviewThunk } from "../../store/reviews";
 import "./PostReview.css";
 
-const PostReview = (props) => {
+const PostReview = ({spotId, userId}) => {
   const dispatch = useDispatch();
   const { closeModal } = useModal();
   const [rating, setRating] = useState(0);
@@ -22,7 +23,14 @@ const PostReview = (props) => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
+    const reviewData = {
+      spotId,
+      userId,
+      review,
+      stars: rating
+    };
 
+    dispatch(postReviewThunk(reviewData));
   }
 
   const filled = "fa-solid fa-star fa-lg"

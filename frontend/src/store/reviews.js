@@ -1,6 +1,7 @@
 import { csrfFetch } from "./csrf";
 
 const GET_REVIEWS = "spots/GET_REVIEWS";
+const POST_REVIEW = "spots/POST_REVIEW";
 
 const getSpotReviews = (reviews) => {
   return {
@@ -8,6 +9,17 @@ const getSpotReviews = (reviews) => {
     reviews
   }
 };
+
+const postReview = (review) => {
+  return {
+    type: POST_REVIEW,
+    review
+  }
+};
+
+export const postReviewThunk = (review) => async (dispatch) => {
+  console.log('post review thunk', review);
+}
 
 export const getSpotReviewsThunk = (spotId) => async (dispatch) => {
   const response = await csrfFetch(`/api/spots/${spotId}/reviews`);

@@ -11,14 +11,22 @@ const ViewSpot = ({defaultImg}) => {
   const { spotId } = useParams();
   const dispatch = useDispatch();
   const spotObj = useSelector(state => state.spots.singleSpot);
+  const userObj = useSelector(state => state.session.user);
+  const ratingListener = useSelector(state => state.spots.singleSpot.avgStarRating)
   const reviewsObj = useSelector(state => state.reviews.spot)
   const reviews = Object.values(reviewsObj);
+  const [rating, setRating] = useState(ratingListener);
+
   const { address, avgStarRating, city, country, description, lat, lng, name, numReviews, owner, price, spotImages, state } = spotObj;
 
   useEffect(() => {
     dispatch(getSpotReviewsThunk(spotId));
     dispatch(getSpotThunk(spotId))
   }, [dispatch]);
+
+  useEffect(() => {
+    setRating(spotObj.avgStarRating)
+  }, [spotObj])
 
   // TODO: refactor this to look simpler. change to use reviews variable and check for spotId
   if(!spotObj.spotImages || (Object.values(spotObj).length === 0 && Object.values(reviewsObj).length === 0)) {
@@ -49,7 +57,7 @@ const ViewSpot = ({defaultImg}) => {
           <div className="spot-info-right">
             <div className="upper-info">
               <p className="spot-info__price">${price} night</p>
-              <p><i className="fa-solid fa-star"></i> {parseFloat(avgStarRating).toFixed(1)} &#x2022; {numReviews} Reviews</p>
+              <p><i className="fa-solid fa-star"></i> {Number(rating).toFixed(1)} &#x2022; {numReviews} Reviews</p>
             </div>
             <button className="btn login-btn" onClick={() => alert('feature coming soon')}>Reserve</button>
           </div>
@@ -57,7 +65,7 @@ const ViewSpot = ({defaultImg}) => {
         <OpenModalButton
           className="create-rev-btn btn"
           buttonText="Create a review"
-          modalComponent={<PostReview spotId={spotObj.id} />}
+          modalComponent={<PostReview spotId={spotObj.id} userId={userObj.id} />}
         />
         {/* TODO: put this in own component */}
         <div className="spot-reviews">
