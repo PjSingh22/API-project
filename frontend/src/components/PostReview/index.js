@@ -8,6 +8,7 @@ import "./PostReview.css";
 const PostReview = ({spotId, userId}) => {
   const dispatch = useDispatch();
   const { closeModal } = useModal();
+  const sessionUser = useSelector(state => state.session.user);
   const [rating, setRating] = useState(0);
   const [activeRating, setActiveRating] = useState(rating);
   const [review, setReview] = useState("");
@@ -31,8 +32,9 @@ const PostReview = ({spotId, userId}) => {
       stars: rating
     };
 
-    dispatch(postReviewThunk(reviewData));
-    dispatch(getSpotThunk(spotId));
+    dispatch(postReviewThunk(reviewData, sessionUser))
+    .then(() => dispatch(getSpotThunk(spotId)))
+
     closeModal();
   }
 

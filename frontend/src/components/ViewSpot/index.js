@@ -23,11 +23,11 @@ const ViewSpot = ({defaultImg}) => {
   useEffect(() => {
     dispatch(getSpotReviewsThunk(spotId));
     dispatch(getSpotThunk(spotId))
-  }, [dispatch]);
+  }, [dispatch, spotId]);
 
-  useEffect(() => {
-    setRating(spotObj.avgStarRating)
-  }, [ratingListener]);
+  // useEffect(() => {
+  //   setRating(spotObj.avgStarRating)
+  // }, [ratingListener]);
 
   // TODO: refactor this to look simpler. change to use reviews variable and check for spotId
   if(!spotObj.spotImages || (Object.values(spotObj).length === 0 && Object.values(reviewsObj).length === 0)) {
@@ -58,7 +58,7 @@ const ViewSpot = ({defaultImg}) => {
           <div className="spot-info-right">
             <div className="upper-info">
               <p className="spot-info__price">${price} night</p>
-              {rating ? <p><i className="fa-solid fa-star"></i> {rating == 5 ? 5 : Number(rating).toFixed(1)} &#x2022; {numReviews} Reviews</p> : "New"}
+               <p><i className="fa-solid fa-star"></i> { parseFloat(avgStarRating).toFixed(1)} &#x2022; {numReviews} Reviews</p>
             </div>
             <button className="btn login-btn" onClick={() => alert('feature coming soon')}>Reserve</button>
           </div>
@@ -70,11 +70,11 @@ const ViewSpot = ({defaultImg}) => {
         />
         {/* TODO: put this in own component */}
         <div className="spot-reviews">
-          {rating ? <p style={{fontSize: "1.2em"}}><i className="fa-solid fa-star"></i> {Number(rating).toFixed(1)} &#x2022; {numReviews} Reviews</p> : "New" }
+           <p style={{fontSize: "1.2em"}}><i className="fa-solid fa-star"></i> {parseFloat(avgStarRating).toFixed(1)} &#x2022; {numReviews} Reviews</p>
 
           { reviews.length <= 0 ? <p>Be the first to post a review!</p> : reviews.map(review => (
             <div className="spot__review">
-              <p className="review-username">{review.User.firstName}</p>
+              <p className="review-username">{review.User?.firstName}</p>
               <p className="review-postDate">{review.createdAt}</p>
               <p className="review-desc">{review.review}</p>
               {userObj.id === review.User.id ? <OpenModalButton className="delete-rev-btn btn" buttonText="Delete review" modalComponent={<DeleteReviewButton reviewId={review.id} spotId={spotObj.id} />} /> : null}

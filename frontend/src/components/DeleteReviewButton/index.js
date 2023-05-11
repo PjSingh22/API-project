@@ -9,9 +9,9 @@ const DeleteReviewButton = ({reviewId, spotId}) => {
   const { closeModal } = useModal();
 
   const deleteHandler = () => {
-    dispatch(deleteReviewThunk(reviewId, spotId));
-    dispatch(getSpotThunk(spotId))
-    closeModal();
+    dispatch(deleteReviewThunk(reviewId, spotId))
+    .then(dispatch(getSpotThunk(spotId)))
+    .then(closeModal());
   }
 
   return (
