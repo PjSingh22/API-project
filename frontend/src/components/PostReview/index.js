@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useModal } from "../../context/Modal";
 import { postReviewThunk } from "../../store/reviews";
+import { getSpotThunk } from "../../store/spots";
 import "./PostReview.css";
 
 const PostReview = ({spotId, userId}) => {
@@ -31,6 +32,8 @@ const PostReview = ({spotId, userId}) => {
     };
 
     dispatch(postReviewThunk(reviewData));
+    dispatch(getSpotThunk(spotId));
+    closeModal();
   }
 
   const filled = "fa-solid fa-star fa-lg"

@@ -26,7 +26,7 @@ const ViewSpot = ({defaultImg}) => {
 
   useEffect(() => {
     setRating(spotObj.avgStarRating)
-  }, [spotObj])
+  }, [ratingListener])
 
   // TODO: refactor this to look simpler. change to use reviews variable and check for spotId
   if(!spotObj.spotImages || (Object.values(spotObj).length === 0 && Object.values(reviewsObj).length === 0)) {
@@ -57,7 +57,7 @@ const ViewSpot = ({defaultImg}) => {
           <div className="spot-info-right">
             <div className="upper-info">
               <p className="spot-info__price">${price} night</p>
-              <p><i className="fa-solid fa-star"></i> {Number(rating).toFixed(1)} &#x2022; {numReviews} Reviews</p>
+              {rating ? <p><i className="fa-solid fa-star"></i> { Number(rating).toFixed(1)} &#x2022; {numReviews} Reviews</p> : "New"}
             </div>
             <button className="btn login-btn" onClick={() => alert('feature coming soon')}>Reserve</button>
           </div>
@@ -69,7 +69,8 @@ const ViewSpot = ({defaultImg}) => {
         />
         {/* TODO: put this in own component */}
         <div className="spot-reviews">
-          <p style={{fontSize: "1.2em"}}><i className="fa-solid fa-star"></i> {parseFloat(avgStarRating).toFixed(1)} &#x2022; {numReviews} Reviews</p>
+          {rating ? <p style={{fontSize: "1.2em"}}><i className="fa-solid fa-star"></i> {Number(rating).toFixed(1)} &#x2022; {numReviews} Reviews</p> : "New" }
+
           { reviews.length <= 0 ? <p>Be the first to post a review!</p> : reviews.map(review => (
             <div className="spot__review">
               <p className="review-username">{review.User.firstName}</p>
