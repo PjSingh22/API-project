@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getSpotThunk } from "../../store/spots";
 import { getSpotReviewsThunk } from "../../store/reviews";
 import OpenModalButton from "../OpenModalButton";
+import DeleteReviewButton from "../DeleteReviewButton";
 import PostReview from "../PostReview";
 import './ViewSpot.css';
 
@@ -12,8 +13,8 @@ const ViewSpot = ({defaultImg}) => {
   const dispatch = useDispatch();
   const spotObj = useSelector(state => state.spots.singleSpot);
   const userObj = useSelector(state => state.session.user);
-  const ratingListener = useSelector(state => state.spots.singleSpot.avgStarRating)
-  const reviewsObj = useSelector(state => state.reviews.spot)
+  const ratingListener = useSelector(state => state.spots.singleSpot.avgStarRating);
+  const reviewsObj = useSelector(state => state.reviews.spot);
   const reviews = Object.values(reviewsObj);
   const [rating, setRating] = useState(ratingListener);
 
@@ -26,7 +27,7 @@ const ViewSpot = ({defaultImg}) => {
 
   useEffect(() => {
     setRating(spotObj.avgStarRating)
-  }, [ratingListener])
+  }, [ratingListener]);
 
   // TODO: refactor this to look simpler. change to use reviews variable and check for spotId
   if(!spotObj.spotImages || (Object.values(spotObj).length === 0 && Object.values(reviewsObj).length === 0)) {
@@ -57,7 +58,7 @@ const ViewSpot = ({defaultImg}) => {
           <div className="spot-info-right">
             <div className="upper-info">
               <p className="spot-info__price">${price} night</p>
-              {rating ? <p><i className="fa-solid fa-star"></i> { Number(rating).toFixed(1)} &#x2022; {numReviews} Reviews</p> : "New"}
+              {rating ? <p><i className="fa-solid fa-star"></i> {rating == 5 ? 5 : Number(rating).toFixed(1)} &#x2022; {numReviews} Reviews</p> : "New"}
             </div>
             <button className="btn login-btn" onClick={() => alert('feature coming soon')}>Reserve</button>
           </div>
@@ -76,6 +77,7 @@ const ViewSpot = ({defaultImg}) => {
               <p className="review-username">{review.User.firstName}</p>
               <p className="review-postDate">{review.createdAt}</p>
               <p className="review-desc">{review.review}</p>
+              {userObj.id === review.User.id ? <OpenModalButton className="delete-rev-btn btn" buttonText="Delete review" modalComponent={<DeleteReviewButton reviewId={review.id} spotId={spotObj.id} />} /> : null}
             </div>
           ))}
         </div>
