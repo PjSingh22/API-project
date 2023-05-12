@@ -11,6 +11,7 @@
   overflow: hidden;
   grid-auto-rows: 300px;
   gap: 5px;
+  margin-bottom: 40px;
   /* max-height: 300px; */
 }
 
@@ -84,4 +85,15 @@
   color: white;
   border-color: 1px solid black;
   box-shadow: var(--box-shadow);
+}
+
+.add-rev-btn, .delete-rev-btn {
+  width: fit-content;
+  border: none;
+}
+
+.add-rev-btn > *, .delete-rev-btn > * {
+  background-color: var(--main-color);
+  border: 1px solid var(--border-color);
+  color: white;
 }

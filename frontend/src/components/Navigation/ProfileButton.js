@@ -9,7 +9,6 @@ import SignupFormModal from "../SignupFormModal";
 import './ProfileButton.css';
 
 function ProfileButton({ user }) {
-  const { closeModal } = useModal();
   const history = useHistory();
   const dispatch = useDispatch();
   const [showMenu, setShowMenu] = useState(false);
@@ -20,10 +19,13 @@ function ProfileButton({ user }) {
     setShowMenu(true);
   };
 
+  const closeMenu = () => setShowMenu(false);
+
   const logout = (e) => {
     e.preventDefault();
     dispatch(sessionActions.logout());
     history.push('/');
+    closeMenu();
   };
 
   useEffect(() => {

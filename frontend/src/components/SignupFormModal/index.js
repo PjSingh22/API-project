@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { Redirect } from "react-router-dom";
+import { useDispatch } from "react-redux";
 import * as sessionActions from "../../store/session";
 import { useModal } from "../../context/Modal";
 import "./SignupForm.css";
 
 function SignupFormModal() {
   const dispatch = useDispatch();
-  const sessionUser = useSelector((state) => state.session.user);
+  // const sessionUser = useSelector((state) => state.session.user);
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
   const [firstName, setFirstName] = useState("");
@@ -15,18 +14,22 @@ function SignupFormModal() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [errors, setErrors] = useState({});
+  const [showErrors, setShowErrors] = useState(false);
   const { closeModal } = useModal();
 
   // implement useEffect to disable button if invalid input fields
-  // useEffect(() => {
-  //   const inputErrors = {};
-  //   if (!username.length) inputErrors["username"] = 'User name must be filled in';
-  //   if (!email.includes('@')) inputErrors["email"] = "Enter valid email";
-  //   setErrors({...errors});
-  // }, [username, email])
+  useEffect(() => {
+    const inputErrors = {};
+    if (!email.includes('@')) inputErrors["email"] = "Enter valid email";
+    setErrors(inputErrors);
+    if (username.length < 4) inputErrors["username"] = "needs to be more than 4 characters"
+    if (!password.length || !confirmPassword.length) inputErrors["password"] = 'field cant be empty'
+    if (password.length < 6) inputErrors['password'] = "password needs to be greater than 6 characters"
+  }, [email, username])
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (Object.values(errors).length) return setShowErrors(true);
     if (password === confirmPassword) {
       setErrors({});
       return dispatch(
@@ -66,7 +69,7 @@ function SignupFormModal() {
             required
           />
         </label>
-        {errors.email && <p>{errors.email}</p>}
+        {(errors.email && showErrors) && <p>{errors.email}</p>}
         <label>
           Username
           <input
@@ -74,9 +77,10 @@ function SignupFormModal() {
             value={username}
             onChange={(e) => setUsername(e.target.value)}
             required
+
           />
         </label>
-        {errors.username && <p>{errors.username}</p>}
+        {(errors.username && showErrors) && <p className="errors">{errors.username}</p>}
         <label>
           First Name
           <input
@@ -86,7 +90,7 @@ function SignupFormModal() {
             required
           />
         </label>
-        {errors.firstName && <p>{errors.firstName}</p>}
+        {(errors.firstName && showErrors) && <p>{errors.firstName}</p>}
         <label>
           Last Name
           <input
@@ -96,7 +100,7 @@ function SignupFormModal() {
             required
           />
         </label>
-        {errors.lastName && <p>{errors.lastName}</p>}
+        {(errors.lastName && showErrors) && <p>{errors.lastName}</p>}
         <label>
           Password
           <input
@@ -104,9 +108,10 @@ function SignupFormModal() {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
+            minLength={6}
           />
         </label>
-        {errors.password && <p>{errors.password}</p>}
+        {(errors.password && showErrors) && <p>{errors.password}</p>}
         <label>
           Confirm Password
           <input
@@ -114,10 +119,11 @@ function SignupFormModal() {
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
             required
+            minLength={6}
           />
         </label>
-        {errors.username && <p>{errors.username}</p>}
-        <button disabled={Object.keys(errors).length} className={isDisabled} type="submit">Sign Up</button>
+        {(errors.confirmPassword && showErrors) && <p>{errors.confirmPassword}</p>}
+        <button className={isDisabled}  type="submit">Sign Up</button>
       </form>
     </div>
   );

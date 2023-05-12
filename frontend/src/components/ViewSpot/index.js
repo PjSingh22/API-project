@@ -1,4 +1,4 @@
-import { useEffect, useReducer, useState } from "react";
+import { useEffect } from "react";
 import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from "react-redux";
 import { getSpotThunk } from "../../store/spots";
@@ -13,12 +13,12 @@ const ViewSpot = ({defaultImg}) => {
   const dispatch = useDispatch();
   const spotObj = useSelector(state => state.spots.singleSpot);
   const userObj = useSelector(state => state.session.user);
-  const ratingListener = useSelector(state => state.spots.singleSpot.avgStarRating);
+  // const ratingListener = useSelector(state => state.spots.singleSpot.avgStarRating);
   const reviewsObj = useSelector(state => state.reviews.spot);
   const reviews = Object.values(reviewsObj);
-  const [rating, setRating] = useState(ratingListener);
+  // const [rating, setRating] = useState(ratingListener);
 
-  const { address, avgStarRating, city, country, description, lat, lng, name, numReviews, owner, price, spotImages, state } = spotObj;
+  const { avgStarRating, city, country, description, name, numReviews, owner, price, spotImages, state } = spotObj;
 
   useEffect(() => {
     dispatch(getSpotReviewsThunk(spotId));
@@ -63,11 +63,11 @@ const ViewSpot = ({defaultImg}) => {
             <button className="btn login-btn" onClick={() => alert('feature coming soon')}>Reserve</button>
           </div>
         </div>
-        {userObj ? userObj.id !== owner.id ? <OpenModalButton
+        {userObj ? userObj.id !== owner.id ? <button className="add-rev-btn"><OpenModalButton
           className="create-rev-btn btn"
           buttonText="Create a review"
           modalComponent={<PostReview spotId={spotObj?.id} userId={userObj?.id} />}
-        /> : null : null }
+        /></button> : null : null }
 
         {/* TODO: put this in own component */}
         <div className="spot-reviews">
@@ -78,7 +78,7 @@ const ViewSpot = ({defaultImg}) => {
               <p className="review-username">{review.User?.firstName}</p>
               <p className="review-postDate">{review.createdAt}</p>
               <p className="review-desc">{review.review}</p>
-              {userObj?.id === review.User?.id ? <OpenModalButton className="delete-rev-btn btn" buttonText="Delete review" modalComponent={<DeleteReviewButton reviewId={review.id} spotId={spotObj.id} />} /> : null}
+              {userObj?.id === review.User?.id ? <button className="delete-rev-btn"><OpenModalButton className="delete-rev-btn btn" buttonText="Delete review" modalComponent={<DeleteReviewButton reviewId={review.id} spotId={spotObj.id} />} /></button> : null}
             </div>
           ))}
         </div>

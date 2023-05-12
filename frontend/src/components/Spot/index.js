@@ -13,6 +13,7 @@ const Spot = ({spot}) => {
   }
   return (
     <Link to={`/spots/${id}`} key={id} style={linkStyle}>
+      {/* <p className='tooltip'></p> */}
       <div className='spot-card'>
         <img className="card-img" src={previewImage === 'invalid' ? defaultImg : previewImage} alt="preview" />
         <div className="spot-info">
