@@ -25,6 +25,16 @@ const ViewSpot = ({defaultImg}) => {
     dispatch(getSpotThunk(spotId))
   }, [dispatch, spotId]);
 
+  const renderReviewsInfo = () => {
+    if (numReviews === 0) {
+      return (
+        <p style={{fontSize: "1.2em"}}><i className="fa-solid fa-star"></i> {numReviews ?  parseFloat(avgStarRating).toFixed(1) : "New"}</p>
+      )
+    }
+
+    // <p style={{fontSize: "1.2em"}}><i className="fa-solid fa-star"></i> {numReviews ?  parseFloat(avgStarRating).toFixed(1) : "New"} &#x2022; {numReviews} {numReviews === 1 ? "Review" : "Reviews" }</p>
+  }
+
   // useEffect(() => {
   //   setRating(spotObj.avgStarRating)
   // }, [ratingListener]);
@@ -58,7 +68,11 @@ const ViewSpot = ({defaultImg}) => {
           <div className="spot-info-right">
             <div className="upper-info">
               <p className="spot-info__price">${price} night</p>
-               <p><i className="fa-solid fa-star"></i> { parseFloat(avgStarRating).toFixed(1)} &#x2022; {numReviews} Reviews</p>
+              {/* put this and the one below in own component */}
+              {numReviews === 0 ?
+              <p style={{fontSize: "1.2em"}}><i className="fa-solid fa-star"></i> {numReviews ?  parseFloat(avgStarRating).toFixed(1) : "New"}</p>
+              :
+              <p style={{fontSize: "1.2em"}}><i className="fa-solid fa-star"></i> {parseFloat(avgStarRating).toFixed(1)} &#x2022; {numReviews} {numReviews === 1 ? "Review" : "Reviews" }</p>}
             </div>
             <button className="btn login-btn" onClick={() => alert('feature coming soon')}>Reserve</button>
           </div>
@@ -68,19 +82,23 @@ const ViewSpot = ({defaultImg}) => {
           buttonText="Create a review"
           modalComponent={<PostReview spotId={spotObj?.id} userId={userObj?.id} />}
         /></button> : null : null }
-
-        {/* TODO: put this in own component */}
         <div className="spot-reviews">
-           <p style={{fontSize: "1.2em"}}><i className="fa-solid fa-star"></i> {parseFloat(avgStarRating).toFixed(1)} &#x2022; {numReviews} Reviews</p>
+           {numReviews === 0 ? <p style={{fontSize: "1.2em"}}><i className="fa-solid fa-star"></i> {numReviews ?  parseFloat(avgStarRating).toFixed(1) : "New"}</p>
+           :
+           <p style={{fontSize: "1.2em"}}><i className="fa-solid fa-star"></i> {parseFloat(avgStarRating).toFixed(1)} &#x2022; {numReviews} {numReviews === 1 ? "Review" : "Reviews" }</p>}
 
-          { reviews.length <= 0 ? <p>Be the first to post a review!</p> : reviews.map(review => (
+          { reviews.length <= 0 ? <p>Be the first to post a review!</p> : reviews.reverse().map(review => {
+            const convertedDate = new Date(review.createdAt).toDateString().split(" ");
+            console.log('converted date', convertedDate);
+            const postedDate = `${convertedDate[1]} ${convertedDate[3]}`
+            return (
             <div className="spot__review">
               <p className="review-username">{review.User?.firstName}</p>
-              <p className="review-postDate">{review.createdAt}</p>
+              <p className="review-postDate">{postedDate}</p>
               <p className="review-desc">{review.review}</p>
               {userObj?.id === review.User?.id ? <button className="delete-rev-btn"><OpenModalButton className="delete-rev-btn btn" buttonText="Delete review" modalComponent={<DeleteReviewButton reviewId={review.id} spotId={spotObj.id} />} /></button> : null}
             </div>
-          ))}
+          )})}
         </div>
       </div>
     )

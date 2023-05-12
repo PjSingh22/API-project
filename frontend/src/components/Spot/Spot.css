@@ -9,7 +9,8 @@
   background-color: black;
   padding: 5px;
   border-radius: 5px;
-  color: white
+  color: white;
+  opacity: 0.8;
 }
 
 .visible {

@@ -5,6 +5,11 @@
   gap: 15px;
 }
 
+.spot-reviews {
+  display: flex;
+  flex-direction: column;
+}
+
 .spot-images {
   display: grid;
   grid-template-columns: 1fr 1fr;
