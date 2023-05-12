@@ -5,12 +5,18 @@
   gap: 15px;
 }
 
+.spot-reviews {
+  display: flex;
+  flex-direction: column;
+}
+
 .spot-images {
   display: grid;
   grid-template-columns: 1fr 1fr;
   overflow: hidden;
   grid-auto-rows: 300px;
   gap: 5px;
+  margin-bottom: 40px;
   /* max-height: 300px; */
 }
 
@@ -76,4 +82,27 @@
 
 .review-postDate {
   color: grey;
+}
+
+.create-rev-btn {
+  width: fit-content;
+  background-color: var(--main-color);
+  color: white;
+  border-color: 1px solid black;
+  box-shadow: var(--box-shadow);
+}
+
+.add-rev-btn, .delete-rev-btn {
+  width: fit-content;
+  border: none;
+}
+
+.add-rev-btn > *, .delete-rev-btn > * {
+  background-color: var(--main-color);
+  border: 1px solid var(--border-color);
+  color: white;
+}
+
+.add-rev-btn > *:hover, .delete-rev-btn > *:hover {
+  color: white;
 }

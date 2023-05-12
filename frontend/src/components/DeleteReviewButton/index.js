@@ -1,21 +1,23 @@
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useModal } from '../../context/Modal';
-import { deleteSpotThunk } from '../../store/spots';
-import "./DeleteButton.css";
+import { deleteReviewThunk } from '../../store/reviews';
+import { getSpotThunk } from '../../store/spots';
+import './DeleteReviewButton.css';
 
-const DeleteButton = ({spotId}) => {
+const DeleteReviewButton = ({reviewId, spotId}) => {
   const dispatch = useDispatch();
   const { closeModal } = useModal();
 
   const deleteHandler = () => {
-    dispatch(deleteSpotThunk(spotId))
-    closeModal();
+    dispatch(deleteReviewThunk(reviewId, spotId))
+    .then(dispatch(getSpotThunk(spotId)))
+    .then(closeModal());
   }
 
   return (
     <div className='delete-modal'>
       <h2>Confirm Delete</h2>
-      <p>Are you sure you want to remove this spot?</p>
+      <p>Are you sure you want to delete this comment?</p>
       <div className='delete-buttons'>
         <button className='btn yes-btn' onClick={deleteHandler}>Yes</button>
         <button className='btn no-btn' onClick={closeModal}>No</button>
@@ -24,4 +26,4 @@ const DeleteButton = ({spotId}) => {
   )
 };
 
-export default DeleteButton;
+export default DeleteReviewButton;

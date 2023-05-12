@@ -18,7 +18,7 @@ function Navigation({ isLoaded }){
       </li>
       {isLoaded && (
         <li className='nav__right-side'>
-          <Link to="/user/spots/create"><button className='nav__create-spot'>Create a New Spot</button></Link>
+         {sessionUser ? <Link to="/user/spots/create"><button className='nav__create-spot'>Create a New Spot</button></Link> : null}
           <ProfileButton user={sessionUser} />
         </li>
       )}

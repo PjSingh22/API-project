@@ -4,10 +4,18 @@ const GET_SPOT = "spots/GET_SPOT";
 const GET_USER_SPOTS = "spots/GET_USER_SPOTS";
 const CREATE_SPOT = "spots/CREATE_SPOT";
 const DELETE_SPOT = "spots/DELETE_SPOT";
+const UPDATE_SPOT = "spots/UPDATE_SPOT";
 
 const getSpot = (spot) => {
   return {
     type: GET_SPOT,
+    spot
+  }
+}
+
+const updateSpot = (spot) => {
+  return {
+    type: UPDATE_SPOT,
     spot
   }
 }
@@ -39,6 +47,22 @@ const loadSpots = (spots) => {
     spots
   }
 };
+
+export const updateSpotThunk = (spot) => async (dispatch) => {
+  let res = await csrfFetch(`/api/spots/${spot.id}`, {
+    method: "PUT",
+    body: JSON.stringify(spot)
+  });
+
+  if (res.ok) {
+    let spot = await res.json();
+    dispatch(updateSpot(spot))
+    return spot.id;
+  } else {
+    let errors = await res.json();
+    return errors;
+  }
+}
 
 export const deleteSpotThunk = (spotId) => async (dispatch) => {
   const res = await csrfFetch(`/api/spots/${spotId}`, {
@@ -106,7 +130,7 @@ const spotsReducer = (state = initialState, action) => {
         allSpots[spot.id] = spot;
       })
 
-      return { ...state, allSpots: allSpots}
+      return { ...state, allSpots: allSpots, singleSpot: {}}
     case CREATE_SPOT:
       return { ...state, allSpots: { ...state.allSpots, [action.spot.id]: action.spot }}
     case GET_SPOT:
@@ -119,8 +143,12 @@ const spotsReducer = (state = initialState, action) => {
       });
       newState.allSpots = newSpots;
       return newState;
+    case UPDATE_SPOT:
+      let updateState = { ...state };
+      updateState.allSpots[action.spot.id] = action.spot;
+      return updateState;
     case DELETE_SPOT:
-      let alteredState = { ...state };
+      let alteredState = { ...state, allSpots: { ...state.allSpots } };
       delete alteredState.allSpots[action.spotId];
       return alteredState;
     default:

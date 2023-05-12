@@ -1,6 +1,8 @@
 import { csrfFetch } from "./csrf";
 
 const GET_REVIEWS = "spots/GET_REVIEWS";
+const POST_REVIEW = "spots/POST_REVIEW";
+const DELETE_REVIEW = "spots/DELETE_REVIEW";
 
 const getSpotReviews = (reviews) => {
   return {
@@ -8,6 +10,55 @@ const getSpotReviews = (reviews) => {
     reviews
   }
 };
+
+const postReview = (review) => {
+  return {
+    type: POST_REVIEW,
+    review
+  }
+};
+
+const deleteReview = (reviewId) => {
+  return {
+    type: DELETE_REVIEW,
+    reviewId
+  }
+};
+
+export const deleteReviewThunk = (reviewId, spotId) => async (dispatch) => {
+  const res = await csrfFetch(`/api/reviews/${reviewId}`, {
+    method: "DELETE"
+  });
+
+  if (res.ok) {
+    dispatch(deleteReview(reviewId));
+  } else {
+    const errors = await res.ok();
+    return errors;
+  }
+};
+
+export const postReviewThunk = (review, user) => async (dispatch) => {
+  const { spotId } = review;
+  const { firstName, id, lastName } = user;
+  const res = await csrfFetch(`/api/spots/${spotId}/reviews`, {
+    method: "POST",
+    body: JSON.stringify(review)
+  });
+
+  if (res.ok) {
+    const newRev = await res.json();
+    newRev.User = {
+      firstName,
+      id,
+      lastName
+    }
+    dispatch(postReview(newRev));
+  } else {
+    const errors = await res.json();
+    return errors;
+  }
+}
 
 export const getSpotReviewsThunk = (spotId) => async (dispatch) => {
   const response = await csrfFetch(`/api/spots/${spotId}/reviews`);
@@ -25,7 +76,15 @@ const reviewsReducer = (state = initialState, action) => {
         reviewsState[review.id] = review;
       });
       return { ...state, spot: reviewsState}
-      // return state;
+
+    case POST_REVIEW:
+      return { ...state, spot: { ...state.spot, [action.review.id]: action.review }}
+
+    case DELETE_REVIEW:
+      let alteredState = { ...state, spot: { ...state.spot }};
+      delete alteredState.spot[action.reviewId];
+      return alteredState;
+
     default:
       return state;
   }
