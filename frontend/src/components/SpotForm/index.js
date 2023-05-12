@@ -27,7 +27,7 @@ const CreateSpot = (props) => {
   // TODO: hanlde error validation especially for images
   useEffect(() => {
     const errorObj = {};
-    if(description && description.length < 10) errorObj["desc"] = "Description must be at least 10 characters long"
+    if(description && description.length < 30) errorObj["desc"] = "Description must be at least 30 characters long"
     if(!name) errorObj["name"] = "needs a name";
     if(!country) errorObj["country"] = "country needs to be provided";
     if(!address) errorObj["address"] = "Address needs to be provided";
@@ -86,10 +86,10 @@ const CreateSpot = (props) => {
 
   return (
     <div className="form-component" onSubmit={handleSubmit}>
-      <h2>Create your Spot</h2>
+      <h2>Create a New Spot</h2>
       <form>
         <h3>Where's your place located?</h3>
-        <p>Guests will only get your exact address once they booked a reservation</p>
+        <p>Guests will only get your exact address once they booked a reservation.</p>
         <label>
           Country
           <input required={true} type="text" name="country" value={country} onChange={(e) => setCountry(e.target.value)} />
@@ -119,29 +119,29 @@ const CreateSpot = (props) => {
 
         <div className="form-seperator">
           <h3>Describe your place to guests</h3>
-          <p>Mention the best features of your space, any special amenities like fast wifi or parking, and what you love about the neighborhood</p>
+          <p>Mention the best features of your space, any special amenities like fast wifi or parking, and what you love about the neighborhood.</p>
           {errors.desc && <p className="errors">{errors.desc}</p>}
-          <textarea min={10} required={true} className="form-text-area " rows={5} value={description} onChange={(e) => setDescription(e.target.value)} />
+          <textarea minLength={30} required={true} className="form-text-area " rows={5} value={description} onChange={(e) => setDescription(e.target.value)} />
         </div>
 
         <div className="form-seperator">
           <h3>Create a title for your spot</h3>
-          <p>Catch guests' attention with a sot title that highlights what makes your place special</p>
-          <input required={true} className="title-input" type="text" value={name} onChange={(e) => setName(e.target.value)} />
+          <p>Catch guests' attention with a spot title that highlights what makes your place special.</p>
+          <input required={true} className="title-input" type="text" value={name} onChange={(e) => setName(e.target.value)} placeholder="Name of your spot" />
         </div>
 
         <div className="form-seperator">
           <h3>Set a base price for your spot</h3>
-          <p>Competitive pricing can help your listing stand out and rank higher in search results</p>
-          $ <input required={true} min={1} className="price-input" type="number" value={price} onChange={(e) => setPrice(e.target.value)} />
+          <p>Competitive pricing can help your listing stand out and rank higher in search results.</p>
+          $ <input required={true} min={1} className="price-input" type="number" value={price} onChange={(e) => setPrice(e.target.value)} placeholder="Price per night (USD)" />
         </div>
 
         <div className="form-seperator">
           <h3>Liven up your spot with photos</h3>
-          <p>Submit a link to at east one photo to publish your spot</p>
+          <p>Submit a link to at east one photo to publish your spot.</p>
           <div className="links-container">
             { errors.img && <p className="errors">{errors.img}</p> }
-            <input type="url" placeholder="Preview Image" onChange={(e) => setPreviewImage(e.target.value)} />
+            <input required type="url" placeholder="Preview Image URL" onChange={(e) => setPreviewImage(e.target.value)} />
             <input type="url" placeholder="Image URL" onChange={(e) => setImg1(e.target.value)} />
             <input type="url" placeholder="Image URL" onChange={(e) => setImg2(e.target.value)} />
             <input type="url" placeholder="Image URL" onChange={(e) => setImg3(e.target.value)} />

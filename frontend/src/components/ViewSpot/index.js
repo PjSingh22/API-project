@@ -16,28 +16,32 @@ const ViewSpot = ({defaultImg}) => {
   // const ratingListener = useSelector(state => state.spots.singleSpot.avgStarRating);
   const reviewsObj = useSelector(state => state.reviews.spot);
   const reviews = Object.values(reviewsObj);
-  // const [rating, setRating] = useState(ratingListener);
-
   const { avgStarRating, city, country, description, name, numReviews, owner, price, spotImages, state } = spotObj;
+  // const [rating, setRating] = useState(ratingListener);
+  // console.log(reviewsObj)
+  const showAddRevBtn = () => {
+    if (userObj) {
+      if (userObj?.id === owner?.id) return false;
+
+      if (userObj?.id !== owner?.id ) {
+        for (let review in reviewsObj) {
+          if (reviewsObj[review].userId === userObj.id) {
+            return false;
+          }
+        }
+      }
+      return true;
+    }
+  }
+
+  const showBtn = showAddRevBtn();
+
+  // let showBtn = showAddRevBtn();
 
   useEffect(() => {
     dispatch(getSpotReviewsThunk(spotId));
     dispatch(getSpotThunk(spotId))
   }, [dispatch, spotId]);
-
-  const renderReviewsInfo = () => {
-    if (numReviews === 0) {
-      return (
-        <p style={{fontSize: "1.2em"}}><i className="fa-solid fa-star"></i> {numReviews ?  parseFloat(avgStarRating).toFixed(1) : "New"}</p>
-      )
-    }
-
-    // <p style={{fontSize: "1.2em"}}><i className="fa-solid fa-star"></i> {numReviews ?  parseFloat(avgStarRating).toFixed(1) : "New"} &#x2022; {numReviews} {numReviews === 1 ? "Review" : "Reviews" }</p>
-  }
-
-  // useEffect(() => {
-  //   setRating(spotObj.avgStarRating)
-  // }, [ratingListener]);
 
   // TODO: refactor this to look simpler. change to use reviews variable and check for spotId
   if(!spotObj.spotImages || (Object.values(spotObj).length === 0 && Object.values(reviewsObj).length === 0)) {
@@ -77,7 +81,7 @@ const ViewSpot = ({defaultImg}) => {
             <button className="btn login-btn" onClick={() => alert('feature coming soon')}>Reserve</button>
           </div>
         </div>
-        {userObj ? userObj.id !== owner.id ? <button className="add-rev-btn"><OpenModalButton
+        {userObj ? showBtn ? <button className="add-rev-btn"><OpenModalButton
           className="create-rev-btn btn"
           buttonText="Create a review"
           modalComponent={<PostReview spotId={spotObj?.id} userId={userObj?.id} />}
@@ -87,9 +91,8 @@ const ViewSpot = ({defaultImg}) => {
            :
            <p style={{fontSize: "1.2em"}}><i className="fa-solid fa-star"></i> {parseFloat(avgStarRating).toFixed(1)} &#x2022; {numReviews} {numReviews === 1 ? "Review" : "Reviews" }</p>}
 
-          { reviews.length <= 0 ? <p>Be the first to post a review!</p> : reviews.reverse().map(review => {
+          { (reviews.length <= 0 && owner?.id !== userObj?.id) ? <p>Be the first to post a review!</p> : reviews.reverse().map(review => {
             const convertedDate = new Date(review.createdAt).toDateString().split(" ");
-            console.log('converted date', convertedDate);
             const postedDate = `${convertedDate[1]} ${convertedDate[3]}`
             return (
             <div className="spot__review">

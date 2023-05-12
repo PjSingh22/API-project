@@ -102,3 +102,7 @@
   border: 1px solid var(--border-color);
   color: white;
 }
+
+.add-rev-btn > *:hover, .delete-rev-btn > *:hover {
+  color: white;
+}
