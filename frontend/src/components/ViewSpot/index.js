@@ -21,6 +21,7 @@ const ViewSpot = ({defaultImg}) => {
   // console.log(reviewsObj)
   const showAddRevBtn = () => {
     if (userObj) {
+
       if (userObj?.id === owner?.id) return false;
 
       if (userObj?.id !== owner?.id ) {
@@ -30,13 +31,12 @@ const ViewSpot = ({defaultImg}) => {
           }
         }
       }
+
       return true;
     }
-  }
+  };
 
   const showBtn = showAddRevBtn();
-
-  // let showBtn = showAddRevBtn();
 
   useEffect(() => {
     dispatch(getSpotReviewsThunk(spotId));

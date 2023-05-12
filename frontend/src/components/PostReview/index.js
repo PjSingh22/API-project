@@ -13,10 +13,11 @@ const PostReview = ({spotId, userId}) => {
   const [activeRating, setActiveRating] = useState(rating);
   const [review, setReview] = useState("");
   const [errors, setErrors] = useState("");
+  const [showErrors, setShowErrors] = useState(false);
 
   useEffect(() => {
     const errorObj = {};
-    if(review.length < 10) errorObj['textarea'] = "Review needs to be at least 10 characters long"
+    if(review.length && review.length < 10) errorObj['textarea'] = "Review needs to be at least 10 characters long"
     if(rating <= 0) errorObj["rating"] = "rating needs to be selected"
 
     setErrors(errorObj);
@@ -24,6 +25,8 @@ const PostReview = ({spotId, userId}) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    if(Object.values(errors).length) setShowErrors(true);
 
     const reviewData = {
       spotId,
@@ -37,7 +40,7 @@ const PostReview = ({spotId, userId}) => {
 
     closeModal();
   }
-
+  // toggle between star filled or empty
   const filled = "fa-solid fa-star fa-lg"
   const empty = "fa-regular fa-star fa-lg";
 
@@ -45,7 +48,7 @@ const PostReview = ({spotId, userId}) => {
     <div className="post-review-container">
       <h2>How was your stay?</h2>
       <p className="errors">{errors.textarea}</p>
-      <textarea value={review} onChange={(e) => setReview(e.target.value)} className="post-review-textbox" rows={5}  />
+      <textarea value={review} onChange={(e) => setReview(e.target.value)} className="post-review-textbox" rows={5} placeholder="Leave your review here..." />
       <div className="post-review-star-rating">
         <div onMouseEnter={() => setActiveRating(1)} onMouseLeave={() => setActiveRating(rating)} onClick={() => setRating(1)}>
           <i className={activeRating >= 1 ? filled : empty }></i>
@@ -63,7 +66,7 @@ const PostReview = ({spotId, userId}) => {
           <i className={activeRating >= 5 ? filled : empty }></i>
         </div>
       </div>
-      <button onClick={handleSubmit} disabled={Object.values(errors).length}>Post</button>
+      <button className="btn login-btn" onClick={handleSubmit} disabled={Object.values(errors).length}>Submit Your Review</button>
     </div>
   )
 };
