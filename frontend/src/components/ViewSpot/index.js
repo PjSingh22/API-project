@@ -63,11 +63,12 @@ const ViewSpot = ({defaultImg}) => {
             <button className="btn login-btn" onClick={() => alert('feature coming soon')}>Reserve</button>
           </div>
         </div>
-        <OpenModalButton
+        {userObj ? <OpenModalButton
           className="create-rev-btn btn"
           buttonText="Create a review"
-          modalComponent={<PostReview spotId={spotObj.id} userId={userObj.id} />}
-        />
+          modalComponent={<PostReview spotId={spotObj?.id} userId={userObj?.id} />}
+        /> : null }
+
         {/* TODO: put this in own component */}
         <div className="spot-reviews">
            <p style={{fontSize: "1.2em"}}><i className="fa-solid fa-star"></i> {parseFloat(avgStarRating).toFixed(1)} &#x2022; {numReviews} Reviews</p>
@@ -77,7 +78,7 @@ const ViewSpot = ({defaultImg}) => {
               <p className="review-username">{review.User?.firstName}</p>
               <p className="review-postDate">{review.createdAt}</p>
               <p className="review-desc">{review.review}</p>
-              {userObj.id === review.User.id ? <OpenModalButton className="delete-rev-btn btn" buttonText="Delete review" modalComponent={<DeleteReviewButton reviewId={review.id} spotId={spotObj.id} />} /> : null}
+              {userObj?.id === review.User?.id ? <OpenModalButton className="delete-rev-btn btn" buttonText="Delete review" modalComponent={<DeleteReviewButton reviewId={review.id} spotId={spotObj.id} />} /> : null}
             </div>
           ))}
         </div>

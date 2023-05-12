@@ -21,3 +21,10 @@ button:hover {
 .app-body {
   margin: 20px 40px;
 }
+
+.page-not-found {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
