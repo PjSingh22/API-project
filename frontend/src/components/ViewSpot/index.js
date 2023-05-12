@@ -63,11 +63,11 @@ const ViewSpot = ({defaultImg}) => {
             <button className="btn login-btn" onClick={() => alert('feature coming soon')}>Reserve</button>
           </div>
         </div>
-        {userObj ? <OpenModalButton
+        {userObj ? userObj.id !== owner.id ? <OpenModalButton
           className="create-rev-btn btn"
           buttonText="Create a review"
           modalComponent={<PostReview spotId={spotObj?.id} userId={userObj?.id} />}
-        /> : null }
+        /> : null : null }
 
         {/* TODO: put this in own component */}
         <div className="spot-reviews">
