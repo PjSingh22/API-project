@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useDispatch } from 'react-redux';
 import { Link, Redirect, useHistory } from 'react-router-dom';
+import { useModal } from "../../context/Modal";
 import * as sessionActions from '../../store/session';
 import OpenModalButton from "../OpenModalButton";
 import LoginFormModal from "../LoginFormModal";
@@ -8,6 +9,7 @@ import SignupFormModal from "../SignupFormModal";
 import './ProfileButton.css';
 
 function ProfileButton({ user }) {
+  const { closeModal } = useModal();
   const history = useHistory();
   const dispatch = useDispatch();
   const [showMenu, setShowMenu] = useState(false);
@@ -20,7 +22,8 @@ function ProfileButton({ user }) {
 
   const logout = (e) => {
     e.preventDefault();
-    dispatch(sessionActions.logout());
+    dispatch(sessionActions.logout())
+      .then(() => closeModal())
     history.push('/');
   };
 
