@@ -130,7 +130,7 @@ const EditSpot = () => {
           <p>Competitive pricing can help your listing stand out and rank higher in search results</p>
           $ <input required={true} min={1} className="price-input" type="number" value={price} onChange={(e) => setPrice(e.target.value)} />
         </div>
-        <button disabled={Object.values(errors).length} className="btn" type="submit">Update Spot</button>
+        <button disabled={Object.values(errors).length} className="btn" type="submit">Update your Spot</button>
         {errors.errors && <p className="errors">{errors.errors.errors}</p>}
       </form>
     </div>

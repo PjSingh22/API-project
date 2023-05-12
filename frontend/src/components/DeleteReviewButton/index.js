@@ -16,7 +16,8 @@ const DeleteReviewButton = ({reviewId, spotId}) => {
 
   return (
     <div className='delete-modal'>
-      <h2>Are you sure you want to delete this comment?</h2>
+      <h2>Confirm Delete</h2>
+      <p>Are you sure you want to delete this comment?</p>
       <div className='delete-buttons'>
         <button className='btn yes-btn' onClick={deleteHandler}>Yes</button>
         <button className='btn no-btn' onClick={closeModal}>No</button>

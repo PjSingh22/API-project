@@ -14,9 +14,13 @@
 }
 
 .yes-btn, .no-btn {
-border-radius: 10px;
+border-radius: 5px;
 padding: 10px;
 color: white;
+}
+
+.yes-btn, .no-btn {
+  border: 1px solid var(--border-color)
 }
 
 .yes-btn {
@@ -24,5 +28,5 @@ color: white;
 }
 
 .no-btn {
-  background-color: blue;
+  background-color: darkgray;
 }

@@ -99,7 +99,7 @@ const ViewSpot = ({defaultImg}) => {
               <p className="review-username">{review.User?.firstName}</p>
               <p className="review-postDate">{postedDate}</p>
               <p className="review-desc">{review.review}</p>
-              {userObj?.id === review.User?.id ? <button className="delete-rev-btn"><OpenModalButton className="delete-rev-btn btn" buttonText="Delete review" modalComponent={<DeleteReviewButton reviewId={review.id} spotId={spotObj.id} />} /></button> : null}
+              {userObj?.id === review.User?.id ? <button className="delete-rev-btn"><OpenModalButton className="delete-rev-btn btn" buttonText="Delete" modalComponent={<DeleteReviewButton reviewId={review.id} spotId={spotObj.id} />} /></button> : null}
             </div>
           )})}
         </div>

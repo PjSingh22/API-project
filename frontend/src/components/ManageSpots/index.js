@@ -21,7 +21,7 @@ const ManageSpots = (props) => {
   return (
     <div>
       <h2>Manage Spots</h2>
-      <Link to="spots/create"><button>Create A Spot</button></Link>
+      <Link to="spots/create"><button className="btn create-spot">Create A New Spot</button></Link>
       <div className="manage__container">
         {spots.map(spot => {
           return (
@@ -29,7 +29,7 @@ const ManageSpots = (props) => {
               <Spot spot={spot} />
               <div className="spot-buttons">
                 {/* TODO: finish this */}
-                <Link to={`/user/spots/${spot.id}`} ><button className="btn">Edit</button></Link>
+                <Link to={`/user/spots/${spot.id}`} ><button className="btn open-modal">Update</button></Link>
                 <OpenModalButton
                    className="open-modal"
                    buttonText="Delete"

@@ -2,4 +2,23 @@
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 25px;
+  margin-top: 20px;
 }
+
+.create-spot {
+  background-color: var(--main-color);
+  border: 1px solid var(--border-color);
+  color: white;
+}
+
+.spot-buttons {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.spot-buttons > * {
+ border: 1px solid black;
+}
+
+/* TODO: add responsive css */
