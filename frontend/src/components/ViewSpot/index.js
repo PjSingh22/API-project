@@ -18,7 +18,6 @@ const ViewSpot = ({defaultImg}) => {
   const reviews = Object.values(reviewsObj);
   const { avgStarRating, city, country, description, name, numReviews, owner, price, spotImages, state } = spotObj;
   // const [rating, setRating] = useState(ratingListener);
-  // console.log(reviewsObj)
   const showAddRevBtn = () => {
     if (userObj) {
 

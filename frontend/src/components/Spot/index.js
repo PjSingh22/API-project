@@ -20,7 +20,7 @@ const Spot = ({spot}) => {
     <Link to={`/spots/${id}`} key={id} style={linkStyle}>
       <div className='spot-card' onMouseEnter={() => setShowToolTip(true)} onMouseLeave={() => setShowToolTip(false)}>
         <p className={toolTipStyle}>{name}</p>
-          <img className="card-img" src={previewImage === 'invalid' ? defaultImg : previewImage} alt="preview" />
+        <img className="card-img" src={previewImage === 'invalid' ? defaultImg : previewImage} alt="preview" />
         <div className="spot-info">
           <div className="left-half-info">
             <div>
@@ -33,7 +33,7 @@ const Spot = ({spot}) => {
             </div>
           </div>
           <div className="right-half-info">
-            {avgRating ? <span><i className="fa-solid fa-star"></i>{parseFloat(avgRating).toFixed(1)}</span> : "New"}
+            {avgRating ? <span className='star-rating'><i className="fa-solid fa-star"></i>{parseFloat(avgRating).toFixed(1)}</span> : "New"}
           </div>
         </div>
       </div>

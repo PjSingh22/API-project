@@ -34,11 +34,19 @@ module.exports = {
       },
       {
         email: 'john@gmail.com',
-        username: 'Johnboi',
+        username: 'johnboi',
         firstName: 'John',
         lastName: 'Cena',
         hashedPassword: bcrypt.hashSync('123456')
+      },
+      {
+        email: 'mike@gmail.com',
+        username: 'mikewithrizz',
+        firstName: 'mike',
+        lastName: 'shinoda',
+        hashedPassword: bcrypt.hashSync('123456')
       }
+
     ], {});
     /**
      * Add seed commands here.

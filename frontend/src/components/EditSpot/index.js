@@ -88,7 +88,7 @@ const EditSpot = () => {
      if (editSpot.errors) {
       // fix error handling
       setErrors(editSpot.errors);
-      console.log('spot errors', editSpot.errors)
+      // console.log('spot errors', editSpot.errors)
      } else {
       return history.push(`/spots/${editSpot}`);
      }

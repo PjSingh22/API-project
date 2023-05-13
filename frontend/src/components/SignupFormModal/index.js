@@ -54,16 +54,30 @@ function SignupFormModal() {
     });
   };
 
-  const isDisabled = Object.keys(errors).length ? "login-btn disabled" : "login-btn btn"
+  const checkInputs = () => {
+    const inputs = [email, username, firstName, lastName, password, confirmPassword];
+
+    for (let i = 0; i < inputs.length; i++) {
+      const input = inputs[i];
+
+      if(!input.length) return true
+    }
+    return false;
+  }
+
+  const disabledBtn = checkInputs();
+  const isDisabled = checkInputs() ? " login-btn disabled btn" : "login-btn btn";
+
 
   return (
     <div className="user-form signup-form form">
       <h1 style={{textAlign: 'center'}}>Sign Up</h1>
       <form onSubmit={handleSubmit}>
         <label>
-          Email
           <input
-            type="text"
+            placeholder="Email"
+            className="user-form-input"
+            type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
@@ -71,8 +85,9 @@ function SignupFormModal() {
         </label>
         {(errors.email && showErrors) && <p>{errors.email}</p>}
         <label>
-          Username
           <input
+            placeholder="Username"
+            className="user-form-input"
             type="text"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
@@ -82,8 +97,9 @@ function SignupFormModal() {
         </label>
         {(errors.username && showErrors) && <p className="errors">{errors.username}</p>}
         <label>
-          First Name
           <input
+            placeholder="First Name"
+            className="user-form-input"
             type="text"
             value={firstName}
             onChange={(e) => setFirstName(e.target.value)}
@@ -92,8 +108,9 @@ function SignupFormModal() {
         </label>
         {(errors.firstName && showErrors) && <p>{errors.firstName}</p>}
         <label>
-          Last Name
           <input
+            className="user-form-input"
+            placeholder="Last Name"
             type="text"
             value={lastName}
             onChange={(e) => setLastName(e.target.value)}
@@ -102,8 +119,9 @@ function SignupFormModal() {
         </label>
         {(errors.lastName && showErrors) && <p>{errors.lastName}</p>}
         <label>
-          Password
           <input
+            className="user-form-input"
+            placeholder="Password"
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
@@ -113,8 +131,9 @@ function SignupFormModal() {
         </label>
         {(errors.password && showErrors) && <p>{errors.password}</p>}
         <label>
-          Confirm Password
           <input
+            className="user-form-input"
+            placeholder="Confirm Password"
             type="password"
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
@@ -122,8 +141,8 @@ function SignupFormModal() {
             minLength={6}
           />
         </label>
-        {(errors.confirmPassword && showErrors) && <p>{errors.confirmPassword}</p>}
-        <button className={isDisabled}  type="submit">Sign Up</button>
+        {(errors.confirmPassword && showErrors) && <p className="errors">{errors.confirmPassword}</p>}
+        <button className={isDisabled} disabled={disabledBtn}  type="submit">Sign Up</button>
       </form>
     </div>
   );

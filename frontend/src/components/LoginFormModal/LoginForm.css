@@ -38,3 +38,9 @@
 .disabled {
   background-color: grey;
 }
+
+.user-form-input {
+  padding: 5px;
+  border: 1px solid var(--border-color);
+  border-radius: 5px;
+}
