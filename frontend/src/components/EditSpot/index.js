@@ -87,28 +87,20 @@ const EditSpot = () => {
         <p>Guests will only get your exact address once they booked a reservation</p>
         <label>
           Country
-          <input required={true} type="text" name="country" value={country} onChange={(e) => setCountry(e.target.value)} />
+          <input required={true} minLength={3} maxLength={57} type="text" name="country" value={country} onChange={(e) => setCountry(e.target.value)} />
         </label>
         <label>
           Street Address
-          <input required={true} type="text" name="address" value={address} onChange={(e) => setAddress(e.target.value)} />
+          <input required={true} minLength={5} maxLength={30} type="text" name="address" value={address} onChange={(e) => setAddress(e.target.value)} />
         </label>
         <div className="city-state form-seperator">
           <label>
             City
-            <input required={true} type="text" name="city" value={city} onChange={(e) => setCity(e.target.value)} />
+            <input required={true} minLength={2} maxLength={18} type="text" name="city" value={city} onChange={(e) => setCity(e.target.value)} />
           </label>
           <label>
             State
-            <input required={true} type="text" value={state} onChange={(e) => setState(e.target.value)} />
-          </label>
-          <label>
-            latitude
-            <input type="number" step="0.001" min={-90} max={90} value={lat} onChange={(e) => setLat(e.target.value)} />
-          </label>
-          <label>
-            longitude
-            <input type="number" step="0.001" min={-180} max={180} value={lng} onChange={(e) => setLng(e.target.value)} />
+            <input required={true} minLength={1} maxLength={12} type="text" value={state} onChange={(e) => setState(e.target.value)} />
           </label>
         </div>
 
