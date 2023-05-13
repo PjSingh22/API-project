@@ -113,7 +113,7 @@ const validateSpot = [
     .withMessage("Description is required"),
 
   check("description")
-  .isLength({ min: 10})
+  .isLength({ min: 30})
   .withMessage("Description must be at least 10 characters long"),
 
   check("price")

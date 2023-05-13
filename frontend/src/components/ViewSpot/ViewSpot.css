@@ -16,6 +16,7 @@
   overflow: hidden;
   grid-auto-rows: 300px;
   gap: 5px;
+  border-radius: 10px;
   margin-bottom: 40px;
   /* max-height: 300px; */
 }
@@ -30,6 +31,7 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-template-rows: 150px;
+  gap: 5px;
 }
 
 .other-imgs > img {

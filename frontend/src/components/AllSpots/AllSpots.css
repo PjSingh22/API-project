@@ -28,14 +28,15 @@
   justify-content: space-between;
 }
 
-@media screen and (max-width: 1024px) {
+/* @media screen and (max-width: 1024px) {
   .all-spots {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(4, 1fr);
   }
-}
+} */
 
 @media screen and (max-width: 767px) {
   .all-spots {
     grid-template-columns: 1fr;
+    /* width: 100%; */
   }
 }
