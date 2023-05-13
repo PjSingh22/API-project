@@ -20,7 +20,7 @@ const Spot = ({spot}) => {
     <Link to={`/spots/${id}`} key={id} style={linkStyle}>
       <div className='spot-card' onMouseEnter={() => setShowToolTip(true)} onMouseLeave={() => setShowToolTip(false)}>
         <p className={toolTipStyle}>{name}</p>
-        <img className="card-img" src={previewImage === 'invalid' ? defaultImg : previewImage} alt="preview" />
+          <img className="card-img" src={previewImage === 'invalid' ? defaultImg : previewImage} alt="preview" />
         <div className="spot-info">
           <div className="left-half-info">
             <div>

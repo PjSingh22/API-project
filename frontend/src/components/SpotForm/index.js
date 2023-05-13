@@ -82,11 +82,11 @@ const CreateSpot = (props) => {
     }
 
     const spotImages = [
-      previewImage,
-      img1,
-      img2,
-      img3,
-      img4
+      previewImage.trim(),
+      img1.trim(),
+      img2.trim(),
+      img3.trim(),
+      img4.trim()
     ]
 
      let spot = await dispatch(createSpotThunk(spotData, spotImages, owner.id));
