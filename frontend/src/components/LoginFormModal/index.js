@@ -45,8 +45,9 @@ function LoginFormModal() {
       <h1 style={{textAlign: 'center'}}>Log In</h1>
       <form onSubmit={handleSubmit}>
         <label>
-          Username or Email
           <input
+            className="user-form-input"
+            placeholder="Username or Email"
             type="text"
             value={credential}
             onChange={(e) => setCredential(e.target.value)}
@@ -54,8 +55,9 @@ function LoginFormModal() {
           />
         </label>
         <label>
-          Password
           <input
+            className="user-form-input"
+            placeholder="Password"
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}

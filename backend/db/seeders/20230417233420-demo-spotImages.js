@@ -26,7 +26,7 @@ module.exports = {
     },
     {
       spotId: 1,
-      url: 'https://i.imgur.com/M6WbGRu.jpeg',
+      url: 'https://i.imgur.com/WOKYVES.jpeg',
       preview: true
     },
     {
