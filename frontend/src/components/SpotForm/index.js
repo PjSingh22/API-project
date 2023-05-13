@@ -94,7 +94,7 @@ const CreateSpot = (props) => {
      if (spot.errors) {
       // fix error handling
       setErrors(spot.errors);
-      console.log('spot errors', spot.errors)
+      // console.log('spot errors', spot.errors)
      } else {
       return history.push(`/spots/${spot}`);
      }

@@ -16,3 +16,18 @@
 .visible {
   visibility: visible;
 }
+
+.spot-card > img {
+  border-radius: 5px;
+}
+
+.star-rating {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.star-rating > i {
+  position: relative;
+  bottom: 2px;
+}

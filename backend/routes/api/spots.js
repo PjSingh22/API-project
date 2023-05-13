@@ -451,15 +451,12 @@ router.get('/:id', async (req, res, next) => {
 
   // gets the total stars and average
   const stars = await Review.sum('stars',{where:{spotId:spot.id}}); // get all stars tied to this spot
-  console.log('get single spot sum of stars', stars);
   const owner = await User.findByPk(spot.ownerId, { attributes: ['id', 'firstName', 'lastName']});
   const totalReviews = await Review.count({where:{spotId:spot.id}});
-  console.log('get single spot total reviews', totalReviews);
 
   const spotImages = await SpotImage.findAll({where:{spotId:spot.id}, attributes: ['id', 'url', 'preview']})
   let avg = stars/totalReviews
   totalReviews === 0 ? spot.avgStarRating = 0 : spot.avgStarRating = avg;
-  console.log('spot avgStarRating in single spot', spot.avgStarRating);
   // spot.avgStarRating = avg ? avg : 0; // set it!
   spot.numReviews = totalReviews;
   spot.owner = owner

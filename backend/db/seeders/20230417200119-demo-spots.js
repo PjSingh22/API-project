@@ -19,7 +19,7 @@ module.exports = {
     */
    options.tableName = 'Spots'
    await queryInterface.bulkInsert(options, [
-    {
+    { // spot 1
       ownerId: 1,
       address: '123 somewhere st',
       city: 'someTown',
@@ -31,7 +31,7 @@ module.exports = {
       description: 'come on over and give me your money',
       price: 100
     },
-    {
+    { // spot 2
       ownerId: 1,
       address: '246 somewhere st',
       city: 'anotherTown',
@@ -43,7 +43,7 @@ module.exports = {
       description: 'more money please!',
       price: 65
     },
-    {
+    { // spot 3
       ownerId: 2,
       address: '2245 oldtown rd',
       city: 'oldTown',
@@ -55,7 +55,31 @@ module.exports = {
       description: 'don\'t tell my wife',
       price: 20
     },
-    {
+    { // spot 4
+      ownerId: 3,
+      address: '298 James road',
+      city: 'New York',
+      state: 'New York',
+      country: 'United States',
+      lat: 12.432,
+      lng: 88.444,
+      name: 'Views',
+      description: 'Watch out for Rob',
+      price: 160
+    },
+    { // spot 5
+      ownerId: 3,
+      address: 'West 34th Street',
+      city: 'New York',
+      state: 'New York',
+      country: 'United States',
+      lat: 12.432,
+      lng: 88.444,
+      name: 'Empire State Building',
+      description: 'costs extra to go to the top',
+      price: 300
+    },
+    { // spot 6
       ownerId: 4,
       address: '420 oldtown road',
       city: 'oldTown',
@@ -67,18 +91,30 @@ module.exports = {
       description: 'no free toilet paper',
       price: 200
     },
-    {
-      ownerId: 3,
-      address: '298 James road',
-      city: 'New York',
-      state: 'New York',
+    { // spot 7
+      ownerId: 5,
+      address: '9 figure ln',
+      city: 'Agoura Hills',
+      state: 'California',
       country: 'United States',
-      lat: 12.432,
+      lat: 99.432,
       lng: 88.444,
-      name: 'Views',
-      description: 'Watch out for Rob',
+      name: 'Castle Of Glass',
+      description: 'One step closer to find a place where you belong',
       price: 160
-    }
+    },
+    { // spot 8
+      ownerId: 5,
+      address: '3764 Elvis Presley Boulevard',
+      city: 'Memphis',
+      state: 'Tennessee',
+      country: 'United States',
+      lat: 124.420,
+      lng: 645.123,
+      name: 'Graceland',
+      description: "It's all in the pelvis",
+      price: 2000
+    },
    ])
   },
 
