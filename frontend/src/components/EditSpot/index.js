@@ -8,7 +8,7 @@ const EditSpot = () => {
   const { spotId } = useParams();
   const history = useHistory();
   const dispatch = useDispatch();
-  const owner = useSelector(state => state.session.user);
+  // const owner = useSelector(state => state.session.user);
   const spot = useSelector(state => state.spots.singleSpot);
   let [country, setCountry] = useState(spot.country);
   const [address, setAddress] = useState(spot.address);
@@ -52,6 +52,21 @@ const EditSpot = () => {
 
     setErrors(errorObj)
   }, [name, address, city, state, lat, lng, description, name, price])
+
+  const checkInputs = () => {
+    const inputs = [country, address, city, state, description, name, price];
+
+    if(description?.length < 30) return true
+    for (let i = 0; i < inputs.length; i++) {
+      const input = inputs[i];
+
+      if(!input?.length) return true
+    }
+    return false;
+  }
+
+  const disabledBtn = checkInputs();
+  const isDisable = checkInputs() ? "disabled btn" : "btn";
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -122,7 +137,7 @@ const EditSpot = () => {
           <p>Competitive pricing can help your listing stand out and rank higher in search results</p>
           $ <input required={true} min={1} className="price-input" type="number" value={price} onChange={(e) => setPrice(e.target.value)} />
         </div>
-        <button disabled={Object.values(errors).length} className="btn" type="submit">Update your Spot</button>
+        <button disabled={disabledBtn} className={isDisable} type="submit">Update your Spot</button>
         {errors.errors && <p className="errors">{errors.errors.errors}</p>}
       </form>
     </div>

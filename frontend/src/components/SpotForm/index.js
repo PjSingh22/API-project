@@ -39,7 +39,7 @@ const CreateSpot = (props) => {
     setErrors(errorObj);
   }, [name, address, city, state, lat, lng, description, name, price, previewImage, img1, img2, img3, img4]);
 
-  const validURL = [".png", ".jpg", ".jpeg"];
+  // const validURL = [".png", ".jpg", ".jpeg"];
 
   const urlValidator = (url)=> {
     let split = url.split(".");
@@ -49,6 +49,22 @@ const CreateSpot = (props) => {
       return false
     }
   };
+
+  const checkInputs = () => {
+    const inputs = [country, address, city, state, description, name, price, previewImage];
+
+    if(description.length < 30) return true
+
+    for (let i = 0; i < inputs.length; i++) {
+      const input = inputs[i];
+
+      if(!input.length) return true
+    }
+    return false;
+  }
+
+  const disabledBtn = checkInputs();
+  const isDisable = checkInputs() ? "disabled btn" : "btn";
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -113,7 +129,7 @@ const CreateSpot = (props) => {
           <h3>Describe your place to guests</h3>
           <p>Mention the best features of your space, any special amenities like fast wifi or parking, and what you love about the neighborhood.</p>
           {errors.desc && <p className="errors">{errors.desc}</p>}
-          <textarea minLength={30} required={true} className="form-text-area " rows={5} value={description} onChange={(e) => setDescription(e.target.value)} />
+          <textarea minLength={30} required className="form-text-area " rows={5} value={description} onChange={(e) => setDescription(e.target.value)} />
         </div>
 
         <div className="form-seperator">
@@ -140,7 +156,7 @@ const CreateSpot = (props) => {
             <input type="url" placeholder="Image URL" onChange={(e) => setImg4(e.target.value)} />
           </div>
         </div>
-        <button disabled={Object.values(errors).length} className="btn" type="submit">Create Spot</button>
+        <button disabled={disabledBtn} className={isDisable} type="submit">Create Spot</button>
         {errors.errors && <p className="errors">{errors.errors.errors}</p>}
       </form>
     </div>

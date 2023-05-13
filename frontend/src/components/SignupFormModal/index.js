@@ -25,7 +25,7 @@ function SignupFormModal() {
     if (username.length < 4) inputErrors["username"] = "needs to be more than 4 characters"
     if (!password.length || !confirmPassword.length) inputErrors["password"] = 'field cant be empty'
     if (password.length < 6) inputErrors['password'] = "password needs to be greater than 6 characters"
-  }, [email, username])
+  }, [email, username, confirmPassword, password])
 
   const handleSubmit = (e) => {
     e.preventDefault();

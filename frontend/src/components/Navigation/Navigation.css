@@ -26,3 +26,7 @@
 .nav__create-spot:hover {
   color: var(--main-color);
 }
+
+form > button {
+  width: 100%;
+}
