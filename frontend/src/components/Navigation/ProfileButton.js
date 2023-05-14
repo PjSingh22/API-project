@@ -56,7 +56,7 @@ function ProfileButton({ user }) {
             <li>Hello, {user.username}</li>
             {/* <li>{user.firstName} {user.lastName}</li> */}
             <li>{user.email}</li>
-            <li><button className="pb__manage-spots"><Link style={{textDecoration: 'none', color: 'black'}} to='/user/spots'>Manage Spots</Link></button></li> {/*TODO: place a link inside li */}
+            <li><button onClick={closeMenu} className="pb__manage-spots"><Link style={{textDecoration: 'none', color: 'black'}} to='/user/spots'>Manage Spots</Link></button></li> {/*TODO: place a link inside li */}
             <li>
               <button className="logout-btn btn" onClick={logout}>Log Out</button>
             </li>
