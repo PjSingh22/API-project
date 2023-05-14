@@ -29,3 +29,7 @@ button:hover {
   align-items: center;
   justify-content: center;
 }
+
+input, textarea {
+  padding: 5px;
+}
