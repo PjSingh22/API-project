@@ -9,7 +9,8 @@
 
 .delete-buttons {
   display: flex;
-  justify-content: space-around;
+  flex-direction: column;
+  gap: 10px;
   width: 100%;
 }
 
@@ -19,14 +20,11 @@ padding: 10px;
 color: white;
 }
 
-.yes-btn, .no-btn {
-  border: 1px solid var(--border-color)
-}
-
-.yes-btn {
+/* .yes-btn {
   background-color: red;
-}
+} */
 
 .no-btn {
-  background-color: darkgray;
+  background-color: #666666;
+  box-shadow: var(--box-shadow);
 }

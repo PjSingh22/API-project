@@ -17,8 +17,8 @@ const DeleteButton = ({spotId}) => {
       <h2>Confirm Delete</h2>
       <p>Are you sure you want to remove this spot?</p>
       <div className='delete-buttons'>
-        <button className='btn yes-btn' onClick={deleteHandler}>Yes</button>
-        <button className='btn no-btn' onClick={closeModal}>No</button>
+        <button className='btn yes-btn login-btn' onClick={deleteHandler}>Yes (Delete Spot)</button>
+        <button className='btn no-btn' onClick={closeModal}>No (Keep Spot)</button>
       </div>
     </div>
   )
