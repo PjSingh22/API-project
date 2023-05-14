@@ -40,6 +40,20 @@ function LoginFormModal() {
     );
   };
 
+  const checkInputs = () => {
+    const inputs = [credential, password];
+
+    for (let i = 0; i < inputs.length; i++) {
+      const input = inputs[i];
+
+      if(!input.length) return true
+    }
+    return false;
+  }
+
+  const disabledBtn = checkInputs();
+  const isDisabled = checkInputs() ? " login-btn disabled btn" : "login-btn btn";
+
   return (
     <div className="user-form login-form form">
       <h1 style={{textAlign: 'center'}}>Log In</h1>
@@ -65,7 +79,7 @@ function LoginFormModal() {
           />
         </label>
         {errors.credential && <p className="errors">{errors.credential}</p>}
-        <button className="login-btn btn" type="submit">Log In</button>
+        <button disabled={disabledBtn} className={isDisabled} type="submit">Log In</button>
       </form>
       <button className="demo-user btn" onClick={demoUser}>Demo User</button>
     </div>

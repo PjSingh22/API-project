@@ -1,9 +1,11 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import './Spot.css'
+import './Spot.css';
+
 const Spot = ({spot}) => {
-  const { id, city, state, price, avgRating, previewImage, name } = spot;
   const [showToolTip, setShowToolTip] = useState(false);
+
+  const { id, city, state, price, avgRating, previewImage, name } = spot;
   const defaultImg = "https://www.gannett-cdn.com/presto/2019/10/11/PNAS/adf1101a-0f8c-404f-9df3-5837bf387dfd-1_Exterior_House_Beautiful_Whole_Home_Concept_House_Castle_Homes_Photo_Reed_Brown_Photography.jpg?crop=5619,3161,x0,y104&width=660&height=372&format=pjpg&auto=webp"
 
   const linkStyle = {
@@ -16,6 +18,7 @@ const Spot = ({spot}) => {
   }
 
   let toolTipStyle = showToolTip ? "tooltip visible" : "tooltip";
+
   return (
     <Link to={`/spots/${id}`} key={id} style={linkStyle}>
       <div className='spot-card' onMouseEnter={() => setShowToolTip(true)} onMouseLeave={() => setShowToolTip(false)}>
@@ -24,11 +27,11 @@ const Spot = ({spot}) => {
         <div className="spot-info">
           <div className="left-half-info">
             <div>
-              <div>
-                <span>{city}</span>, <span>{state}</span>
+              <div className='spot__city-state'>
+                <span className='spot__city'>{city}</span>, <span>{state}</span>
               </div>
-              <div>
-                <span> ${price}</span> night
+              <div className='spot__price'>
+                <span>${price} night</span>
               </div>
             </div>
           </div>

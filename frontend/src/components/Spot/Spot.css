@@ -31,3 +31,7 @@
   position: relative;
   bottom: 2px;
 }
+
+.spot__city-state {
+  padding-right: 5px;
+}
