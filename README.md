@@ -6,7 +6,7 @@
 <!--!!END_ADD -->
 
 ## Introduction
-Hello and welcome to my AirBnB clone TripBnb. This is the first full stack project I've copmpleted during my time at App Academy. This project features a back end build using sequelize and front end built using react and redux for state management.
+Hello and welcome to my AirBnB clone TripBnb. This is the first full stack project I've copmpleted during my time at App Academy. This project features a back end build using express & sequelize and front end built using react & redux for state management.
 
 ## Features
 # BackEnd
