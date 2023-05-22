@@ -5,6 +5,32 @@
 <!-- # `<name of application here>` -->
 <!--!!END_ADD -->
 
+## Introduction
+Hello and welcome to my AirBnB clone TripBnb. This is the first full stack project I've copmpleted during my time at App Academy. This project features a back end build using sequelize and front end built using react and redux for state management.
+
+## Features
+# BackEnd
+- create/read/update user
+- create/read/update/delete spots
+- create/read/update/delete reviews
+- create/read/update/delete reservations
+- create/update/delete images for spots and reviews
+
+# FrontEnd
+- view all spots on root page
+- singup/login user
+- create spot and images for spot
+- update a spot
+- delete a spot owned by user
+- leave reviews on spots not owned by user
+- add review (coming soon)
+- manage spots owned by user
+- manage users reviews (coming soon)
+
+![image](https://github.com/PjSingh22/API-project/assets/47789898/ad11501f-26c4-4dbe-ad2b-aab886ba9659)
+![image](https://github.com/PjSingh22/API-project/assets/47789898/2ab1b4d9-2fd2-467a-8af7-b018d67b99ae)
+![image](https://github.com/PjSingh22/API-project/assets/47789898/44142f74-f3b5-4edd-bd0b-78917aa2644c)
+
 ## Database Schema Design
 
 <!--!!START SILENT -->
