@@ -66,7 +66,7 @@ const CreateSpot = (props) => {
   const disabledBtn = checkInputs();
   const isDisable = checkInputs() ? "disabled btn" : "btn";
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
 
     const spotData = {
@@ -89,15 +89,20 @@ const CreateSpot = (props) => {
       img4.trim()
     ]
 
-     let spot = await dispatch(createSpotThunk(spotData, spotImages, owner.id));
+     dispatch(createSpotThunk(spotData, spotImages, owner.id))
+     .then(spotId => history.push(`/spots/${spotId}`))
+     .catch(async res => {
+        const data = await res.json();
+        if (data && data.errors) setErrors(data.errors);
+     })
 
-     if (spot.errors) {
-      // fix error handling
-      setErrors(spot.errors);
-      // console.log('spot errors', spot.errors)
-     } else {
-      return history.push(`/spots/${spot}`);
-     }
+    //  if (spot.errors) {
+    //   // fix error handling
+    //   setErrors(spot.errors);
+    //   // console.log('spot errors', spot.errors)
+    //  } else {
+    //   return history.push(`/spots/${spot}`);
+    //  }
   }
 
   return (

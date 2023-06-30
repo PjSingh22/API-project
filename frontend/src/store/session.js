@@ -67,9 +67,15 @@ export const signup = (user) => async (dispatch) => {
       password,
     }),
   });
-  const data = await response.json();
-  dispatch(fetchUser(data.user));
-  return response;
+
+  if (response.ok) {
+    const data = await response.json();
+    dispatch(fetchUser(data.user));
+    return response;
+  } else {
+    const errors = await response.json();
+    console.log('sign up errors', errors.errors);
+  }
 };
 
 export const currentUserSpotsThunk = () => async (dispatch) => {
