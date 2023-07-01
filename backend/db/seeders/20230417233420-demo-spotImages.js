@@ -219,7 +219,106 @@ module.exports = {
       url: 'https://c8.alamy.com/comp/DCB4D6/gold-records-on-display-in-the-trophy-room-at-graceland-the-home-of-DCB4D6.jpg',
       preview: false
     },
-
+    {
+      spotId: 9,
+      url: 'https://cdn.discordapp.com/attachments/1118265667246882867/1124772305197867098/America-Most-Expensive-Bel-Air-Los-Angeles-Residence.jpg',
+      preview: true
+    },
+    {
+      spotId: 9,
+      url: 'https://cdn.discordapp.com/attachments/1118265667246882867/1124772305487278250/America-Most-Expensive-Bel-Air-Los-Angeles-Residence-Dining-table-with-View.jpg',
+      preview: false
+    },
+    {
+      spotId: 9,
+      url: 'https://cdn.discordapp.com/attachments/1118265667246882867/1124772305755717683/America-Most-Expensive-Bel-Air-Los-Angeles-Residence-Swimming-pool-View.jpg',
+      preview: false
+    },
+    {
+      spotId: 9,
+      url: 'https://cdn.discordapp.com/attachments/1118265667246882867/1124772304975577218/b83eb5f4117d9cc9af22fb4e20d9d02d.jpg',
+      preview: false
+    },
+    {
+      spotId: 9,
+      url: 'https://cdn.discordapp.com/attachments/1118265667246882867/1124772306003173396/1650498253351.jpeg',
+      preview: false
+    },
+    {
+      spotId: 10,
+      url: 'https://cdn.discordapp.com/attachments/1118265667246882867/1124781099600584794/Mario-Romano-Wave-House.jpg',
+      preview: true
+    },
+    {
+      spotId: 10,
+      url: 'https://cdn.discordapp.com/attachments/1118265667246882867/1124781100015833178/Mario-Romano-Wave-House-Patio.jpg',
+      preview: false
+    },
+    {
+      spotId: 10,
+      url: 'https://cdn.discordapp.com/attachments/1118265667246882867/1124781100288454766/Mario-Romano-Wave-House-Swimming-Pool.jpg',
+      preview: false
+    },
+    {
+      spotId: 10,
+      url: 'https://cdn.discordapp.com/attachments/1118265667246882867/1124781100556886076/large_im-74408.jpeg',
+      preview: false
+    },
+    {
+      spotId: 10,
+      url: 'https://cdn.discordapp.com/attachments/1118265667246882867/1124781100829528174/d1efe7c321b693518c4ff1e83a34161f.jpg',
+      preview: false
+    },
+    {
+      spotId: 11,
+      url: 'https://cdn.discordapp.com/attachments/1118265667246882867/1124783169724497980/Weathering-steel-house-Sanoma-Valley.jpg',
+      preview: true
+    },
+    {
+      spotId: 11,
+      url: 'https://cdn.discordapp.com/attachments/1118265667246882867/1124783170034864298/Weathering-steel-house-Sanoma-Valley-View.jpg',
+      preview: false
+    },
+    {
+      spotId: 11,
+      url: 'https://cdn.discordapp.com/attachments/1118265667246882867/1124783170328473731/Weathering-steel-house-Sanoma-Valley-Bedroom.jpg',
+      preview: false
+    },
+    {
+      spotId: 11,
+      url: 'https://cdn.discordapp.com/attachments/1118265667246882867/1124783170630455406/Weathering-steel-house-Sanoma-Valley-Living-room.jpg',
+      preview: false
+    },
+    {
+      spotId: 11,
+      url: 'https://cdn.discordapp.com/attachments/1118265667246882867/1124783170932453516/Weathering-steel-house-Sanoma-Valley-Living-Area.jpg',
+      preview: false
+    },
+    {
+      spotId: 12,
+      url: 'https://cdn.discordapp.com/attachments/1118265667246882867/1124785416265011220/Contemporary-Napa-Valley-California-Residence-Backyard.jpg',
+      preview: true
+    },
+    {
+      spotId: 12,
+      url: 'https://cdn.discordapp.com/attachments/1118265667246882867/1124785415996583996/Contemporary-Napa-Valley-California-Residence-Living.jpg',
+      preview: false
+    },
+    {
+      spotId: 12,
+      url: 'https://cdn.discordapp.com/attachments/1118265667246882867/1124785415505842236/Contemporary-Napa-Valley-California-Residence-Lush-Vegetation.jpg',
+      preview: false
+    },
+    {
+      spotId: 12,
+      url: 'https://cdn.discordapp.com/attachments/1118265667246882867/1124785415749128243/Contemporary-Napa-Valley-California-Residence-Exterior.jpg',
+      preview: false
+    },
+    {
+      spotId: 12,
+      url: 'https://cdn.discordapp.com/attachments/1118265667246882867/1124785416508297246/Contemporary-Napa-Valley-California-Residence-Hairpin-Bed.jpg',
+      preview: false
+    },
    ]);
   },
 

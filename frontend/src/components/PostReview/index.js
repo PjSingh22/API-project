@@ -48,7 +48,7 @@ const PostReview = ({spotId, userId}) => {
     <div className="post-review-container">
       <h2>How was your stay?</h2>
       <p className="errors">{errors.textarea}</p>
-      <textarea value={review} onChange={(e) => setReview(e.target.value)} className="post-review-textbox" rows={5} placeholder="Leave your review here..." />
+      <textarea required minLength={10} value={review} onChange={(e) => setReview(e.target.value)} className="post-review-textbox" rows={5} placeholder="Leave your review here..." />
       <div className="post-review-star-rating">
         <div onMouseEnter={() => setActiveRating(1)} onMouseLeave={() => setActiveRating(rating)} onClick={() => setRating(1)}>
           <i className={activeRating >= 1 ? filled : empty }></i>

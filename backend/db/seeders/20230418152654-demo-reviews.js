@@ -157,6 +157,60 @@ module.exports = {
       review: "Got me shaking like Elvis",
       stars: 4
     },
+    {
+      spotId: 9,
+      userId: 2,
+      review: "Woah this place is huge!!",
+      stars: 5
+    },
+    {
+      spotId: 9,
+      userId: 3,
+      review: "Size doesn't matter to me, it's all about how you work it.",
+      stars: 3
+    },
+    {
+      spotId: 9,
+      userId: 4,
+      review: "pretty nice place with a great view. My daddy is a oil mogal so I've seen better",
+      stars: 4
+    },
+    {
+      spotId: 10,
+      userId: 1,
+      review: "Nice exterior design, definetly different",
+      stars: 4
+    },
+    {
+      spotId: 10,
+      userId: 3,
+      review: "I don't really like the interior, what were they thinking when planning the design out.",
+      stars: 2
+    },
+    {
+      spotId: 10,
+      userId: 5,
+      review: "Had a wild party here and the owner was cool with it.",
+      stars: 5
+    },
+    {
+      spotId: 12,
+      userId: 5,
+      review: "Cute place!",
+      stars: 5
+    },
+    {
+      spotId: 12,
+      userId: 2,
+      review: "Quiet place with a nice view to smoke to.",
+      stars: 5
+    },
+    {
+      spotId: 12,
+      userId: 1,
+      review: "Kinda spooky, could of sworn I saw a figure standing outside at night. must be seeing things...",
+      stars: 2
+    },
    ]);
   },
 
