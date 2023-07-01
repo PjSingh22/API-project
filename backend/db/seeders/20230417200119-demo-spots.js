@@ -115,6 +115,54 @@ module.exports = {
       description: "It's all in the pelvis",
       price: 2000
     },
+    {
+      ownerId: 1,
+      address: '2468 appreciate road',
+      city: 'James',
+      state: 'iowa',
+      country: 'United States',
+      lat: 124.420,
+      lng: 645.123,
+      name: 'The Big House',
+      description: "only for the best of the best",
+      price: 200
+    },
+    {
+      ownerId: 2,
+      address: '1269 quary lake dr',
+      city: 'Blazing',
+      state: 'Arizona',
+      country: 'United States',
+      lat: 128.420,
+      lng: 642.123,
+      name: 'The Blazing house',
+      description: "Hot and ready for you",
+      price: 100
+    },
+    {
+      ownerId: 3,
+      address: '54 Old Glory ln',
+      city: 'Glory',
+      state: 'Idaho',
+      country: 'United States',
+      lat: 148.420,
+      lng: 672.123,
+      name: 'The real spot',
+      description: "cozy and comfy",
+      price: 300
+    },
+    {
+      ownerId: 4,
+      address: '888 fauna gate rd',
+      city: 'Montana',
+      state: 'Montana',
+      country: 'United States',
+      lat: 118.420,
+      lng: 472.123,
+      name: 'Magical house',
+      description: "its beautiful for a fair price",
+      price: 600
+    },
    ])
   },
 
