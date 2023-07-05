@@ -4,8 +4,6 @@
 .tooltip {
   visibility: hidden;
   position: absolute;
-  bottom: 20%;
-  left: 30%;
   background-color: black;
   padding: 5px;
   border-radius: 5px;
