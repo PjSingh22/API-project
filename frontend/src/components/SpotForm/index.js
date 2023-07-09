@@ -50,22 +50,6 @@ const CreateSpot = (props) => {
     }
   };
 
-  const checkInputs = () => {
-    const inputs = [country, address, city, state, description, name, price, previewImage];
-
-    if(description.length < 30) return true
-
-    for (let i = 0; i < inputs.length; i++) {
-      const input = inputs[i];
-
-      if(!input.length) return true
-    }
-    return false;
-  }
-
-  const disabledBtn = checkInputs();
-  const isDisable = checkInputs() ? "disabled btn" : "btn";
-
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -161,7 +145,7 @@ const CreateSpot = (props) => {
             <input type="url" placeholder="Image URL" onChange={(e) => setImg4(e.target.value)} />
           </div>
         </div>
-        <button disabled={disabledBtn} className={isDisable} type="submit">Create Spot</button>
+        <button className="btn" type="submit">Create Spot</button>
         {errors.errors && <p className="errors">{errors.errors.errors}</p>}
       </form>
     </div>

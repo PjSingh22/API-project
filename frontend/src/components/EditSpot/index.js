@@ -40,7 +40,7 @@ const EditSpot = () => {
   // TODO: handle error validation especially for images
   useEffect(() => {
     const errorObj = {};
-    if(description && description.length < 10) errorObj["desc"] = "Description must be at least 10 characters long"
+    if(description && description.length < 30) errorObj["desc"] = "Description must be at least 30 characters long"
     if(!name) errorObj["name"] = "needs a name";
     if(!country) errorObj["country"] = "country needs to be provided";
     if(!address) errorObj["address"] = "Address needs to be provided";
@@ -83,6 +83,8 @@ const EditSpot = () => {
       price,
     }
 
+    if (Object.values(errors).length) return;
+
      let editSpot = await dispatch(updateSpotThunk(spotData));
 
      if (editSpot.errors) {
@@ -123,7 +125,7 @@ const EditSpot = () => {
           <h3>Describe your place to guests</h3>
           <p>Mention the best features of your space, any special amenities like fast wifi or parking, and what you love about the neighborhood</p>
           {errors.desc && <p className="errors">{errors.desc}</p>}
-          <textarea min={10} required={true} className="form-text-area " rows={5} value={description} onChange={(e) => setDescription(e.target.value)} />
+          <textarea minLength={30} required={true} className="form-text-area " rows={5} value={description} onChange={(e) => setDescription(e.target.value)} />
         </div>
 
         <div className="form-seperator">
@@ -137,7 +139,7 @@ const EditSpot = () => {
           <p>Competitive pricing can help your listing stand out and rank higher in search results</p>
           $ <input required={true} min={1} className="price-input" type="number" value={price} onChange={(e) => setPrice(e.target.value)} />
         </div>
-        <button disabled={disabledBtn} className={isDisable} type="submit">Update your Spot</button>
+        <button className="btn" type="submit">Update your Spot</button>
         {errors.errors && <p className="errors">{errors.errors.errors}</p>}
       </form>
     </div>

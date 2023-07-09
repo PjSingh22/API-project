@@ -40,19 +40,16 @@ function LoginFormModal() {
     );
   };
 
-  const checkInputs = () => {
-    const inputs = [credential, password];
+  // const checkInputs = () => {
+  //   const inputs = [credential, password];
 
-    for (let i = 0; i < inputs.length; i++) {
-      const input = inputs[i];
+  //   for (let i = 0; i < inputs.length; i++) {
+  //     const input = inputs[i];
 
-      if(!input.length) return true
-    }
-    return false;
-  }
-
-  const disabledBtn = checkInputs();
-  const isDisabled = checkInputs() ? " login-btn disabled btn" : "login-btn btn";
+  //     if(!input.length) return true
+  //   }
+  //   return false;
+  // }
 
   return (
     <div className="user-form login-form form">
@@ -62,7 +59,7 @@ function LoginFormModal() {
           <input
             className="user-form-input"
             placeholder="Username or Email"
-            type="text"
+            type="email"
             value={credential}
             onChange={(e) => setCredential(e.target.value)}
             required
@@ -73,13 +70,15 @@ function LoginFormModal() {
             className="user-form-input"
             placeholder="Password"
             type="password"
+            minLength={6}
+            maxLength={30}
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
           />
         </label>
         {errors.credential && <p className="errors">{errors.credential}</p>}
-        <button disabled={disabledBtn} className={isDisabled} type="submit">Log In</button>
+        <button className="login-btn btn" type="submit">Log In</button>
       </form>
       <button className="demo-user btn" onClick={demoUser}>Demo User</button>
     </div>
