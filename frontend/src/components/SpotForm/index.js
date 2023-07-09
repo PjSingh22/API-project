@@ -161,7 +161,7 @@ const CreateSpot = (props) => {
             <input type="url" placeholder="Image URL" onChange={(e) => setImg4(e.target.value)} />
           </div>
         </div>
-        <button disabled={disabledBtn} className={isDisable} type="submit">Create Spot</button>
+        <button className="btn" type="submit">Create Spot</button>
         {errors.errors && <p className="errors">{errors.errors.errors}</p>}
       </form>
     </div>
