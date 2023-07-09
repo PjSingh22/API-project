@@ -50,22 +50,6 @@ const CreateSpot = (props) => {
     }
   };
 
-  const checkInputs = () => {
-    const inputs = [country, address, city, state, description, name, price, previewImage];
-
-    if(description.length < 30) return true
-
-    for (let i = 0; i < inputs.length; i++) {
-      const input = inputs[i];
-
-      if(!input.length) return true
-    }
-    return false;
-  }
-
-  const disabledBtn = checkInputs();
-  const isDisable = checkInputs() ? "disabled btn" : "btn";
-
   const handleSubmit = (e) => {
     e.preventDefault();
 
