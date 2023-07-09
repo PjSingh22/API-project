@@ -54,19 +54,16 @@ function SignupFormModal() {
     });
   };
 
-  const checkInputs = () => {
-    const inputs = [email, username, firstName, lastName, password, confirmPassword];
+  // const checkInputs = () => {
+  //   const inputs = [email, username, firstName, lastName, password, confirmPassword];
 
-    for (let i = 0; i < inputs.length; i++) {
-      const input = inputs[i];
+  //   for (let i = 0; i < inputs.length; i++) {
+  //     const input = inputs[i];
 
-      if(!input.length) return true
-    }
-    return false;
-  }
-
-  const disabledBtn = checkInputs();
-  const isDisabled = checkInputs() ? " login-btn disabled btn" : "login-btn btn";
+  //     if(!input.length) return true
+  //   }
+  //   return false;
+  // }
 
 
   return (
@@ -127,6 +124,7 @@ function SignupFormModal() {
             onChange={(e) => setPassword(e.target.value)}
             required
             minLength={6}
+            maxLength={30}
           />
         </label>
         {(errors.password && showErrors) && <p>{errors.password}</p>}
@@ -139,10 +137,11 @@ function SignupFormModal() {
             onChange={(e) => setConfirmPassword(e.target.value)}
             required
             minLength={6}
+            maxLength={30}
           />
         </label>
         {(errors.confirmPassword && showErrors) && <p className="errors">{errors.confirmPassword}</p>}
-        <button className={isDisabled} disabled={disabledBtn}  type="submit">Sign Up</button>
+        <button className="login-btn btn" type="submit">Sign Up</button>
       </form>
     </div>
   );

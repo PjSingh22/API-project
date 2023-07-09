@@ -40,19 +40,16 @@ function LoginFormModal() {
     );
   };
 
-  const checkInputs = () => {
-    const inputs = [credential, password];
+  // const checkInputs = () => {
+  //   const inputs = [credential, password];
 
-    for (let i = 0; i < inputs.length; i++) {
-      const input = inputs[i];
+  //   for (let i = 0; i < inputs.length; i++) {
+  //     const input = inputs[i];
 
-      if(!input.length) return true
-    }
-    return false;
-  }
-
-  const disabledBtn = checkInputs();
-  const isDisabled = checkInputs() ? " login-btn disabled btn" : "login-btn btn";
+  //     if(!input.length) return true
+  //   }
+  //   return false;
+  // }
 
   return (
     <div className="user-form login-form form">
