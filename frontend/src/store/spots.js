@@ -146,15 +146,11 @@ const spotsReducer = (state = initialState, action) => {
   switch (action.type) {
     case GET_RESERVED_SPOTS:
       let reservedSpotsState = {...state, reservedSpots: {}};
-      console.log(action.spots.Bookings)
       if(action.spots.Bookings.length) {
         action.spots.Bookings.forEach(booking => {
           reservedSpotsState.reservedSpots[booking.Spot.id] = booking.Spot;
         })
       }
-      // action.spots.forEach(spot => {
-      //   reservedSpots.reservedSpots[spot.id] = spot;
-      // })
       return reservedSpotsState;
     case LOAD_SPOTS:
       let allSpots = {};
