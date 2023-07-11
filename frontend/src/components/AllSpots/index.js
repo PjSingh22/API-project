@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { loadSpotsThunk } from '../../store/spots';
+import { getReservedSpotsThunk, loadSpotsThunk } from '../../store/spots';
 // import { Link } from 'react-router-dom';
 import Spot from '../Spot';
 import './AllSpots.css';
@@ -13,6 +13,7 @@ const AllSpots = () => {
 
   useEffect(() => {
     dispatch(loadSpotsThunk());
+    dispatch(getReservedSpotsThunk());
   }, [dispatch])
   return (
     <div className="all-spots">

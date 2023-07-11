@@ -19,6 +19,21 @@
   z-index: 1;
 }
 
+.dropdown-link {
+  color: black;
+}
+
+.dropdown-link:hover {
+  color: var(--main-color);
+}
+
+.user-email {
+  border-bottom: 1px solid var(--border-color);
+  width: 100%;
+  text-align: center;
+  padding-bottom: 5px;
+}
+
 .btn {
   padding: 5px 10px;
 }

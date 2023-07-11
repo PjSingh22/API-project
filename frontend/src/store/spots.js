@@ -5,6 +5,14 @@ const GET_USER_SPOTS = "spots/GET_USER_SPOTS";
 const CREATE_SPOT = "spots/CREATE_SPOT";
 const DELETE_SPOT = "spots/DELETE_SPOT";
 const UPDATE_SPOT = "spots/UPDATE_SPOT";
+const GET_RESERVED_SPOTS = "spots/GET_RESERVED_SPOTS";
+
+const getReservedSpots = (spots) => {
+  return {
+    type: GET_RESERVED_SPOTS,
+    spots
+  }
+}
 
 const getSpot = (spot) => {
   return {
@@ -47,6 +55,18 @@ const loadSpots = (spots) => {
     spots
   }
 };
+
+export const getReservedSpotsThunk = () => async (dispatch) => {
+  const res = await csrfFetch("/api/bookings/current");
+
+  if (res.ok) {
+    const spots = await res.json();
+    dispatch(getReservedSpots(spots));
+  } else {
+    let errors = await res.json();
+    return errors;
+  }
+}
 
 export const updateSpotThunk = (spot) => async (dispatch) => {
   let res = await csrfFetch(`/api/spots/${spot.id}`, {
@@ -120,10 +140,22 @@ export const loadSpotsThunk = () => async (dispatch) => {
   dispatch(loadSpots(data.Spots))
 }
 
-const initialState = { allSpots: {}, singleSpot: {} };
+const initialState = { allSpots: {}, singleSpot: {}, reservedSpots: {} };
 
 const spotsReducer = (state = initialState, action) => {
   switch (action.type) {
+    case GET_RESERVED_SPOTS:
+      let reservedSpotsState = {...state, reservedSpots: {}};
+      console.log(action.spots.Bookings)
+      if(action.spots.Bookings.length) {
+        action.spots.Bookings.forEach(booking => {
+          reservedSpotsState.reservedSpots[booking.Spot.id] = booking.Spot;
+        })
+      }
+      // action.spots.forEach(spot => {
+      //   reservedSpots.reservedSpots[spot.id] = spot;
+      // })
+      return reservedSpotsState;
     case LOAD_SPOTS:
       let allSpots = {};
       action.spots.forEach(spot => {
