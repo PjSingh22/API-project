@@ -27,7 +27,7 @@ function ManageReservation() {
     </div>
   );
   return (
-    <div>
+    <div className="reservations">
       {reservationsArr.length ? reservationsArr.map(reservation => {
 
         const { previewImage, address, city, state } = reservation.Spot;
