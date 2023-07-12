@@ -1,8 +1,10 @@
+import { useHistory } from 'react-router-dom';
 import './reservationcard.css'
 
 function ReservationCard({ reservation }) {
-   const { previewImage, address, city, state } = reservation.Spot;
-    const { startDate, endDate } = reservation;
+  const history = useHistory();
+  const { previewImage, address, city, state } = reservation.Spot;
+  const { startDate, endDate } = reservation;
 
   const pastResevation = () => {
     const convertedEndDate = new Date(endDate);
@@ -18,7 +20,7 @@ function ReservationCard({ reservation }) {
     return `${month}/${day}/${year}`;
   }
   return (
-    <div className="reservation-container">
+    <div onClick={() => history.push(`/spots/${reservation.Spot.id}`)} className="reservation-container">
       <div className="reservation-image" >
         <img src={previewImage} alt="preview" />
       </div>
@@ -32,7 +34,7 @@ function ReservationCard({ reservation }) {
         <div className="reservation-info__dates">End Date: {dateConverter(endDate)}</div>
       </div>
       <div className="reservation-buttons">
-        {pastResevation() ? <button className="reservation-buttons__review btn">Leave a Review</button> : (
+        {pastResevation() ? <button className="reservation-buttons__review btn" onClick={() => history.push(`/spots/${reservation.Spot.id}`)}>Leave a Review</button> : (
           <>
             <button className="reservation-buttons__edit btn">Edit</button>
             <button className="reservation-buttons__delete btn">Delete</button>
