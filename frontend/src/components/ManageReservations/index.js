@@ -22,14 +22,6 @@ function ManageReservation() {
     return convertedStartDate > today;
   });
 
-  const dateConverter = (date) => {
-    const dateArr = date.split('-');
-    const year = dateArr[0];
-    const month = dateArr[1];
-    const day = dateArr[2].slice(0, 2);
-    return `${month}/${day}/${year}`;
-  }
-
   useEffect(() => {
     if (reservationsArr.length) return;
     dispatch(getReservedSpotsThunk());

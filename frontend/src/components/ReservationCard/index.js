@@ -1,10 +1,17 @@
 import { useHistory } from 'react-router-dom';
+import OpenModalButton from '../OpenModalButton';
+import DeleteBookingModal from '../DeleteBookingModal';
 import './reservationcard.css'
 
 function ReservationCard({ reservation }) {
   const history = useHistory();
   const { previewImage, address, city, state } = reservation.Spot;
   const { startDate, endDate } = reservation;
+
+  const handleRoute = (e) => {
+    if (e.target.className.includes('upcoming-btns') || e.target.className.includes('open-modal')) return;
+    history.push(`/spots/${reservation.Spot.id}`);
+  }
 
   const pastResevation = () => {
     const convertedEndDate = new Date(endDate);
@@ -20,7 +27,7 @@ function ReservationCard({ reservation }) {
     return `${month}/${day}/${year}`;
   }
   return (
-    <div onClick={() => history.push(`/spots/${reservation.Spot.id}`)} className="reservation-container">
+    <div onClick={(e) => handleRoute(e)} className="reservation-container">
       <div className="reservation-image" >
         <img src={previewImage} alt="preview" />
       </div>
@@ -34,10 +41,12 @@ function ReservationCard({ reservation }) {
         <div className="reservation-info__dates">End Date: {dateConverter(endDate)}</div>
       </div>
       <div className="reservation-buttons">
-        {pastResevation() ? <button className="reservation-buttons__review btn" onClick={() => history.push(`/spots/${reservation.Spot.id}`)}>Leave a Review</button> : (
+        {pastResevation() ? <button className="reservation-buttons__review btn" onClick={(e) => handleRoute(e)}>Leave a Review</button> : (
           <>
-            <button className="reservation-buttons__edit btn">Edit</button>
-            <button className="reservation-buttons__delete btn">Delete</button>
+            <button className="reservation-buttons__edit upcoming-btns btn">Edit</button>
+            <button className="reservation-buttons__delete upcoming-btns btn">
+              <OpenModalButton className="reservation-buttons__delete upcoming-btns" buttonText="Delete" modalComponent={<DeleteBookingModal bookingId={reservation.id} spotId={reservation.Spot.id} />} />
+            </button>
           </>
         )}
       </div>

@@ -69,5 +69,17 @@
   padding: 5px 10px;
   color: white;
   font-family: var(--main-font);
-  font-size: 20px;
+  /* font-size: 20px; */
+}
+
+.reservation-buttons__delete > * {
+  background-color: rgb(236, 12, 12);
+  color: white;
+  font-size: 16px;
+  border: none;
+
+}
+
+.reservation-buttons__delete > *:hover {
+  color: white;
 }
