@@ -1,6 +1,7 @@
 import { useHistory } from 'react-router-dom';
 import OpenModalButton from '../OpenModalButton';
 import DeleteBookingModal from '../DeleteBookingModal';
+import UpdateReservation from "../UpdateReservationModal";
 import './reservationcard.css'
 
 function ReservationCard({ reservation }) {
@@ -46,7 +47,7 @@ function ReservationCard({ reservation }) {
       <div className="reservation-buttons">
         {pastResevation() ? <button className="reservation-buttons__review btn" onClick={(e) => handleRoute(e)}>Leave a Review</button> : (
           <>
-            <button className="reservation-buttons__edit upcoming-btns btn">Edit</button>
+            <button className="reservation-buttons__edit upcoming-btns btn"><OpenModalButton className="reservation-buttons__edit btn" buttonText="Edit" modalComponent={<UpdateReservation reservation={reservation} />} /></button>
             <button className="reservation-buttons__delete upcoming-btns btn">
               <OpenModalButton className="reservation-buttons__delete upcoming-btns" buttonText="Delete" modalComponent={<DeleteBookingModal bookingId={reservation?.id} spotId={reservation?.Spot?.id} />} />
             </button>

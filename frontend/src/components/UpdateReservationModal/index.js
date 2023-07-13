@@ -2,34 +2,34 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { useModal } from "../../context/Modal";
-import "./reservationmodal.css"
 import { useSelector } from "react-redux";
-import { createReservedSpotThunk } from "../../store/spots";
+import { updateReservedSpotThunk } from "../../store/spots";
 
-function ReservationModal({ spot }) {
+function UpdateReservation({ reservation }) {
   const dispatch = useDispatch();
   const history = useHistory();
   const { closeModal } = useModal();
   const user = useSelector(state => state.session.user)
-  const [startDate, setStartDate] = useState("");
-  const [endDate, setEndDate] = useState("");
+  const [startDate, setStartDate] = useState(reservation.startDate);
+  const [endDate, setEndDate] = useState(reservation.endDate);
   const [errors, setErrors] = useState([]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     const body = {
-      spotId: spot.id,
+      id: reservation.id,
+      spotId: reservation.Spot.id,
       userId: user.id,
       startDate,
       endDate
     }
 
-    return dispatch(createReservedSpotThunk(body))
+    return dispatch(updateReservedSpotThunk(body))
       .then((data) => {
         setStartDate("");
         setEndDate("");
         closeModal();
-        alert("Reservation Successful!")
+        alert("Update Successful!")
       })
       .catch(async (res) => {
         const data = await res.json();
@@ -49,12 +49,12 @@ function ReservationModal({ spot }) {
           ))}
         </div>
       )}
-      <h1>Create Booking</h1>
+      <h1>Update Booking</h1>
       <form className="new-reservation-form" onSubmit={handleSubmit}>
         <div className="dates-container">
           <div className="dates-container__start-date">
             <label htmlFor="start-date">Start Date</label>
-            <input onChange={(e) => setStartDate(e.target.value)} type="date" name="start-date" id="start-date" />
+            <input defaultValue={startDate} onChange={(e) => setStartDate(e.target.value)} type="date" name="start-date" id="start-date" />
           </div>
           <div className="dates-container__end-date">
             <label htmlFor="end-date">End Date</label>
@@ -67,4 +67,4 @@ function ReservationModal({ spot }) {
   )
 }
 
-export default ReservationModal;
+export default UpdateReservation;
