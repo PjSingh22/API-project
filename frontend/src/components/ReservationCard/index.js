@@ -5,7 +5,7 @@ import './reservationcard.css'
 
 function ReservationCard({ reservation }) {
   const history = useHistory();
-  const { previewImage, address, city, state } = reservation.Spot;
+  // const { address, city, state } = reservation.Spot;
   const { startDate, endDate } = reservation;
 
   const handleRoute = (e) => {
@@ -15,8 +15,9 @@ function ReservationCard({ reservation }) {
 
   const pastResevation = () => {
     const convertedEndDate = new Date(endDate);
+    const convertedStartDate = new Date(startDate);
     const today = new Date();
-    return convertedEndDate < today;
+    return convertedEndDate < today || convertedStartDate <= today;
   }
 
   const dateConverter = (date) => {
@@ -26,15 +27,17 @@ function ReservationCard({ reservation }) {
     const day = dateArr[2].slice(0, 2);
     return `${month}/${day}/${year}`;
   }
+
+  if (!reservation) return null;
   return (
     <div onClick={(e) => handleRoute(e)} className="reservation-container">
       <div className="reservation-image" >
-        <img src={previewImage} alt="preview" />
+        <img src={reservation?.Spot?.previewImage} alt="preview" />
       </div>
       <div className="reservation-info">
         <div className="reservation-info__address">
-          <div className="reservation-address__main">{address}</div>
-          <div className="reservation-address__city">{city}, {state}</div>
+          <div className="reservation-address__main">{reservation?.Spot?.address}</div>
+          <div className="reservation-address__city">{reservation?.Spot?.city}, {reservation?.Spot?.state}</div>
         </div>
         {/* convert start date to mm/dd/yyyy */}
         <div className="reservation-info__dates">Start Date: {dateConverter(startDate)}</div>
@@ -45,7 +48,7 @@ function ReservationCard({ reservation }) {
           <>
             <button className="reservation-buttons__edit upcoming-btns btn">Edit</button>
             <button className="reservation-buttons__delete upcoming-btns btn">
-              <OpenModalButton className="reservation-buttons__delete upcoming-btns" buttonText="Delete" modalComponent={<DeleteBookingModal bookingId={reservation.id} spotId={reservation.Spot.id} />} />
+              <OpenModalButton className="reservation-buttons__delete upcoming-btns" buttonText="Delete" modalComponent={<DeleteBookingModal bookingId={reservation?.id} spotId={reservation?.Spot?.id} />} />
             </button>
           </>
         )}

@@ -47,6 +47,20 @@
   padding-bottom: 15px;
 }
 
+.reserve-btn {
+  width: 100%;
+}
+
+.reserve-btn > * {
+  width: 100%;
+  background-color: var(--main-color);
+  color: white;
+}
+
+.reserve-btn > *:hover {
+  color: white;
+}
+
 .spot__desc, .review-desc, .review-postDate {
   text-align: left;
   font-size: 12px;
@@ -107,4 +121,9 @@
 
 .add-rev-btn > *:hover, .delete-rev-btn > *:hover {
   color: white;
+}
+
+.edit-link {
+  color: white;
+  text-decoration: none;
 }
