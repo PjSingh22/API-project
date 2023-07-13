@@ -9,6 +9,7 @@ import { loadSpotsThunk } from "./store/spots";
 import ManageSpots from "./components/ManageSpots";
 import CreateSpot from "./components/SpotForm";
 import EditSpot from "./components/EditSpot";
+import ManageReservation from "./components/ManageReservations";
 
 function App() {
   const dispatch = useDispatch();
@@ -47,6 +48,9 @@ function App() {
       isLoaded &&
         <div className="app-body">
           <Switch>
+            <Route path="/user/reservations">
+              <ManageReservation />
+            </Route>
             <Route path="/user/spots/create">
               <CreateSpot />
             </Route>

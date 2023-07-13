@@ -27,6 +27,16 @@
   color: var(--main-color);
 }
 
+.external-links {
+  display: flex;
+  gap: 25px;
+  font-size: 25px;
+}
+
+.external-links > a {
+  color: var(--main-color);
+}
+
 form > button {
   width: 100%;
 }

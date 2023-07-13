@@ -1,16 +1,18 @@
 import { useEffect } from "react";
-import { useParams } from 'react-router-dom';
+import { useParams, Link, useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from "react-redux";
 import { getSpotThunk } from "../../store/spots";
 import { getSpotReviewsThunk } from "../../store/reviews";
 import OpenModalButton from "../OpenModalButton";
 import DeleteReviewButton from "../DeleteReviewButton";
+import ReservationModal from "../ReservationModal";
 import PostReview from "../PostReview";
 import './ViewSpot.css';
 
 const ViewSpot = ({defaultImg}) => {
   const { spotId } = useParams();
   const dispatch = useDispatch();
+  const history = useHistory();
   const spotObj = useSelector(state => state.spots.singleSpot);
   const userObj = useSelector(state => state.session.user);
   // const ratingListener = useSelector(state => state.spots.singleSpot.avgStarRating);
@@ -77,7 +79,7 @@ const ViewSpot = ({defaultImg}) => {
               :
               <p style={{fontSize: "1.2em"}}><i className="fa-solid fa-star"></i> {parseFloat(avgStarRating).toFixed(1)} &#x2022; {numReviews} {numReviews === 1 ? "Review" : "Reviews" }</p>}
             </div>
-            <button className="btn login-btn" onClick={() => alert('feature coming soon')}>Reserve</button>
+            {userObj.id === spotObj.ownerId ? <button className="btn login-btn"><Link className="edit-link" to={`/user/spots/${spotObj.id}`} >Update</Link></button> : <button className="btn login-btn reserve-btn"><OpenModalButton className="btn" buttonText="Reserve" modalComponent={<ReservationModal spot={spotObj} />} /></button>}
           </div>
         </div>
         {userObj ? showBtn ? <button className="add-rev-btn"><OpenModalButton

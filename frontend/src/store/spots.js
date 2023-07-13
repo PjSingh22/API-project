@@ -5,6 +5,30 @@ const GET_USER_SPOTS = "spots/GET_USER_SPOTS";
 const CREATE_SPOT = "spots/CREATE_SPOT";
 const DELETE_SPOT = "spots/DELETE_SPOT";
 const UPDATE_SPOT = "spots/UPDATE_SPOT";
+const GET_RESERVED_SPOTS = "spots/GET_RESERVED_SPOTS";
+const DELETE_RESERVED_SPOT = "spots/DELETE_RESERVED_SPOT";
+const CREATE_RESERVED_SPOT = "spots/CREATE_RESERVED_SPOT";
+
+const createReservedSpot = (spot) => {
+  return {
+    type: CREATE_RESERVED_SPOT,
+    spot
+  }
+}
+
+const deleteReservedSpot = (reservationId) => {
+  return {
+    type: DELETE_RESERVED_SPOT,
+    reservationId
+  }
+}
+
+const getReservedSpots = (spots) => {
+  return {
+    type: GET_RESERVED_SPOTS,
+    spots
+  }
+}
 
 const getSpot = (spot) => {
   return {
@@ -47,6 +71,47 @@ const loadSpots = (spots) => {
     spots
   }
 };
+
+export const createReservedSpotThunk = (reservationObj) => async (dispatch) => {
+  const { spotId } = reservationObj;
+  const res = await csrfFetch(`/api/spots/${spotId}/bookings`, {
+    method: 'POST',
+    body: JSON.stringify(reservationObj)
+  });
+
+  if (res.ok) {
+    const spot = await res.json();
+    dispatch(createReservedSpot(spot));
+  } else {
+    let errors = await res.json();
+    return errors;
+  }
+}
+
+export const deleteReservedSpotThunk = (reservationId) => async (dispatch) => {
+  const res = await csrfFetch(`/api/bookings/${reservationId}`, {
+    method: 'DELETE'
+  });
+
+  if (res.ok) {
+    dispatch(deleteReservedSpot(reservationId));
+  } else {
+    let errors = await res.json();
+    return errors;
+  }
+}
+
+export const getReservedSpotsThunk = () => async (dispatch) => {
+  const res = await csrfFetch("/api/bookings/current");
+
+  if (res.ok) {
+    const spots = await res.json();
+    dispatch(getReservedSpots(spots));
+  } else {
+    let errors = await res.json();
+    return errors;
+  }
+}
 
 export const updateSpotThunk = (spot) => async (dispatch) => {
   let res = await csrfFetch(`/api/spots/${spot.id}`, {
@@ -120,10 +185,24 @@ export const loadSpotsThunk = () => async (dispatch) => {
   dispatch(loadSpots(data.Spots))
 }
 
-const initialState = { allSpots: {}, singleSpot: {} };
+const initialState = { allSpots: {}, singleSpot: {}, reservedSpots: {} };
 
 const spotsReducer = (state = initialState, action) => {
   switch (action.type) {
+    case CREATE_RESERVED_SPOT:
+      return { ...state, reservedSpots: { ...state.reservedSpots, [action.spot.id]: action.spot } };
+    case DELETE_RESERVED_SPOT:
+      let newReservedState = {...state, reservedSpots: {...state.reservedSpots}};
+      delete newReservedState.reservedSpots[action.reservationId];
+      return newReservedState;
+    case GET_RESERVED_SPOTS:
+      let reservedSpotsState = {...state, reservedSpots: {}};
+      if(action.spots.Bookings.length) {
+        action.spots.Bookings.forEach(booking => {
+          reservedSpotsState.reservedSpots[booking.id] = booking;
+        })
+      }
+      return reservedSpotsState;
     case LOAD_SPOTS:
       let allSpots = {};
       action.spots.forEach(spot => {
