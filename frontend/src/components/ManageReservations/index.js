@@ -7,7 +7,7 @@ import "./managereservations.css"
 function ManageReservation() {
   const dispatch = useDispatch();
   const reservations = useSelector(state => state.spots.reservedSpots);
-  const reservationsArr = Object.values(reservations);
+  const reservationsArr = reservations ? Object.values(reservations) : [];
   const pastReservations = reservationsArr.filter(reservation => {
     const { endDate } = reservation;
     const { startDate } = reservation;
