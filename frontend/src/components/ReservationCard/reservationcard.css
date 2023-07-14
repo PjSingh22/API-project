@@ -83,3 +83,14 @@
 .reservation-buttons__delete > *:hover {
   color: white;
 }
+
+.reservation-buttons__edit > * {
+  background-color: var(--main-color);
+  color: white;
+  font-size: 16px;
+  border: none;
+}
+
+.reservation-buttons__edit > *:hover {
+  color: white;
+}
