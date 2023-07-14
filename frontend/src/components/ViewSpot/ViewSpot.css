@@ -123,9 +123,8 @@
   color: white;
 }
 
-.edit-link {
-  color: white;
-  text-decoration: none;
+.reserve-btn > .edit-link {
+  width: 100%;
 }
 
 /* @media (min-width: 1920px) and () */
