@@ -79,7 +79,7 @@ const ViewSpot = ({defaultImg}) => {
               :
               <p style={{fontSize: "1.2em"}}><i className="fa-solid fa-star"></i> {parseFloat(avgStarRating).toFixed(1)} &#x2022; {numReviews} {numReviews === 1 ? "Review" : "Reviews" }</p>}
             </div>
-            {userObj.id === spotObj.ownerId ? <button className="btn login-btn"><Link className="edit-link" to={`/user/spots/${spotObj.id}`} >Update</Link></button> : <button className="btn login-btn reserve-btn"><OpenModalButton className="btn" buttonText="Reserve" modalComponent={<ReservationModal spot={spotObj} />} /></button>}
+            { userObj && spotObj ? userObj.id === spotObj.ownerId ?  <button className="btn login-btn"><Link className="edit-link" to={`/user/spots/${spotObj.id}`} >Update</Link></button> : <button className="btn login-btn reserve-btn"><OpenModalButton className="btn" buttonText="Reserve" modalComponent={<ReservationModal spot={spotObj} />} /></button> : <button className="btn login-btn">Log in to Book</button>}
           </div>
         </div>
         {userObj ? showBtn ? <button className="add-rev-btn"><OpenModalButton
