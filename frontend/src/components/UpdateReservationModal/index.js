@@ -34,7 +34,6 @@ function UpdateReservation({ reservation }) {
       .catch(async (res) => {
         const data = await res.json();
         if (data && data.errors) {
-          console.log("reservation errors", data.errors);
           setErrors(data.errors);
         }
       })

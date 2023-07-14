@@ -158,7 +158,10 @@ router.post('/:id/bookings', async (req, res) => {
 
     if (convertedBSD < today.getTime() && bodyStartDate != today.toDateString()) {
       return res.status(400).json({
-        message: "Cannot book dates in the past"
+        message: "Cannot book dates in the past",
+        errors: {
+          startDate: "Cannot book dates in the past"
+        }
       })
     }
 
