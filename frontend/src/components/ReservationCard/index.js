@@ -47,8 +47,8 @@ function ReservationCard({ reservation }) {
       <div className="reservation-buttons">
         {pastResevation() ? <button className="reservation-buttons__review btn" onClick={(e) => handleRoute(e)}>Leave a Review</button> : (
           <>
-            <button className="reservation-buttons__edit upcoming-btns btn"><OpenModalButton className="reservation-buttons__edit btn" buttonText="Edit" modalComponent={<UpdateReservation reservation={reservation} />} /></button>
-            <button className="reservation-buttons__delete upcoming-btns btn">
+            <button className="reservation-buttons__edit upcoming-btns btn reserve-btn"><OpenModalButton className="reservation-buttons__edit btn" buttonText="Edit" modalComponent={<UpdateReservation reservation={reservation} />} /></button>
+            <button className="reservation-buttons__delete upcoming-btns btn reserve-btn">
               <OpenModalButton className="reservation-buttons__delete upcoming-btns" buttonText="Delete" modalComponent={<DeleteBookingModal bookingId={reservation?.id} spotId={reservation?.Spot?.id} />} />
             </button>
           </>
